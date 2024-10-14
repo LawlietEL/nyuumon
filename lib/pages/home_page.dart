@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nyuumon/pages/login_page.dart';
+import 'package:nyuumon/routes/router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -79,6 +82,7 @@ class HomePage extends StatelessWidget {
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
+                          context.push('/home/:belajar');
                           // Aksi ketika kotak "Belajar" ditekan
                           print('Kotak Belajar Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -91,7 +95,7 @@ class HomePage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(156, 239, 71, 107),
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey),
+                            border: Border.all(color: Colors.black),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -117,6 +121,7 @@ class HomePage extends StatelessWidget {
                       // Kotak kedua sebagai button
                       GestureDetector(
                         onTap: () {
+                          context.push('/home/games');
                           // Aksi ketika kotak "Games" ditekan
                           print('Kotak Games Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -129,7 +134,7 @@ class HomePage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(156, 239, 71, 107),
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey),
+                            border: Border.all(color: Colors.black),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +172,7 @@ class HomePage extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(156, 239, 71, 107),
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey),
+                            border: Border.all(color: Colors.black),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,

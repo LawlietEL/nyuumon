@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1062810734601",
+    "project_id": "nyuumon-online",
+    "storage_bucket": "nyuumon-online.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1062810734601:android:131b6aa209044a55e728d8",
+        "android_client_info": {
+          "package_name": "com.nyuumon.online.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRX19To3eCl__EMp5Kwll-u-DBnyTs3us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

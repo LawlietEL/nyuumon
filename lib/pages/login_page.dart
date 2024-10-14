@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nyuumon/bloc/visibility/visibility_cubit.dart';
+import 'package:nyuumon/routes/router.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -54,22 +58,34 @@ class LoginPage extends StatelessWidget {
                   // Password TextField
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.08,
-                    child: TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: 'Password',
-                        hintStyle: const TextStyle(color: Color(0xFF8A8888)),
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Color(0xFF8A8888),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
+                    child: BlocBuilder<VisibilityCubit, bool>(
+                      builder: (context, state) {
+                        return TextField(
+                          obscureText: state,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: 'Password',
+                            hintStyle:
+                                const TextStyle(color: Color(0xFF8A8888)),
+                            prefixIcon: Icon(
+                              Icons.lock,
+                              color: Color(0xFF8A8888),
+                            ),
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  context.read<VisibilityCubit>().change();
+                                },
+                                icon: Icon(state == true
+                                    ? Icons.visibility
+                                    : Icons.visibility_off)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.grey),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   SizedBox(
@@ -110,6 +126,7 @@ class LoginPage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: ElevatedButton(
                       onPressed: () {
+                        context.push('/home');
                         // Add login functionality here
                       },
                       child: Text(
