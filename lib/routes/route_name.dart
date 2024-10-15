@@ -2,7 +2,8 @@ part of 'router.dart';
 
 abstract class Routes {
   static const onboarding = 'onboarding';
-  static const register = 'register';
+  static const create_account = 'create_account';
+  static const back_to_login = 'back_to_login';
   static const login = 'login';
   static const home = 'home';
   static const belajar = 'belajar';

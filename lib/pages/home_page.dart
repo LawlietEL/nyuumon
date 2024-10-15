@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/home/:belajar');
+                          context.push('/home/belajar');
                           // Aksi ketika kotak "Belajar" ditekan
                           print('Kotak Belajar Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -160,6 +160,7 @@ class HomePage extends StatelessWidget {
                       // Kotak ketiga sebagai button
                       GestureDetector(
                         onTap: () {
+                          context.push('/home/latihan');
                           // Aksi ketika kotak "Latihan" ditekan
                           print('Kotak Latihan Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini

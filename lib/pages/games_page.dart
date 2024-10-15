@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class GamesPage extends StatelessWidget {
   const GamesPage({super.key});
@@ -90,6 +91,7 @@ class GamesPage extends StatelessWidget {
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
+                          context.push('/home/games/game_matching');
                           // Aksi ketika kotak "Matching Hirakata" ditekan
                           print('Matching Hirakata Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -130,6 +132,7 @@ class GamesPage extends StatelessWidget {
                       // Kotak kedua sebagai button
                       GestureDetector(
                         onTap: () {
+                          context.push('/home/games/game_memory');
                           // Aksi ketika kotak "Hirakata Memory" ditekan
                           print('Hirakata Memory Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini

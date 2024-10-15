@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CreateAccountPage extends StatelessWidget {
   const CreateAccountPage({super.key});
@@ -122,6 +123,7 @@ class CreateAccountPage extends StatelessWidget {
                   // Create an account text
                   GestureDetector(
                     onTap: () {
+                      context.push('/create_account/back_to_login');
                       // Handle account creation process
                     },
                     child: Text(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nyuumon/pages/home_page.dart';
 
 class BelajarPage extends StatelessWidget {
   const BelajarPage({super.key});
@@ -90,6 +92,7 @@ class BelajarPage extends StatelessWidget {
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
+                          context.push('/home/belajar/tabel_hiragana');
                           // Aksi ketika kotak "ひらがな" ditekan
                           print('Kotak ひらがな Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -129,6 +132,7 @@ class BelajarPage extends StatelessWidget {
                       // Kotak kedua sebagai button
                       GestureDetector(
                         onTap: () {
+                          context.push('/home/belajar/tabel_katakana');
                           // Aksi ketika kotak "カタカナ" ditekan
                           print('Kotak カタカナ Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
