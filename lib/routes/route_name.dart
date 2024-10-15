@@ -6,6 +6,7 @@ abstract class Routes {
   static const back_to_login = 'back_to_login';
   static const login = 'login';
   static const home = 'home';
+  static const profil = 'profil';
   static const belajar = 'belajar';
   static const tabel_hiragana = 'tabel_hiragana';
   static const detail_huruf_hiragana = 'detail_huruf_hiragana';
@@ -18,4 +19,5 @@ abstract class Routes {
   static const latihan_menulis_hirakata = 'latihan_menulis_hirakata';
   static const latihan_membaca_hirakata = 'latihan_membaca_hirakata';
   static const latihan_menulis_kosakata = 'latihan_menulis_kosakata';
+  static const logout = 'logout';
 }

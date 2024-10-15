@@ -37,17 +37,25 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8), // Jarak antara nama dan gambar
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.grey[300], // Warna lingkaran
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/icons/logo.png', // Ganti dengan path gambar Anda
-                          fit: BoxFit.cover,
+                    GestureDetector(
+                      onTap: () {
+                        context.push('/home/profil');
+                        // Aksi ketika gambar profil ditekan
+                        print('Profil button ditekan');
+                        // Contoh navigasi ke halaman profil
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey[300], // Warna lingkaran
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            'assets/icons/logo.png', // Ganti dengan path gambar Anda
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),

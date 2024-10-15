@@ -13,6 +13,7 @@ import 'package:nyuumon/pages/latihan_menulis_kosakata_page.dart';
 import 'package:nyuumon/pages/latihan_page.dart';
 import 'package:nyuumon/pages/login_page.dart';
 import 'package:nyuumon/pages/onboarding_page.dart';
+import 'package:nyuumon/pages/profil_page.dart';
 import 'package:nyuumon/pages/tabel_hiragana_page.dart';
 import 'package:nyuumon/pages/tabel_katakana_page.dart';
 
@@ -73,6 +74,22 @@ final GoRouter router = GoRouter(
             return const HomePage();
           },
           routes: [
+            GoRoute(
+              path: '/profil',
+              name: Routes.profil,
+              builder: (BuildContext context, GoRouterState state) {
+                return const ProfilPage();
+              },
+              routes: [
+                GoRoute(
+                  path: '/logout',
+                  name: Routes.logout,
+                  builder: (BuildContext context, GoRouterState state) {
+                    return const LoginPage();
+                  },
+                ),
+              ],
+            ),
             GoRoute(
               path: '/belajar',
               name: Routes.belajar,
