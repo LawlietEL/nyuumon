@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nyuumon/pages/belajar_page.dart';
+import 'package:nyuumon/pages/change_password.dart';
 import 'package:nyuumon/pages/create_account_page.dart';
 import 'package:nyuumon/pages/game_matching_page.dart';
 import 'package:nyuumon/pages/game_memory_page.dart';
@@ -88,6 +89,13 @@ final GoRouter router = GoRouter(
                     return const LoginPage();
                   },
                 ),
+                GoRoute(
+                  path: '/change_password',
+                  name: Routes.change_password,
+                  builder: (BuildContext context, GoRouterState state) {
+                    return const ChangePassword();
+                  },
+                ),
               ],
             ),
             GoRoute(
@@ -97,6 +105,13 @@ final GoRouter router = GoRouter(
                 return const BelajarPage();
               },
               routes: [
+                // GoRoute(
+                //   path: '/profil',
+                //   name: Routes.profil,
+                //   builder: (BuildContext context, GoRouterState state) {
+                //     return const ProfilPage();
+                //   },
+                // ),
                 GoRoute(
                   path: '/tabel_hiragana',
                   name: Routes.tabel_hiragana,
@@ -120,6 +135,13 @@ final GoRouter router = GoRouter(
                 return const GamesPage();
               },
               routes: [
+                // GoRoute(
+                //   path: '/profil',
+                //   name: Routes.profil,
+                //   builder: (BuildContext context, GoRouterState state) {
+                //     return const ProfilPage();
+                //   },
+                // ),
                 GoRoute(
                   path: '/game_matching',
                   name: Routes.game_matching,
@@ -143,6 +165,13 @@ final GoRouter router = GoRouter(
                 return const LatihanPage();
               },
               routes: [
+                // GoRoute(
+                //   path: '/profil',
+                //   name: Routes.profil,
+                //   builder: (BuildContext context, GoRouterState state) {
+                //     return const ProfilPage();
+                //   },
+                // ),
                 GoRoute(
                   path: '/latihan_menulis_hirakata',
                   name: Routes.latihan_menulis_hirakata,

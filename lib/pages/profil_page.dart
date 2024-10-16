@@ -140,6 +140,7 @@ class ProfilPage extends StatelessWidget {
             // Button "Change Password"
             GestureDetector(
               onTap: () {
+                context.push('/home/profil/change_password');
                 // Aksi ketika tombol ditekan
                 print('Change Password ditekan');
               },

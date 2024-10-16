@@ -36,17 +36,27 @@ class GamesPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8), // Jarak antara nama dan gambar
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.grey[300], // Warna lingkaran
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/icons/logo.png', // Ganti dengan path gambar Anda
-                          fit: BoxFit.cover,
+                    // Mengubah lingkaran profile menjadi button
+                    GestureDetector(
+                      onTap: () {
+                        // context.push('/home/games/profil');
+                        // Aksi yang ingin dijalankan ketika profile button ditekan
+                        print('Profile Button Ditekan');
+                        // Misalnya, arahkan ke halaman profile
+                        context.push('/profile');
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey[300], // Warna lingkaran
+                        ),
+                        child: ClipOval(
+                          child: Image.asset(
+                            'assets/icons/logo.png', // Ganti dengan path gambar Anda
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
