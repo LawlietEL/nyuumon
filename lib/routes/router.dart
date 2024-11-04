@@ -49,7 +49,7 @@ final GoRouter router = GoRouter(
       path: '/',
       name: Routes.login,
       builder: (BuildContext context, GoRouterState state) {
-        return const LoginPage();
+        return LoginPage();
       },
       routes: [
         GoRoute(
@@ -63,7 +63,7 @@ final GoRouter router = GoRouter(
               path: '/back_to_login',
               name: Routes.back_to_login,
               builder: (BuildContext context, GoRouterState state) {
-                return const LoginPage();
+                return LoginPage();
               },
             ),
           ],
@@ -86,7 +86,7 @@ final GoRouter router = GoRouter(
                   path: '/logout',
                   name: Routes.logout,
                   builder: (BuildContext context, GoRouterState state) {
-                    return const LoginPage();
+                    return LoginPage();
                   },
                 ),
                 GoRoute(

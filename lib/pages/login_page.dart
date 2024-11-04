@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nyuumon/bloc/auth/auth_bloc.dart';
 import 'package:nyuumon/bloc/visibility/visibility_cubit.dart';
 import 'package:nyuumon/routes/router.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+
+  final TextEditingController emailC = TextEditingController();
+  final TextEditingController passC = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +42,8 @@ class LoginPage extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.08,
                     child: TextField(
+                      autocorrect: false,
+                      controller: emailC,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -61,6 +67,8 @@ class LoginPage extends StatelessWidget {
                     child: BlocBuilder<VisibilityCubit, bool>(
                       builder: (context, state) {
                         return TextField(
+                          autocorrect: false,
+                          controller: passC,
                           obscureText: state,
                           decoration: InputDecoration(
                             filled: true,
@@ -126,12 +134,31 @@ class LoginPage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: ElevatedButton(
                       onPressed: () {
-                        context.push('/home');
-                        // Add login functionality here
+                        // context.push('/home');
+                        context.read<AuthBloc>().add(
+                              AuthEventLogin(emailC.text, passC.text),
+                            );
                       },
-                      child: Text(
-                        'Login',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      child: BlocConsumer<AuthBloc, AuthState>(
+                        listener: (context, state) {
+                          if (state is AuthStateLogin) {
+                            context.goNamed(Routes.home);
+                          }
+                          if (state is AuthStateError) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(state.message),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        },
+                        builder: (context, state) {
+                          if (state is AuthStateLoading) {
+                            return const Text("LOADING...");
+                          }
+                          return const Text("LOGIN");
+                        },
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor:

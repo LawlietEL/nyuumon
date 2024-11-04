@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nyuumon/bloc/auth/auth_bloc.dart';
 
 class ProfilPage extends StatelessWidget {
   const ProfilPage({super.key});
@@ -174,7 +176,7 @@ class ProfilPage extends StatelessWidget {
             // Button "Logout"
             GestureDetector(
               onTap: () {
-                context.push('/home/profil/logout');
+                context.read<AuthBloc>().add(AuthEventLogout());
                 // Aksi ketika tombol ditekan
                 print('Logout ditekan');
               },

@@ -57,6 +57,7 @@ class DefaultFirebaseOptions {
     appId: '1:1062810734601:android:131b6aa209044a55e728d8',
     messagingSenderId: '1062810734601',
     projectId: 'nyuumon-online',
-    storageBucket: 'nyuumon-online.appspot.com',
+    storageBucket: 'nyuumon-online.firebasestorage.app',
   );
+
 }
