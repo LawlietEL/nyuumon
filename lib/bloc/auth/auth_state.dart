@@ -19,3 +19,10 @@ class AuthStateError extends AuthState {
 
   final String message;
 }
+
+class AuthStateProfil extends AuthState {
+  AuthStateProfil(this.email, this.name);
+
+  final String email;
+  final String name;
+}
