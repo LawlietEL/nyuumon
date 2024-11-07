@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nyuumon/pages/belajar_page.dart';
@@ -13,7 +12,6 @@ import 'package:nyuumon/pages/latihan_menulis_hirakata_page.dart';
 import 'package:nyuumon/pages/latihan_menulis_kosakata_page.dart';
 import 'package:nyuumon/pages/latihan_page.dart';
 import 'package:nyuumon/pages/login_page.dart';
-import 'package:nyuumon/pages/onboarding_page.dart';
 import 'package:nyuumon/pages/profil_page.dart';
 import 'package:nyuumon/pages/tabel_hiragana_page.dart';
 import 'package:nyuumon/pages/tabel_katakana_page.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:nyuumon/pages/games_page.dart';
 
 class LatihanPage extends StatelessWidget {
   const LatihanPage({super.key});

@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nyuumon/bloc/auth/auth_bloc.dart';
-import 'package:nyuumon/main.dart';
-import 'package:nyuumon/pages/login_page.dart';
-import 'package:nyuumon/routes/router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
