@@ -4,6 +4,7 @@ abstract class Routes {
   static const onboarding = 'onboarding';
   static const create_account = 'create_account';
   static const back_to_login = 'back_to_login';
+  static const forget_password = 'forget_password';
   static const login = 'login';
   static const home = 'home';
   static const profil = 'profil';

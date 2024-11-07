@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nyuumon/pages/belajar_page.dart';
 import 'package:nyuumon/pages/change_password.dart';
 import 'package:nyuumon/pages/create_account_page.dart';
+import 'package:nyuumon/pages/forget_password_page.dart';
 import 'package:nyuumon/pages/game_matching_page.dart';
 import 'package:nyuumon/pages/game_memory_page.dart';
 import 'package:nyuumon/pages/games_page.dart';
@@ -50,6 +51,13 @@ final GoRouter router = GoRouter(
         return LoginPage();
       },
       routes: [
+        GoRoute(
+          path: '/forget_password',
+          name: Routes.forget_password,
+          builder: (BuildContext context, GoRouterState state) {
+            return ForgetPasswordPage();
+          },
+        ),
         GoRoute(
           path: '/create_account',
           name: Routes.create_account,

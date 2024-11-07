@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
                         hintText: 'Email',
                         hintStyle: const TextStyle(color: Color(0xFF8A8888)),
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.email,
                           color: Color(0xFF8A8888),
                         ),
                         border: OutlineInputBorder(
@@ -120,15 +120,22 @@ class LoginPage extends StatelessWidget {
                           )
                         ],
                       ),
-                      Text(
-                        "Forget password?",
-                        style: TextStyle(
-                            color: Colors.grey, fontStyle: FontStyle.italic),
-                      )
+                      TextButton(
+                        onPressed: () {
+                          context.push('/forget_password');
+                        },
+                        child: Text(
+                          "Forget password?",
+                          style: TextStyle(
+                            color: Color(0xFF8A8888),
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(
-                      height: 20), // Space between Remember me and the button
+                      height: 10), // Space between Remember me and the button
                   // Login Button
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.4,
@@ -194,7 +201,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   SizedBox(
                       height:
-                          15), // Space between button and create account text
+                          10), // Space between button and create account text
                   // Create an account text
                   GestureDetector(
                     onTap: () {
