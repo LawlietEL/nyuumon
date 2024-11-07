@@ -14,27 +14,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLogin>((event, emit) async {
       try {
         emit(AuthStateLoading());
-        // fungsi untuk login
 
+        // Fungsi untuk login
         var u = await auth.signInWithEmailAndPassword(
           email: event.email,
           password: event.pass,
         );
-        //Untuk saring user sudah ada atau tidak, sudah login atau tidak
-        //if()
-        //1. cek uid kedalam firebase
-        //2. kalau belum ada, nambah
-        //3. kalau sudah ada, update
-        print(u);
-        await users
-            .add({
-              'name': u.user!.displayName,
-              'email': u.user!.email,
-              'created_at': DateTime.now(),
-              'updated_at': DateTime.now(),
-            })
-            .then((value) => print("User Added"))
-            .catchError((error) => print("Failed to add user: $error"));
+
+        // Cek apakah user sudah ada di database Firestore
+        var userDoc =
+            await users.where('email', isEqualTo: u.user!.email).get();
+
+        if (userDoc.docs.isNotEmpty) {
+          // Jika user sudah ada, update kolom updated_at
+          await users.doc(userDoc.docs.first.id).update({
+            'updated_at': DateTime.now(),
+          });
+          print("User updated");
+        } else {
+          // Jika user belum ada, tambahkan data baru
+          await users.add({
+            'name': u.user!.displayName,
+            'email': u.user!.email,
+            'created_at': DateTime.now(),
+            'updated_at': DateTime.now(),
+          });
+          print("User added");
+        }
 
         emit(AuthStateLogin());
       } on FirebaseAuthException catch (e) {
@@ -45,37 +51,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthStateError(e.toString()));
       }
     });
+
     on<AuthEventLogout>((event, emit) async {
-      // fungsi untuk logout
       try {
         emit(AuthStateLoading());
-        // fungsi untuk logout
+
+        // Fungsi untuk logout
         await auth.signOut();
         emit(AuthStateLogout());
         router.goNamed(Routes.login);
       } on FirebaseAuthException catch (e) {
-        // Error dari Firebase Auth
         emit(AuthStateError(e.message.toString()));
       } catch (e) {
-        // Error general
         emit(AuthStateError(e.toString()));
       }
     });
+
     on<AuthEventProfil>(
       (event, emit) async {
         try {
           emit(AuthStateLoading());
-          var email = await auth.currentUser!.email;
-          var name = await auth.currentUser?.displayName ?? 'null';
+          var email = auth.currentUser!.email;
+          var name = auth.currentUser?.displayName ?? 'null';
           emit(AuthStateProfil(
             email!,
             name,
           ));
         } on FirebaseException catch (e) {
-          // Error dari Firebase Auth
           emit(AuthStateError(e.message.toString()));
         } catch (e) {
-          // Error general
           emit(AuthStateError(e.toString()));
         }
       },
