@@ -186,7 +186,10 @@ class LoginPage extends StatelessWidget {
                           if (state is AuthStateLoading) {
                             return const Text("LOADING...");
                           }
-                          return const Text("LOGIN");
+                          return const Text(
+                            "LOGIN",
+                            style: TextStyle(color: Colors.white),
+                          );
                         },
                       ),
                       style: ElevatedButton.styleFrom(
