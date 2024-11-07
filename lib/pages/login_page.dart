@@ -47,7 +47,7 @@ class LoginPage extends StatelessWidget {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
-                        hintText: 'Username',
+                        hintText: 'Email',
                         hintStyle: const TextStyle(color: Color(0xFF8A8888)),
                         prefixIcon: Icon(
                           Icons.person,
@@ -134,10 +134,21 @@ class LoginPage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: ElevatedButton(
                       onPressed: () {
-                        // context.push('/home');
-                        context.read<AuthBloc>().add(
-                              AuthEventLogin(emailC.text, passC.text),
-                            );
+                        // Cek apakah kolom email atau password kosong
+                        if (emailC.text.isEmpty || passC.text.isEmpty) {
+                          // Tampilkan pesan error jika kolom kosong
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content:
+                                  Text("Kolom email dan password harus diisi!"),
+                            ),
+                          );
+                        } else {
+                          // Kirim event login jika kedua kolom terisi
+                          context.read<AuthBloc>().add(
+                                AuthEventLogin(emailC.text, passC.text),
+                              );
+                        }
                       },
                       child: BlocConsumer<AuthBloc, AuthState>(
                         listener: (context, state) {
@@ -145,9 +156,20 @@ class LoginPage extends StatelessWidget {
                             context.goNamed(Routes.home);
                           }
                           if (state is AuthStateError) {
+                            // Cek jika error terjadi karena email atau password salah
+                            String errorMessage = state.errorMessage;
+
+                            // Jika error berhubungan dengan email atau password salah
+                            if (errorMessage.contains('email') ||
+                                errorMessage.contains('password')) {
+                              errorMessage =
+                                  "Email atau Password salah, silahkan periksa kembali!";
+                            }
+
+                            // Tampilkan error message yang disesuaikan
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(state.message),
+                                content: Text(errorMessage),
                                 duration: const Duration(seconds: 2),
                               ),
                             );

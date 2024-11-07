@@ -56,7 +56,7 @@ final GoRouter router = GoRouter(
           path: '/create_account',
           name: Routes.create_account,
           builder: (BuildContext context, GoRouterState state) {
-            return const CreateAccountPage();
+            return CreateAccountPage();
           },
           routes: [
             GoRoute(

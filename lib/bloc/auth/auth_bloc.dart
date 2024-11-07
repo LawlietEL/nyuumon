@@ -11,6 +11,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     FirebaseAuth auth = FirebaseAuth.instance;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
+// Handler untuk event register
+    on<AuthEventRegister>((event, emit) async {
+      emit(AuthStateLoading());
+      try {
+        var userCredential = await auth.createUserWithEmailAndPassword(
+          email: event.email,
+          password: event.password,
+        );
+
+        // Tambahkan data pengguna ke Firestore
+        await users.doc(userCredential.user!.uid).set({
+          'username': event.username,
+          'email': event.email,
+          'created_at': DateTime.now(),
+        });
+
+        // Pencetakan sukses jika berhasil
+        emit(AuthStateRegisterSuccess());
+      } on FirebaseAuthException catch (e) {
+        emit(AuthStateError(e.message ?? 'Registration failed.'));
+      } catch (e) {
+        emit(AuthStateError('An unexpected error occurred.'));
+      }
+    });
+
     on<AuthEventLogin>((event, emit) async {
       try {
         emit(AuthStateLoading());
