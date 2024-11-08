@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 70),
+        padding: const EdgeInsets.only(top: 60),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -23,14 +23,14 @@ class LoginPage extends StatelessWidget {
             Center(
               child: Image.asset(
                 "assets/icons/logo.png",
-                width: MediaQuery.of(context).size.width * 0.75,
+                width: MediaQuery.of(context).size.width * 0.70,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 50),
+              padding: const EdgeInsets.only(top: 35),
               child: Image.asset(
                 "assets/images/youkoso.png",
-                width: MediaQuery.of(context).size.width * 0.3,
+                width: MediaQuery.of(context).size.width * 0.27,
               ),
             ),
             SizedBox(height: 15), // Padding between image and input fields
