@@ -99,7 +99,7 @@ final GoRouter router = GoRouter(
                   path: '/change_password',
                   name: Routes.change_password,
                   builder: (BuildContext context, GoRouterState state) {
-                    return const ChangePassword();
+                    return ChangePassword();
                   },
                 ),
               ],

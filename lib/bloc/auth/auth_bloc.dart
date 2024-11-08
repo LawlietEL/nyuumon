@@ -7,15 +7,17 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(AuthStateLogout()) {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-// Handler untuk event register
+  AuthBloc() : super(AuthStateLogout()) {
+    CollectionReference users = _firestore.collection('users');
+
+    // Handler untuk event register
     on<AuthEventRegister>((event, emit) async {
       emit(AuthStateLoading());
       try {
-        var userCredential = await auth.createUserWithEmailAndPassword(
+        var userCredential = await _auth.createUserWithEmailAndPassword(
           email: event.email,
           password: event.password,
         );
@@ -27,7 +29,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'created_at': DateTime.now(),
         });
 
-        // Pencetakan sukses jika berhasil
         emit(AuthStateRegisterSuccess());
       } on FirebaseAuthException catch (e) {
         emit(AuthStateError(e.message ?? 'Registration failed.'));
@@ -36,28 +37,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    // Handler untuk event login
     on<AuthEventLogin>((event, emit) async {
       try {
         emit(AuthStateLoading());
 
-        // Fungsi untuk login
-        var u = await auth.signInWithEmailAndPassword(
+        var u = await _auth.signInWithEmailAndPassword(
           email: event.email,
           password: event.pass,
         );
 
-        // Cek apakah user sudah ada di database Firestore
         var userDoc =
             await users.where('email', isEqualTo: u.user!.email).get();
 
         if (userDoc.docs.isNotEmpty) {
-          // Jika user sudah ada, update kolom updated_at
           await users.doc(userDoc.docs.first.id).update({
             'updated_at': DateTime.now(),
           });
           print("User updated");
         } else {
-          // Jika user belum ada, tambahkan data baru
           await users.add({
             'name': u.user!.displayName,
             'email': u.user!.email,
@@ -69,20 +67,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         emit(AuthStateLogin());
       } on FirebaseAuthException catch (e) {
-        // Error dari Firebase Auth
         emit(AuthStateError(e.message.toString()));
       } catch (e) {
-        // Error general
         emit(AuthStateError(e.toString()));
       }
     });
 
+    // Handler untuk event logout
     on<AuthEventLogout>((event, emit) async {
       try {
         emit(AuthStateLoading());
 
-        // Fungsi untuk logout
-        await auth.signOut();
+        await _auth.signOut();
         emit(AuthStateLogout());
         router.goNamed(Routes.login);
       } on FirebaseAuthException catch (e) {
@@ -92,22 +88,65 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
-    on<AuthEventProfil>(
-      (event, emit) async {
-        try {
-          emit(AuthStateLoading());
-          var email = auth.currentUser!.email;
-          var name = auth.currentUser?.displayName ?? 'null';
-          emit(AuthStateProfil(
-            email!,
-            name,
-          ));
-        } on FirebaseException catch (e) {
-          emit(AuthStateError(e.message.toString()));
-        } catch (e) {
-          emit(AuthStateError(e.toString()));
-        }
-      },
-    );
+    // Handler untuk event profil
+    on<AuthEventProfil>((event, emit) async {
+      try {
+        emit(AuthStateLoading());
+        var email = _auth.currentUser!.email;
+        var name = _auth.currentUser?.displayName ?? 'null';
+        emit(AuthStateProfil(
+          email!,
+          name,
+        ));
+      } on FirebaseException catch (e) {
+        emit(AuthStateError(e.message.toString()));
+      } catch (e) {
+        emit(AuthStateError(e.toString()));
+      }
+    });
+
+    // Handler untuk event change password
+    on<ChangePasswordEvent>(_onChangePassword);
+  }
+
+  // Fungsi handler untuk event ChangePasswordEvent
+  Future<void> _onChangePassword(
+      ChangePasswordEvent event, Emitter<AuthState> emit) async {
+    try {
+      emit(AuthStateLoading());
+
+      final user = _auth.currentUser;
+      if (user == null) {
+        emit(AuthStateError('User not logged in'));
+        return;
+      }
+
+      // Validasi recent password
+      final credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: event.recentPassword,
+      );
+
+      try {
+        await user.reauthenticateWithCredential(credential);
+      } on FirebaseAuthException {
+        emit(AuthChangePasswordError("Recent password is incorrect"));
+        return;
+      }
+
+      // Update password
+      await user.updatePassword(event.newPassword);
+
+      // Optional: Update Firestore (not recommended to store passwords in Firestore)
+      await _firestore.collection('users').doc(user.uid).update({
+        'password': event.newPassword, // Avoid storing passwords directly
+      });
+
+      emit(AuthPasswordChanged());
+    } on FirebaseAuthException catch (e) {
+      emit(AuthStateError(e.message ?? 'Failed to change password'));
+    } catch (e) {
+      emit(AuthStateError('An unexpected error occurred.'));
+    }
   }
 }

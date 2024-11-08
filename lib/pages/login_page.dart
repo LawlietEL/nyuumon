@@ -146,8 +146,8 @@ class LoginPage extends StatelessWidget {
                           // Tampilkan pesan error jika kolom kosong
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content:
-                                  Text("Kolom email dan password harus diisi!"),
+                              content: Text(
+                                  "The email and password fields must be filled in!"),
                             ),
                           );
                         } else {
@@ -170,7 +170,7 @@ class LoginPage extends StatelessWidget {
                             if (errorMessage.contains('email') ||
                                 errorMessage.contains('password')) {
                               errorMessage =
-                                  "Email atau Password salah, silahkan periksa kembali!";
+                                  "Incorrect email or password, please check again!";
                             }
 
                             // Tampilkan error message yang disesuaikan

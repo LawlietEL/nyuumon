@@ -29,3 +29,13 @@ class AuthEventLogin extends AuthEvent {
 class AuthEventProfil extends AuthEvent {}
 
 class AuthEventLogout extends AuthEvent {}
+
+class ChangePasswordEvent extends AuthEvent {
+  final String recentPassword;
+  final String newPassword;
+
+  ChangePasswordEvent({
+    required this.recentPassword,
+    required this.newPassword,
+  });
+}

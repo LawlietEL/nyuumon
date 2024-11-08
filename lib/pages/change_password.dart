@@ -1,151 +1,258 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nyuumon/bloc/auth/auth_bloc.dart';
 
-class ChangePassword extends StatelessWidget {
+class ChangePassword extends StatefulWidget {
   const ChangePassword({super.key});
 
+  @override
+  _ChangePasswordState createState() => _ChangePasswordState();
+}
+
+class _ChangePasswordState extends State<ChangePassword> {
+  final TextEditingController recentPasswordController =
+      TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  bool isRecentPasswordVisible = false;
+  bool isNewPasswordVisible = false;
+  bool isConfirmPasswordVisible = false;
+
+  void _handleChangePassword(BuildContext context) {
+    final recentPassword = recentPasswordController.text.trim();
+    final newPassword = newPasswordController.text.trim();
+    final confirmPassword = confirmPasswordController.text.trim();
+
+    // Pengecekan jika ada kolom yang kosong
+    if (recentPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in Recent Password")),
+      );
+      return;
+    } else if (newPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in New Password")),
+      );
+      return;
+    } else if (confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in Confirm New Password")),
+      );
+      return;
+    }
+
+    // Pengecekan jika password baru sama dengan password lama
+    if (newPassword == recentPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content:
+                Text("New password and recent password must not be the same")),
+      );
+      return;
+    }
+
+    // Pengecekan jika password baru dan konfirmasi tidak cocok
+    if (newPassword != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("New passwords do not match")),
+      );
+      return;
+    }
+
+    // Jika semua validasi berhasil, kirim event untuk mengubah password
+    context.read<AuthBloc>().add(ChangePasswordEvent(
+          recentPassword: recentPassword,
+          newPassword: newPassword,
+        ));
+  }
+
+  void _clearTextFields() {
+    recentPasswordController.clear();
+    newPasswordController.clear();
+    confirmPasswordController.clear();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Menempatkan tombol back dan user info di bagian atas
-            Padding(
-              padding: const EdgeInsets.only(
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthPasswordChanged) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Password changed successfully")),
+            );
+            _clearTextFields();
+          } else if (state is AuthChangePasswordError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.errorMessage)),
+            );
+          }
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
                   top: 30,
                   left: 5,
                   bottom: 5,
-                  right: 10), // Padding di sekitar teks
-              child: Row(
-                children: [
-                  // Tombol back dengan ikon panah kiri
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context); // Kembali ke halaman sebelumnya
-                    },
-                  ),
-                  // Expanded untuk membuat judul berada di tengah
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'Change Password',
-                        style: TextStyle(
-                          fontSize: 23,
+                  right: 10,
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    const Expanded(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Change Password',
+                          style: TextStyle(
+                            fontSize: 23,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8), // Spacer untuk gambar (opsional)
-                ],
+                    const SizedBox(width: 8),
+                  ],
+                ),
               ),
-            ),
-            // Garis horizontal tipis berwarna abu-abu
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-            ),
-            const SizedBox(height: 20), // Jarak antara divider dan logo
+              const Divider(
+                color: Colors.grey,
+                thickness: 1,
+              ),
+              const SizedBox(height: 20),
 
-            // Menambahkan logo menggantikan CircleAvatar
-            Padding(
-              padding: const EdgeInsets.only(top: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Image.asset(
-                      "assets/icons/logo.png", // Ganti dengan path gambar Anda
-                      width: MediaQuery.of(context).size.width *
-                          0.50, // Lebar gambar 50% dari lebar layar
+              // Logo atau gambar lainnya
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Center(
+                  child: Image.asset(
+                    "assets/icons/logo.png",
+                    width: MediaQuery.of(context).size.width * 0.50,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+
+              // Kolom isian Recent Password
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: TextField(
+                  controller: recentPasswordController,
+                  obscureText: !isRecentPasswordVisible,
+                  decoration: InputDecoration(
+                    hintText: 'Recent Password',
+                    hintStyle: const TextStyle(color: Color(0xFF8A8888)),
+                    prefixIcon: const Icon(Icons.lock_outline,
+                        color: Color(0xFF8A8888)),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isRecentPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Color(0xFF8A8888),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isRecentPasswordVisible = !isRecentPasswordVisible;
+                        });
+                      },
+                    ),
+                    border: const OutlineInputBorder(),
+                  ),
+                ),
+              ),
+
+              // Kolom isian New Password
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: TextField(
+                  controller: newPasswordController,
+                  obscureText: !isNewPasswordVisible,
+                  decoration: InputDecoration(
+                    hintText: 'New Password',
+                    hintStyle: const TextStyle(color: Color(0xFF8A8888)),
+                    prefixIcon:
+                        const Icon(Icons.lock, color: Color(0xFF8A8888)),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isNewPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Color(0xFF8A8888),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isNewPasswordVisible = !isNewPasswordVisible;
+                        });
+                      },
+                    ),
+                    border: const OutlineInputBorder(),
+                  ),
+                ),
+              ),
+
+              // Kolom isian Confirm New Password
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: TextField(
+                  controller: confirmPasswordController,
+                  obscureText: !isConfirmPasswordVisible,
+                  decoration: InputDecoration(
+                    hintText: 'Confirm New Password',
+                    hintStyle: const TextStyle(color: Color(0xFF8A8888)),
+                    prefixIcon:
+                        const Icon(Icons.lock, color: Color(0xFF8A8888)),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isConfirmPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Color(0xFF8A8888),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isConfirmPasswordVisible = !isConfirmPasswordVisible;
+                        });
+                      },
+                    ),
+                    border: const OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 35),
+
+              // Tombol "Change"
+              GestureDetector(
+                onTap: () => _handleChangePassword(context),
+                child: Container(
+                  width: 150,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Change',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 30), // Jarak setelah logo
-
-            // Kolom isian pertama (Recent Password)
-            Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 20, vertical: 5), // Mengurangi jarak antar kolom
-              child: TextField(
-                obscureText: true, // Untuk menyembunyikan teks
-                decoration: const InputDecoration(
-                  hintText: 'Recent Password',
-                  hintStyle: TextStyle(
-                      color: Color(0xFF8A8888)), // Mengubah warna hint text
-                  prefixIcon: Icon(Icons.lock_outline,
-                      color: Color(0xFF8A8888)), // Mengubah warna ikon gembok
-                  border: OutlineInputBorder(),
                 ),
               ),
-            ),
-
-            // Kolom isian kedua (New Password)
-            Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 20, vertical: 5), // Mengurangi jarak antar kolom
-              child: TextField(
-                obscureText: true, // Untuk menyembunyikan teks
-                decoration: const InputDecoration(
-                  hintText: 'New Password',
-                  hintStyle: TextStyle(
-                      color: Color(0xFF8A8888)), // Mengubah warna hint text
-                  prefixIcon: Icon(Icons.lock,
-                      color: Color(0xFF8A8888)), // Mengubah warna ikon gembok
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-
-            // Kolom isian ketiga (Confirm New Password)
-            Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 20, vertical: 5), // Mengurangi jarak antar kolom
-              child: TextField(
-                obscureText: true, // Untuk menyembunyikan teks
-                decoration: const InputDecoration(
-                  hintText: 'Confirm New Password',
-                  hintStyle: TextStyle(
-                      color: Color(0xFF8A8888)), // Mengubah warna hint text
-                  prefixIcon: Icon(Icons.lock,
-                      color: Color(0xFF8A8888)), // Mengubah warna ikon gembok
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 35), // Jarak setelah kolom isian ketiga
-
-            // Button "Change"
-            GestureDetector(
-              onTap: () {
-                // Aksi ketika tombol ditekan
-                print('Change button clicked');
-              },
-              child: Container(
-                width: 150,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.blue, // Warna kotak button
-                  borderRadius:
-                      BorderRadius.circular(5), // Membuat sudut membulat
-                ),
-                child: const Center(
-                  child: Text(
-                    'Change',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white, // Warna teks
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20), // Jarak di akhir halaman
-          ],
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
