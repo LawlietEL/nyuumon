@@ -25,7 +25,6 @@ class _ChangePasswordState extends State<ChangePassword> {
     final newPassword = newPasswordController.text.trim();
     final confirmPassword = confirmPasswordController.text.trim();
 
-    // Pengecekan jika ada kolom yang kosong
     if (recentPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please fill in Recent Password")),
@@ -43,7 +42,6 @@ class _ChangePasswordState extends State<ChangePassword> {
       return;
     }
 
-    // Pengecekan jika password baru sama dengan password lama
     if (newPassword == recentPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -53,7 +51,6 @@ class _ChangePasswordState extends State<ChangePassword> {
       return;
     }
 
-    // Pengecekan jika password baru dan konfirmasi tidak cocok
     if (newPassword != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("New passwords do not match")),
@@ -61,7 +58,6 @@ class _ChangePasswordState extends State<ChangePassword> {
       return;
     }
 
-    // Jika semua validasi berhasil, kirim event untuk mengubah password
     context.read<AuthBloc>().add(ChangePasswordEvent(
           recentPassword: recentPassword,
           newPassword: newPassword,
@@ -112,7 +108,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Change Password',
+                          'Change Your Password',
                           style: TextStyle(
                             fontSize: 23,
                           ),
@@ -127,19 +123,26 @@ class _ChangePasswordState extends State<ChangePassword> {
                 color: Colors.grey,
                 thickness: 1,
               ),
-              const SizedBox(height: 20),
 
-              // Logo atau gambar lainnya
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Center(
                   child: Image.asset(
-                    "assets/icons/logo.png",
-                    width: MediaQuery.of(context).size.width * 0.50,
+                    "assets/images/change_password.png",
+                    width: MediaQuery.of(context).size.width * 0.32,
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
+              // Tulisan Edit Profile
+              const Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 10),
+                child: Text(
+                  'Change Password',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
 
               // Kolom isian Recent Password
               Container(
@@ -158,7 +161,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         isRecentPasswordVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
-                        color: Color(0xFF8A8888),
+                        color: const Color(0xFF8A8888),
                       ),
                       onPressed: () {
                         setState(() {
@@ -166,7 +169,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                         });
                       },
                     ),
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10), // Circular 10
+                    ),
                   ),
                 ),
               ),
@@ -188,7 +193,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         isNewPasswordVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
-                        color: Color(0xFF8A8888),
+                        color: const Color(0xFF8A8888),
                       ),
                       onPressed: () {
                         setState(() {
@@ -196,7 +201,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                         });
                       },
                     ),
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10), // Circular 10
+                    ),
                   ),
                 ),
               ),
@@ -218,7 +225,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         isConfirmPasswordVisible
                             ? Icons.visibility
                             : Icons.visibility_off,
-                        color: Color(0xFF8A8888),
+                        color: const Color(0xFF8A8888),
                       ),
                       onPressed: () {
                         setState(() {
@@ -226,28 +233,66 @@ class _ChangePasswordState extends State<ChangePassword> {
                         });
                       },
                     ),
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10), // Circular 10
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 35),
 
-              // Tombol "Change"
-              GestureDetector(
-                onTap: () => _handleChangePassword(context),
-                child: Container(
-                  width: 150,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Change',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
+              // Tombol Change dan Cancel
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    // Tombol Change
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => _handleChangePassword(context),
+                        child: Container(
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius:
+                                BorderRadius.circular(20), // Circular 10
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Change',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 10),
+                    // Tombol Cancel
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context); // Kembali ke halaman profil
+                        },
+                        child: Container(
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey),
+                            borderRadius:
+                                BorderRadius.circular(20), // Circular 10
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Cancel',
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 20),

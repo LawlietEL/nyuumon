@@ -76,6 +76,7 @@ class ProfilPage extends StatelessWidget {
                 // Button "Ubah Profil"
                 GestureDetector(
                   onTap: () {
+                    context.push('/home/profil/edit_profile');
                     // Aksi ketika tombol ditekan
                     print('Ubah Profil ditekan');
                   },
@@ -88,7 +89,7 @@ class ProfilPage extends StatelessWidget {
                     ),
                     child: const Center(
                       child: Text(
-                        'Ubah Profil',
+                        'Edit Profile',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -177,7 +178,7 @@ class ProfilPage extends StatelessWidget {
                 ),
                 const SizedBox(
                     height:
-                        50), // Jarak antara button "Change Password" dan button "Logout"
+                        40), // Jarak antara button "Change Password" dan button "Logout"
 
                 // Button "Logout"
                 GestureDetector(
@@ -188,7 +189,7 @@ class ProfilPage extends StatelessWidget {
                   },
                   child: Container(
                     width: 100,
-                    height: 40,
+                    height: 45,
                     decoration: BoxDecoration(
                       color: Colors.red, // Warna kotak
                       borderRadius: BorderRadius.circular(10),

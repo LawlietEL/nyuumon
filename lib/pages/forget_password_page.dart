@@ -111,7 +111,7 @@ class ForgetPasswordPage extends StatelessWidget {
 
             // Tombol "Send"
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
+              width: MediaQuery.of(context).size.width * 0.45,
               child: ElevatedButton(
                 onPressed: () {
                   // Logika pengiriman email untuk reset password
@@ -120,7 +120,7 @@ class ForgetPasswordPage extends StatelessWidget {
                   backgroundColor: Colors.blue,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
                 child: const Text(
