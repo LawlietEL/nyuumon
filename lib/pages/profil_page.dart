@@ -11,7 +11,7 @@ class ProfilPage extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-          if (state is AuthStateProfil) {
+          if (state is AuthStateProfilUser) {
             return Column(
               children: [
                 // Menempatkan tombol back dan user info di bagian atas

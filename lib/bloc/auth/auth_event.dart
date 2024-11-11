@@ -26,7 +26,7 @@ class AuthEventLogin extends AuthEvent {
   final String pass;
 }
 
-class AuthEventProfil extends AuthEvent {}
+class AuthEventProfilUser extends AuthEvent {}
 
 class AuthEventLogout extends AuthEvent {}
 

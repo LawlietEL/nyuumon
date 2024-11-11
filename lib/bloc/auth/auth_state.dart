@@ -19,8 +19,8 @@ class AuthStateLogout extends AuthState {}
 
 class AuthPasswordChanged extends AuthState {}
 
-class AuthStateProfil extends AuthState {
-  AuthStateProfil(this.email, this.name);
+class AuthStateProfilUser extends AuthState {
+  AuthStateProfilUser(this.email, this.name);
 
   final String email;
   final String name;

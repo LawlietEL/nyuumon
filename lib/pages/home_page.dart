@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
                     const SizedBox(width: 8), // Jarak antara nama dan gambar
                     GestureDetector(
                       onTap: () {
-                        context.read<AuthBloc>().add(AuthEventProfil());
+                        context.read<AuthBloc>().add(AuthEventProfilUser());
                         context.push('/home/profil');
                         // Aksi ketika gambar profil ditekan
                         print('Profil button ditekan');

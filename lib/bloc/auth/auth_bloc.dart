@@ -89,12 +89,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     // Handler untuk event profil
-    on<AuthEventProfil>((event, emit) async {
+    on<AuthEventProfilUser>((event, emit) async {
       try {
         emit(AuthStateLoading());
         var email = _auth.currentUser!.email;
         var name = _auth.currentUser?.displayName ?? 'null';
-        emit(AuthStateProfil(
+        emit(AuthStateProfilUser(
           email!,
           name,
         ));
