@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TabelKatakanaPage extends StatelessWidget {
   const TabelKatakanaPage({super.key});
@@ -68,6 +69,8 @@ class TabelKatakanaPage extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           // Aksi ketika lingkaran vocal ditekan
+                          context.push(
+                              '/home/belajar/tabel_hiragana/detail_huruf');
                           print('Vocal $vocal Ditekan');
                           // Bisa melakukan aksi lain sesuai kebutuhan
                         },
@@ -112,6 +115,8 @@ class TabelKatakanaPage extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           // Aksi ketika lingkaran konsonan ditekan
+                          context.push(
+                              '/home/belajar/tabel_hiragana/detail_huruf');
                           if (konsonan.isNotEmpty) {
                             print('Konsonan $konsonan Ditekan');
                           }

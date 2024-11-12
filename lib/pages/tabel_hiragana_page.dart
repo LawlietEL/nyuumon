@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TabelHiraganaPage extends StatelessWidget {
   const TabelHiraganaPage({super.key});
@@ -67,7 +68,8 @@ class TabelHiraganaPage extends StatelessWidget {
                     children: ['あ', 'い', 'う', 'え', 'お'].map((vocal) {
                       return GestureDetector(
                         onTap: () {
-                          // Aksi ketika lingkaran vocal ditekan
+                          context.push(
+                              '/home/belajar/tabel_hiragana/detail_huruf');
                           print('Vocal $vocal Ditekan');
                           // Bisa melakukan aksi lain sesuai kebutuhan
                         },
@@ -111,7 +113,8 @@ class TabelHiraganaPage extends StatelessWidget {
                       final konsonan = _konsonanList()[index];
                       return GestureDetector(
                         onTap: () {
-                          // Aksi ketika lingkaran konsonan ditekan
+                          context.push(
+                              '/home/belajar/tabel_hiragana/detail_huruf');
                           if (konsonan.isNotEmpty) {
                             print('Konsonan $konsonan Ditekan');
                           }
@@ -119,11 +122,10 @@ class TabelHiraganaPage extends StatelessWidget {
                         child: CircleAvatar(
                           radius: 25,
                           backgroundColor: konsonan.isEmpty
-                              ? Colors
-                                  .transparent // Lingkaran kosong sama dengan warna background
+                              ? Colors.transparent
                               : const Color.fromARGB(156, 239, 71, 107),
                           child: konsonan.isEmpty
-                              ? null // Jika tidak ada huruf hiragana, jangan tampilkan teks
+                              ? null
                               : Text(
                                   konsonan,
                                   style: const TextStyle(

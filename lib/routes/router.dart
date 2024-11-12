@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nyuumon/pages/belajar_page.dart';
 import 'package:nyuumon/pages/change_password.dart';
 import 'package:nyuumon/pages/create_account_page.dart';
+import 'package:nyuumon/pages/detail_huruf_page.dart';
 import 'package:nyuumon/pages/edit_profile_page.dart';
 import 'package:nyuumon/pages/forget_password_page.dart';
 import 'package:nyuumon/pages/game_matching_page.dart';
@@ -132,6 +133,15 @@ final GoRouter router = GoRouter(
                   builder: (BuildContext context, GoRouterState state) {
                     return const TabelHiraganaPage();
                   },
+                  routes: [
+                    GoRoute(
+                      path: '/detail_huruf',
+                      name: Routes.detail_huruf,
+                      builder: (BuildContext context, GoRouterState state) {
+                        return const DetailHurufPage();
+                      },
+                    ),
+                  ],
                 ),
                 GoRoute(
                   path: '/tabel_katakana',
@@ -139,75 +149,84 @@ final GoRouter router = GoRouter(
                   builder: (BuildContext context, GoRouterState state) {
                     return const TabelKatakanaPage();
                   },
+                  routes: [
+                    GoRoute(
+                      path: '/detail_huruf',
+                      name: Routes.detail_huruf,
+                      builder: (BuildContext context, GoRouterState state) {
+                        return const DetailHurufPage();
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
+          ],
+        ),
+        GoRoute(
+          path: '/games',
+          name: Routes.games,
+          builder: (BuildContext context, GoRouterState state) {
+            return const GamesPage();
+          },
+          routes: [
+            // GoRoute(
+            //   path: '/profil',
+            //   name: Routes.profil,
+            //   builder: (BuildContext context, GoRouterState state) {
+            //     return const ProfilPage();
+            //   },
+            // ),
             GoRoute(
-              path: '/games',
-              name: Routes.games,
+              path: '/game_matching',
+              name: Routes.game_matching,
               builder: (BuildContext context, GoRouterState state) {
-                return const GamesPage();
+                return const GameMatchingPage();
               },
-              routes: [
-                // GoRoute(
-                //   path: '/profil',
-                //   name: Routes.profil,
-                //   builder: (BuildContext context, GoRouterState state) {
-                //     return const ProfilPage();
-                //   },
-                // ),
-                GoRoute(
-                  path: '/game_matching',
-                  name: Routes.game_matching,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return const GameMatchingPage();
-                  },
-                ),
-                GoRoute(
-                  path: '/game_memory',
-                  name: Routes.game_memory,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return const GameMemoryPage();
-                  },
-                ),
-              ],
             ),
             GoRoute(
-              path: '/latihan',
-              name: Routes.latihan,
+              path: '/game_memory',
+              name: Routes.game_memory,
               builder: (BuildContext context, GoRouterState state) {
-                return const LatihanPage();
+                return const GameMemoryPage();
               },
-              routes: [
-                // GoRoute(
-                //   path: '/profil',
-                //   name: Routes.profil,
-                //   builder: (BuildContext context, GoRouterState state) {
-                //     return const ProfilPage();
-                //   },
-                // ),
-                GoRoute(
-                  path: '/latihan_menulis_hirakata',
-                  name: Routes.latihan_menulis_hirakata,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return const LatihanMenulisHirakataPage();
-                  },
-                ),
-                GoRoute(
-                  path: '/latihan_membaca_hirakata',
-                  name: Routes.latihan_membaca_hirakata,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return const LatihanMembacaHirakataPage();
-                  },
-                ),
-                GoRoute(
-                  path: '/latihan_menulis_kosakata',
-                  name: Routes.latihan_menulis_kosakata,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return const LatihanMenulisKosakataPage();
-                  },
-                ),
-              ],
+            ),
+          ],
+        ),
+        GoRoute(
+          path: '/latihan',
+          name: Routes.latihan,
+          builder: (BuildContext context, GoRouterState state) {
+            return const LatihanPage();
+          },
+          routes: [
+            // GoRoute(
+            //   path: '/profil',
+            //   name: Routes.profil,
+            //   builder: (BuildContext context, GoRouterState state) {
+            //     return const ProfilPage();
+            //   },
+            // ),
+            GoRoute(
+              path: '/latihan_menulis_hirakata',
+              name: Routes.latihan_menulis_hirakata,
+              builder: (BuildContext context, GoRouterState state) {
+                return const LatihanMenulisHirakataPage();
+              },
+            ),
+            GoRoute(
+              path: '/latihan_membaca_hirakata',
+              name: Routes.latihan_membaca_hirakata,
+              builder: (BuildContext context, GoRouterState state) {
+                return const LatihanMembacaHirakataPage();
+              },
+            ),
+            GoRoute(
+              path: '/latihan_menulis_kosakata',
+              name: Routes.latihan_menulis_kosakata,
+              builder: (BuildContext context, GoRouterState state) {
+                return const LatihanMenulisKosakataPage();
+              },
             ),
           ],
         ),

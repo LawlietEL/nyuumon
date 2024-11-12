@@ -15,6 +15,7 @@ abstract class Routes {
   static const detail_huruf_hiragana = 'detail_huruf_hiragana';
   static const tabel_katakana = 'tabel_katakana';
   static const detail_huruf_katakana = 'detail_huruf_katakana';
+  static const detail_huruf = 'detail_huruf';
   static const games = 'games';
   static const game_matching = 'game_matching';
   static const game_memory = 'game_memory';
