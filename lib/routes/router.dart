@@ -22,30 +22,7 @@ import 'package:nyuumon/pages/tabel_katakana_page.dart';
 part 'route_name.dart';
 
 final GoRouter router = GoRouter(
-  // redirect: (context, state) {
-  // FirebaseAuth.instance.authStateChanges().listen((User? user) {
-  //   if (user == null) {
-  //     return '/login';
-  //   } else {
-  //     return '/';
-  //   }
-  // });
-  // },
   routes: [
-    // GoRoute(
-    //   path: '/onboarding',
-    //   name: Routes.onboarding,
-    //   builder: (BuildContext context, GoRouterState state) {
-    //     return const OnBoardingPage();
-    //   },
-    // ),
-    // GoRoute(
-    //   path: '/login',
-    //   name: Routes.login,
-    //   builder: (BuildContext context, GoRouterState state) {
-    //     return LoginPage();
-    //   },
-    // ),
     GoRoute(
       path: '/',
       name: Routes.login,
@@ -82,84 +59,42 @@ final GoRouter router = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             return const HomePage();
           },
+        ),
+        GoRoute(
+          path: '/belajar',
+          name: Routes.belajar,
+          builder: (BuildContext context, GoRouterState state) {
+            return const BelajarPage();
+          },
           routes: [
+            // GoRoute(
+            //   path: '/profil',
+            //   name: Routes.profil,
+            //   builder: (BuildContext context, GoRouterState state) {
+            //     return const ProfilPage();
+            //   },
+            // ),
             GoRoute(
-              path: '/profil',
-              name: Routes.profil,
+              path: '/tabel_hiragana',
+              name: Routes.tabel_hiragana,
               builder: (BuildContext context, GoRouterState state) {
-                return const ProfilPage();
+                return const TabelHiraganaPage();
               },
-              routes: [
-                GoRoute(
-                  path: '/logout',
-                  name: Routes.logout,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return LoginPage();
-                  },
-                ),
-                GoRoute(
-                  path: '/edit_profile',
-                  name: Routes.edit_profile,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return EditProfilePage();
-                  },
-                ),
-                GoRoute(
-                  path: '/change_password',
-                  name: Routes.change_password,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return ChangePassword();
-                  },
-                ),
-              ],
             ),
             GoRoute(
-              path: '/belajar',
-              name: Routes.belajar,
+              path: '/tabel_katakana',
+              name: Routes.tabel_katakana,
               builder: (BuildContext context, GoRouterState state) {
-                return const BelajarPage();
+                return const TabelKatakanaPage();
               },
-              routes: [
-                // GoRoute(
-                //   path: '/profil',
-                //   name: Routes.profil,
-                //   builder: (BuildContext context, GoRouterState state) {
-                //     return const ProfilPage();
-                //   },
-                // ),
-                GoRoute(
-                  path: '/tabel_hiragana',
-                  name: Routes.tabel_hiragana,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return const TabelHiraganaPage();
-                  },
-                  routes: [
-                    GoRoute(
-                      path: '/detail_huruf',
-                      name: Routes.detail_huruf,
-                      builder: (BuildContext context, GoRouterState state) {
-                        return const DetailHurufPage();
-                      },
-                    ),
-                  ],
-                ),
-                GoRoute(
-                  path: '/tabel_katakana',
-                  name: Routes.tabel_katakana,
-                  builder: (BuildContext context, GoRouterState state) {
-                    return const TabelKatakanaPage();
-                  },
-                  routes: [
-                    GoRoute(
-                      path: '/detail_huruf',
-                      name: Routes.detail_huruf,
-                      builder: (BuildContext context, GoRouterState state) {
-                        return const DetailHurufPage();
-                      },
-                    ),
-                  ],
-                ),
-              ],
+            ),
+
+            GoRoute(
+              path: '/detail_huruf',
+              name: Routes.detail_huruf,
+              builder: (BuildContext context, GoRouterState state) {
+                return const DetailHurufPage();
+              },
             ),
           ],
         ),
@@ -226,6 +161,36 @@ final GoRouter router = GoRouter(
               name: Routes.latihan_menulis_kosakata,
               builder: (BuildContext context, GoRouterState state) {
                 return const LatihanMenulisKosakataPage();
+              },
+            ),
+          ],
+        ),
+        GoRoute(
+          path: '/profil',
+          name: Routes.profil,
+          builder: (BuildContext context, GoRouterState state) {
+            return const ProfilPage();
+          },
+          routes: [
+            GoRoute(
+              path: '/logout',
+              name: Routes.logout,
+              builder: (BuildContext context, GoRouterState state) {
+                return LoginPage();
+              },
+            ),
+            GoRoute(
+              path: '/edit_profile',
+              name: Routes.edit_profile,
+              builder: (BuildContext context, GoRouterState state) {
+                return EditProfilePage();
+              },
+            ),
+            GoRoute(
+              path: '/change_password',
+              name: Routes.change_password,
+              builder: (BuildContext context, GoRouterState state) {
+                return ChangePassword();
               },
             ),
           ],

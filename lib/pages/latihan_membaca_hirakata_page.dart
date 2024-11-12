@@ -1,31 +1,187 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 
-class LatihanMembacaHirakataPage extends StatelessWidget {
+class LatihanMembacaHirakataPage extends StatefulWidget {
   const LatihanMembacaHirakataPage({super.key});
 
   @override
+  _LatihanMembacaHirakataPageState createState() =>
+      _LatihanMembacaHirakataPageState();
+}
+
+class _LatihanMembacaHirakataPageState
+    extends State<LatihanMembacaHirakataPage> {
+  final List<Map<String, String>> hirakataPairs = [
+    {'hiragana': 'あ', 'katakana': 'ア'},
+    {'hiragana': 'い', 'katakana': 'イ'},
+    {'hiragana': 'う', 'katakana': 'ウ'},
+    {'hiragana': 'え', 'katakana': 'エ'},
+    {'hiragana': 'お', 'katakana': 'オ'},
+    {'hiragana': 'か', 'katakana': 'カ'},
+    {'hiragana': 'き', 'katakana': 'キ'},
+    {'hiragana': 'く', 'katakana': 'ク'},
+    {'hiragana': 'け', 'katakana': 'ケ'},
+    {'hiragana': 'こ', 'katakana': 'コ'},
+    {'hiragana': 'さ', 'katakana': 'サ'},
+    {'hiragana': 'し', 'katakana': 'シ'},
+    {'hiragana': 'す', 'katakana': 'ス'},
+    {'hiragana': 'せ', 'katakana': 'セ'},
+    {'hiragana': 'そ', 'katakana': 'ソ'},
+    {'hiragana': 'た', 'katakana': 'タ'},
+    {'hiragana': 'ち', 'katakana': 'チ'},
+    {'hiragana': 'つ', 'katakana': 'ツ'},
+    {'hiragana': 'て', 'katakana': 'テ'},
+    {'hiragana': 'と', 'katakana': 'ト'},
+    {'hiragana': 'な', 'katakana': 'ナ'},
+    {'hiragana': 'に', 'katakana': 'ニ'},
+    {'hiragana': 'ぬ', 'katakana': 'ヌ'},
+    {'hiragana': 'ね', 'katakana': 'ネ'},
+    {'hiragana': 'の', 'katakana': 'ノ'},
+    {'hiragana': 'は', 'katakana': 'ハ'},
+    {'hiragana': 'ひ', 'katakana': 'ヒ'},
+    {'hiragana': 'ふ', 'katakana': 'フ'},
+    {'hiragana': 'へ', 'katakana': 'ヘ'},
+    {'hiragana': 'ほ', 'katakana': 'ホ'},
+    {'hiragana': 'ま', 'katakana': 'マ'},
+    {'hiragana': 'み', 'katakana': 'ミ'},
+    {'hiragana': 'む', 'katakana': 'ム'},
+    {'hiragana': 'め', 'katakana': 'メ'},
+    {'hiragana': 'も', 'katakana': 'モ'},
+    {'hiragana': 'や', 'katakana': 'ヤ'},
+    {'hiragana': 'ゆ', 'katakana': 'ユ'},
+    {'hiragana': 'よ', 'katakana': 'ヨ'},
+    {'hiragana': 'ら', 'katakana': 'ラ'},
+    {'hiragana': 'り', 'katakana': 'リ'},
+    {'hiragana': 'る', 'katakana': 'ル'},
+    {'hiragana': 'れ', 'katakana': 'レ'},
+    {'hiragana': 'ろ', 'katakana': 'ロ'},
+    {'hiragana': 'わ', 'katakana': 'ワ'},
+    {'hiragana': 'を', 'katakana': 'ヲ'},
+    {'hiragana': 'ん', 'katakana': 'ン'},
+  ];
+
+  late List<Map<String, String>> soalList;
+  int currentIndex = 0;
+  late bool isHiraganaToKatakana;
+  int timer = 15;
+  Timer? _countdownTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    soalList = generateSoal();
+    isHiraganaToKatakana = Random().nextBool();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    _countdownTimer?.cancel();
+    super.dispose();
+  }
+
+  List<Map<String, String>> generateSoal() {
+    final random = Random();
+    final selectedHiragana = <Map<String, String>>[];
+    final hiraganaSet = Set<int>();
+
+    while (hiraganaSet.length < 15) {
+      final index = random.nextInt(hirakataPairs.length);
+      if (!hiraganaSet.contains(index)) {
+        hiraganaSet.add(index);
+        selectedHiragana.add(hirakataPairs[index]);
+      }
+    }
+    return selectedHiragana;
+  }
+
+  List<String> generateChoices(String correctAnswer) {
+    final random = Random();
+    final choices = <String>[correctAnswer];
+    final usedIndices = <int>[];
+
+    while (choices.length < 3) {
+      final index = random.nextInt(hirakataPairs.length);
+      final wrongAnswer = isHiraganaToKatakana
+          ? hirakataPairs[index]['katakana']!
+          : hirakataPairs[index]['hiragana']!;
+      if (!usedIndices.contains(index) && wrongAnswer != correctAnswer) {
+        usedIndices.add(index);
+        choices.add(wrongAnswer);
+      }
+    }
+
+    choices.shuffle();
+    return choices;
+  }
+
+  void startTimer() {
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (this.timer > 0) {
+          this.timer--;
+        } else {
+          navigateToNext();
+        }
+      });
+    });
+  }
+
+  void resetTimer() {
+    _countdownTimer?.cancel();
+    timer = 15;
+    startTimer();
+  }
+
+  void navigateToPrevious() {
+    if (currentIndex > 0) {
+      setState(() {
+        currentIndex--;
+        isHiraganaToKatakana = Random().nextBool();
+        resetTimer();
+      });
+    }
+  }
+
+  void navigateToNext() {
+    if (currentIndex < soalList.length - 1) {
+      setState(() {
+        currentIndex++;
+        isHiraganaToKatakana = Random().nextBool();
+        resetTimer();
+      });
+    } else {
+      _countdownTimer?.cancel(); // Berhenti jika sudah di soal terakhir
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final currentSoal = soalList[currentIndex];
+    final question = isHiraganaToKatakana
+        ? currentSoal['hiragana']!
+        : currentSoal['katakana']!;
+    final correctAnswer = isHiraganaToKatakana
+        ? currentSoal['katakana']!
+        : currentSoal['hiragana']!;
+    final choices = generateChoices(correctAnswer);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Menempatkan tombol back dan user info di bagian atas
             Padding(
-              padding: const EdgeInsets.only(
-                  top: 30,
-                  left: 5,
-                  bottom: 5,
-                  right: 10), // Padding di sekitar teks
+              padding:
+                  const EdgeInsets.only(top: 30, left: 5, bottom: 5, right: 10),
               child: Row(
                 children: [
-                  // Tombol back dengan ikon panah kiri
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context); // Kembali ke halaman sebelumnya
+                      Navigator.pop(context);
                     },
                   ),
-                  // Expanded untuk membuat judul berada di tengah
                   Expanded(
                     child: Align(
                       alignment: Alignment.center,
@@ -37,33 +193,30 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8), // Spacer untuk gambar (opsional)
+                  const SizedBox(width: 8),
                 ],
               ),
             ),
-            // Garis horizontal tipis berwarna abu-abu
             const Divider(
               color: Colors.grey,
               thickness: 1,
             ),
-
-            // Kotak persegi panjang "Waktu 15"
             Padding(
               padding: const EdgeInsets.all(10),
               child: Container(
-                width: 200, // Lebar kotak mengikuti lebar layar
-                height: 50, // Tinggi kotak
+                width: 200,
+                height: 50,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(
                     color: Colors.black,
-                    width: 2, // Border hitam dengan ketebalan 2
+                    width: 2,
                   ),
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
-                    'Waktu 15', // Menampilkan teks Waktu 15
-                    style: TextStyle(
+                    'Waktu: $timer detik',
+                    style: const TextStyle(
                       fontSize: 24,
                       fontStyle: FontStyle.italic,
                       color: Colors.black,
@@ -72,52 +225,43 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Teks soal 1/10
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
               child: Text(
-                'Soal 1/15',
-                style: TextStyle(
+                'Soal ${currentIndex + 1}/15',
+                style: const TextStyle(
                   fontSize: 25,
                   fontStyle: FontStyle.italic,
                 ),
               ),
             ),
-            // Menambahkan SizedBox untuk memberikan jarak agar kotak agak turun
-            const SizedBox(height: 30),
-
-            // Row dengan panah kiri, kotak huruf, dan panah kanan
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // Panah ke kiri
                   IconButton(
                     icon: const Icon(
                       Icons.arrow_left,
                       size: 40,
                     ),
-                    onPressed: () {
-                      // Aksi tombol back
-                    },
+                    onPressed: navigateToPrevious,
                   ),
-                  // Kotak huruf
                   Container(
-                    width: 180, // Lebar tetap
-                    height: 180, // Tinggi tetap (sama dengan lebar)
+                    width: 180,
+                    height: 180,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(156, 239, 71, 107),
                       border: Border.all(
                         color: Colors.black,
-                        width: 2, // Border hitam dengan ketebalan 2
+                        width: 2,
                       ),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        'あ', // Huruf Hiragana
-                        style: TextStyle(
+                        question,
+                        style: const TextStyle(
                           fontSize: 100,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -125,81 +269,55 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // Panah ke kanan
                   IconButton(
                     icon: const Icon(
                       Icons.arrow_right,
                       size: 40,
                     ),
-                    onPressed: () {
-                      // Aksi tombol next
-                    },
+                    onPressed: navigateToNext,
                   ),
                 ],
               ),
             ),
-            // Tiga lingkaran button di bawah kotak huruf
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Lingkaran pertama
-                  CircleAvatar(
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: choices.map((choice) {
+                return Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: CircleAvatar(
                     radius: 45,
                     backgroundColor: const Color.fromRGBO(81, 79, 80, 100),
-                    child: IconButton(
-                      icon: const Text(
-                        'ア',
-                        style: TextStyle(
+                    child: TextButton(
+                      onPressed: () {
+                        if (choice == correctAnswer) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Benar!'),
+                              duration: Duration(seconds: 1),
+                            ),
+                          );
+                          navigateToNext();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Salah, coba lagi!'),
+                              duration: Duration(seconds: 1),
+                            ),
+                          );
+                        }
+                      },
+                      child: Text(
+                        choice,
+                        style: const TextStyle(
                           fontSize: 40,
-                          fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                      onPressed: () {
-                        // Aksi tombol lingkaran 1
-                      },
                     ),
                   ),
-                  // Lingkaran kedua
-                  CircleAvatar(
-                    radius: 45,
-                    backgroundColor: const Color.fromRGBO(81, 79, 80, 100),
-                    child: IconButton(
-                      icon: const Text(
-                        'エ',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      onPressed: () {
-                        // Aksi tombol lingkaran 2
-                      },
-                    ),
-                  ),
-                  // Lingkaran ketiga
-                  CircleAvatar(
-                    radius: 45,
-                    backgroundColor: const Color.fromRGBO(81, 79, 80, 100),
-                    child: IconButton(
-                      icon: const Text(
-                        'オ',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      onPressed: () {
-                        // Aksi tombol lingkaran 3
-                      },
-                    ),
-                  ),
-                ],
-              ),
+                );
+              }).toList(),
             ),
           ],
         ),

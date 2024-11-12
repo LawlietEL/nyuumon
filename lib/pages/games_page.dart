@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nyuumon/routes/router.dart';
 
 class GamesPage extends StatelessWidget {
   const GamesPage({super.key});
@@ -39,11 +40,9 @@ class GamesPage extends StatelessWidget {
                     // Mengubah lingkaran profile menjadi button
                     GestureDetector(
                       onTap: () {
-                        // context.push('/home/games/profil');
+                        context.pushNamed(Routes.profil);
                         // Aksi yang ingin dijalankan ketika profile button ditekan
                         print('Profile Button Ditekan');
-                        // Misalnya, arahkan ke halaman profile
-                        context.push('/profile');
                       },
                       child: Container(
                         width: 40,
@@ -101,7 +100,7 @@ class GamesPage extends StatelessWidget {
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/home/games/game_matching');
+                          context.push('/games/game_matching');
                           // Aksi ketika kotak "Matching Hirakata" ditekan
                           print('Matching Hirakata Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -142,7 +141,7 @@ class GamesPage extends StatelessWidget {
                       // Kotak kedua sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/home/games/game_memory');
+                          context.push('/games/game_memory');
                           // Aksi ketika kotak "Hirakata Memory" ditekan
                           print('Hirakata Memory Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini

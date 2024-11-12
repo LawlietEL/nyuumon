@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nyuumon/routes/router.dart';
 
 class BelajarPage extends StatelessWidget {
   const BelajarPage({super.key});
@@ -39,11 +40,10 @@ class BelajarPage extends StatelessWidget {
                     // Mengubah lingkaran profile menjadi button
                     GestureDetector(
                       onTap: () {
-                        // context.push('/home/belajar/profil');
+                        context.pushNamed(Routes.profil);
                         // Aksi yang ingin dijalankan ketika profile button ditekan
                         print('Profile Button Ditekan');
                         // Misalnya, arahkan ke halaman profile
-                        context.push('/profile');
                       },
                       child: Container(
                         width: 40,
@@ -101,7 +101,7 @@ class BelajarPage extends StatelessWidget {
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/home/belajar/tabel_hiragana');
+                          context.push('/belajar/tabel_hiragana');
                           // Aksi ketika kotak "ひらがな" ditekan
                           print('Kotak ひらがな Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -141,7 +141,7 @@ class BelajarPage extends StatelessWidget {
                       // Kotak kedua sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/home/belajar/tabel_katakana');
+                          context.push('/belajar/tabel_katakana');
                           // Aksi ketika kotak "カタカナ" ditekan
                           print('Kotak カタカナ Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini

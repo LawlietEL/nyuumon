@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         context.read<AuthBloc>().add(AuthEventProfilUser());
-                        context.push('/home/profil');
+                        context.push('/profil');
                         // Aksi ketika gambar profil ditekan
                         print('Profil button ditekan');
                         // Contoh navigasi ke halaman profil
@@ -91,7 +91,7 @@ class HomePage extends StatelessWidget {
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/home/belajar');
+                          context.push('/belajar');
                           // Aksi ketika kotak "Belajar" ditekan
                           print('Kotak Belajar Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -130,7 +130,7 @@ class HomePage extends StatelessWidget {
                       // Kotak kedua sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/home/games');
+                          context.push('/games');
                           // Aksi ketika kotak "Games" ditekan
                           print('Kotak Games Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -169,7 +169,7 @@ class HomePage extends StatelessWidget {
                       // Kotak ketiga sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/home/latihan');
+                          context.push('/latihan');
                           // Aksi ketika kotak "Latihan" ditekan
                           print('Kotak Latihan Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini

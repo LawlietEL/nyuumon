@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nyuumon/routes/router.dart';
 
 class LatihanPage extends StatelessWidget {
   const LatihanPage({super.key});
@@ -39,11 +40,9 @@ class LatihanPage extends StatelessWidget {
                     // Mengubah lingkaran profile menjadi button
                     GestureDetector(
                       onTap: () {
-                        // context.push('/home/latihan/profil');
+                        context.pushNamed(Routes.profil);
                         // Aksi yang ingin dijalankan ketika profile button ditekan
                         print('Profile Button Ditekan');
-                        context
-                            .push('/profile'); // Ganti dengan path yang sesuai
                       },
                       child: Container(
                         width: 40,
@@ -101,8 +100,7 @@ class LatihanPage extends StatelessWidget {
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
-                          context
-                              .push('/home/latihan/latihan_menulis_hirakata');
+                          context.push('/latihan/latihan_menulis_hirakata');
                           // Aksi ketika kotak "Menulis Hirakata" ditekan
                           print('Menulis Hirakata Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -143,8 +141,7 @@ class LatihanPage extends StatelessWidget {
                       // Kotak kedua sebagai button
                       GestureDetector(
                         onTap: () {
-                          context
-                              .push('/home/latihan/latihan_membaca_hirakata');
+                          context.push('/latihan/latihan_membaca_hirakata');
                           // Aksi ketika kotak "Membaca Hirakata" ditekan
                           print('Membaca Hirakata Ditekan');
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
@@ -189,7 +186,7 @@ class LatihanPage extends StatelessWidget {
                 // Kotak ketiga sebagai button
                 GestureDetector(
                   onTap: () {
-                    context.push('/home/latihan/latihan_menulis_kosakata');
+                    context.push('/latihan/latihan_menulis_kosakata');
                     // Aksi ketika kotak "Menulis Kosakata" ditekan
                     print('Menulis Kosakata Ditekan');
                     // Navigator.push() atau aksi lainnya bisa ditambahkan di sini

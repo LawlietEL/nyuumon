@@ -69,8 +69,7 @@ class TabelKatakanaPage extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           // Aksi ketika lingkaran vocal ditekan
-                          context.push(
-                              '/home/belajar/tabel_hiragana/detail_huruf');
+                          context.push('/belajar/detail_huruf');
                           print('Vocal $vocal Ditekan');
                           // Bisa melakukan aksi lain sesuai kebutuhan
                         },
@@ -115,8 +114,7 @@ class TabelKatakanaPage extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           // Aksi ketika lingkaran konsonan ditekan
-                          context.push(
-                              '/home/belajar/tabel_hiragana/detail_huruf');
+                          context.push('/belajar/detail_huruf');
                           if (konsonan.isNotEmpty) {
                             print('Konsonan $konsonan Ditekan');
                           }
