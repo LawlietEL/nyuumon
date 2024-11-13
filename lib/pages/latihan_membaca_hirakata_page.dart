@@ -235,7 +235,7 @@ class _LatihanMembacaHirakataPageState
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
@@ -279,7 +279,7 @@ class _LatihanMembacaHirakataPageState
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: choices.map((choice) {
@@ -319,6 +319,39 @@ class _LatihanMembacaHirakataPageState
                 );
               }).toList(),
             ),
+            if (currentIndex == soalList.length - 1) ...[
+              const SizedBox(height: 20),
+              Container(
+                width: 150,
+                height: 45,
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 44, 36, 36),
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    // Logic for submitting, could navigate to another page or show a summary.
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Soal selesai!'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),
