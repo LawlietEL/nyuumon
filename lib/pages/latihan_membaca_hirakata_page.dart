@@ -66,12 +66,18 @@ class _LatihanMembacaHirakataPageState
   late bool isHiraganaToKatakana;
   int timer = 15;
   Timer? _countdownTimer;
+  List<String>? currentChoices;
 
   @override
   void initState() {
     super.initState();
     soalList = generateSoal();
     isHiraganaToKatakana = Random().nextBool();
+    currentChoices = generateChoices(
+      isHiraganaToKatakana
+          ? soalList[currentIndex]['katakana']!
+          : soalList[currentIndex]['hiragana']!,
+    );
     startTimer();
   }
 
@@ -139,6 +145,11 @@ class _LatihanMembacaHirakataPageState
       setState(() {
         currentIndex--;
         isHiraganaToKatakana = Random().nextBool();
+        currentChoices = generateChoices(
+          isHiraganaToKatakana
+              ? soalList[currentIndex]['katakana']!
+              : soalList[currentIndex]['hiragana']!,
+        );
         resetTimer();
       });
     }
@@ -149,6 +160,11 @@ class _LatihanMembacaHirakataPageState
       setState(() {
         currentIndex++;
         isHiraganaToKatakana = Random().nextBool();
+        currentChoices = generateChoices(
+          isHiraganaToKatakana
+              ? soalList[currentIndex]['katakana']!
+              : soalList[currentIndex]['hiragana']!,
+        );
         resetTimer();
       });
     } else {
@@ -165,7 +181,6 @@ class _LatihanMembacaHirakataPageState
     final correctAnswer = isHiraganaToKatakana
         ? currentSoal['katakana']!
         : currentSoal['hiragana']!;
-    final choices = generateChoices(correctAnswer);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -282,7 +297,7 @@ class _LatihanMembacaHirakataPageState
             const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: choices.map((choice) {
+              children: currentChoices!.map((choice) {
                 return Padding(
                   padding: const EdgeInsets.all(5),
                   child: CircleAvatar(
@@ -334,7 +349,6 @@ class _LatihanMembacaHirakataPageState
                 ),
                 child: TextButton(
                   onPressed: () {
-                    // Logic for submitting, could navigate to another page or show a summary.
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Soal selesai!'),
