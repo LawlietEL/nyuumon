@@ -16,6 +16,7 @@ class _LatihanMenulisHirakataPageState
   int _timerValue = 10;
   late Timer _timer;
   late String _currentCharacter;
+  final List<String> _questionHistory = []; // History soal yang muncul
 
   final List<String> _hiraganaKatakanaList = [
     // Hiragana
@@ -49,6 +50,8 @@ class _LatihanMenulisHirakataPageState
   void initState() {
     super.initState();
     _currentCharacter = _getRandomHiraganaKatakana();
+    _questionHistory
+        .add(_currentCharacter); // Tambahkan soal pertama ke history
     _startTimer();
   }
 
@@ -64,7 +67,7 @@ class _LatihanMenulisHirakataPageState
         if (_timerValue > 0) {
           _timerValue--;
         } else {
-          _resetTimer();
+          _nextQuestion(); // Beralih ke soal berikutnya saat timer habis
         }
       });
     });
@@ -80,9 +83,16 @@ class _LatihanMenulisHirakataPageState
     if (_currentQuestionIndex < 14) {
       setState(() {
         _currentQuestionIndex++;
-        _currentCharacter = _getRandomHiraganaKatakana(); // Perbarui soal
+        if (_currentQuestionIndex >= _questionHistory.length) {
+          _currentCharacter = _getRandomHiraganaKatakana();
+          _questionHistory.add(_currentCharacter); // Tambahkan ke history
+        } else {
+          _currentCharacter = _questionHistory[_currentQuestionIndex];
+        }
         _resetTimer();
       });
+    } else {
+      _timer.cancel(); // Hentikan timer jika sudah mencapai soal ke-15
     }
   }
 
@@ -90,7 +100,7 @@ class _LatihanMenulisHirakataPageState
     if (_currentQuestionIndex > 0) {
       setState(() {
         _currentQuestionIndex--;
-        _currentCharacter = _getRandomHiraganaKatakana(); // Perbarui soal
+        _currentCharacter = _questionHistory[_currentQuestionIndex];
         _resetTimer();
       });
     }
@@ -136,10 +146,10 @@ class _LatihanMenulisHirakataPageState
 
             // Timer dengan tulisan "Waktu 10 Detik"
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(top: 5),
               child: Container(
                 width: 200,
-                height: 50,
+                height: 45,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: Colors.black, width: 2),
@@ -159,7 +169,7 @@ class _LatihanMenulisHirakataPageState
 
             // Tulisan Soal "x/15"
             Padding(
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 20),
               child: Text(
                 'Soal ${_currentQuestionIndex + 1}/15',
                 style: const TextStyle(
@@ -169,7 +179,7 @@ class _LatihanMenulisHirakataPageState
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
 
             // Row untuk tombol panah kiri, kotak huruf, dan panah kanan
             Padding(
@@ -213,7 +223,7 @@ class _LatihanMenulisHirakataPageState
               ),
             ),
 
-            const SizedBox(height: 5),
+            const SizedBox(),
 
             // Kotak untuk tempat menulis
             Padding(
@@ -249,6 +259,32 @@ class _LatihanMenulisHirakataPageState
                 ),
               ),
             ),
+
+            // Tampilkan tombol submit jika sudah soal terakhir
+            if (_currentQuestionIndex == 14)
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 7), // menambahkan padding
+                      backgroundColor: Colors.blue,
+                      side: const BorderSide(color: Colors.grey),
+                    ),
+                    onPressed: () {
+                      // Logika submit di sini
+                    },
+                    child: const Text(
+                      'Submit',
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
