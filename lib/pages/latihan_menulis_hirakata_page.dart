@@ -1,7 +1,105 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 
-class LatihanMenulisHirakataPage extends StatelessWidget {
+class LatihanMenulisHirakataPage extends StatefulWidget {
   const LatihanMenulisHirakataPage({super.key});
+
+  @override
+  _LatihanMenulisHirakataPageState createState() =>
+      _LatihanMenulisHirakataPageState();
+}
+
+class _LatihanMenulisHirakataPageState
+    extends State<LatihanMenulisHirakataPage> {
+  int _currentQuestionIndex = 0;
+  int _timerValue = 10;
+  late Timer _timer;
+  late String _currentCharacter;
+
+  final List<String> _hiraganaKatakanaList = [
+    // Hiragana
+    'あ', 'い', 'う', 'え', 'お',
+    'か', 'き', 'く', 'け', 'こ',
+    'さ', 'し', 'す', 'せ', 'そ',
+    'た', 'ち', 'つ', 'て', 'と',
+    'な', 'に', 'ぬ', 'ね', 'の',
+    'は', 'ひ', 'ふ', 'へ', 'ほ',
+    'ま', 'み', 'む', 'め', 'も',
+    'や', 'ゆ', 'よ',
+    'ら', 'り', 'る', 'れ', 'ろ',
+    'わ', 'を',
+    'ん',
+
+    // Katakana
+    'ア', 'イ', 'ウ', 'エ', 'オ',
+    'カ', 'キ', 'ク', 'ケ', 'コ',
+    'サ', 'シ', 'ス', 'セ', 'ソ',
+    'タ', 'チ', 'ツ', 'テ', 'ト',
+    'ナ', 'ニ', 'ヌ', 'ネ', 'ノ',
+    'ハ', 'ヒ', 'フ', 'ヘ', 'ホ',
+    'マ', 'ミ', 'ム', 'メ', 'モ',
+    'ヤ', 'ユ', 'ヨ',
+    'ラ', 'リ', 'ル', 'レ', 'ロ',
+    'ワ', 'ヲ',
+    'ン'
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _currentCharacter = _getRandomHiraganaKatakana();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_timerValue > 0) {
+          _timerValue--;
+        } else {
+          _resetTimer();
+        }
+      });
+    });
+  }
+
+  void _resetTimer() {
+    setState(() {
+      _timerValue = 10;
+    });
+  }
+
+  void _nextQuestion() {
+    if (_currentQuestionIndex < 14) {
+      setState(() {
+        _currentQuestionIndex++;
+        _currentCharacter = _getRandomHiraganaKatakana(); // Perbarui soal
+        _resetTimer();
+      });
+    }
+  }
+
+  void _previousQuestion() {
+    if (_currentQuestionIndex > 0) {
+      setState(() {
+        _currentQuestionIndex--;
+        _currentCharacter = _getRandomHiraganaKatakana(); // Perbarui soal
+        _resetTimer();
+      });
+    }
+  }
+
+  String _getRandomHiraganaKatakana() {
+    final random = Random();
+    return _hiraganaKatakanaList[random.nextInt(_hiraganaKatakanaList.length)];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,23 +107,17 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Menempatkan tombol back dan user info di bagian atas
             Padding(
-              padding: const EdgeInsets.only(
-                  top: 30,
-                  left: 5,
-                  bottom: 5,
-                  right: 10), // Padding di sekitar teks
+              padding:
+                  const EdgeInsets.only(top: 30, left: 5, bottom: 5, right: 10),
               child: Row(
                 children: [
-                  // Tombol back dengan ikon panah kiri
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context); // Kembali ke halaman sebelumnya
+                      Navigator.pop(context);
                     },
                   ),
-                  // Expanded untuk membuat judul berada di tengah
                   Expanded(
                     child: Align(
                       alignment: Alignment.center,
@@ -37,33 +129,25 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8), // Spacer untuk gambar (opsional)
                 ],
               ),
             ),
-            // Garis horizontal tipis berwarna abu-abu
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-            ),
+            const Divider(color: Colors.grey, thickness: 1),
 
-            // Kotak persegi panjang "Waktu 15"
+            // Timer dengan tulisan "Waktu 10 Detik"
             Padding(
               padding: const EdgeInsets.all(10),
               child: Container(
-                width: 200, // Lebar mengikuti lebar layar
-                height: 50, // Tinggi kotak
+                width: 200,
+                height: 50,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 2, // Border hitam dengan ketebalan 2
-                  ),
+                  border: Border.all(color: Colors.black, width: 2),
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
-                    'Waktu 15',
-                    style: TextStyle(
+                    'Waktu $_timerValue Detik',
+                    style: const TextStyle(
                       fontSize: 24,
                       fontStyle: FontStyle.italic,
                       color: Colors.black,
@@ -73,12 +157,12 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
               ),
             ),
 
-            // Tulisan Soal 1/15
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
+            // Tulisan Soal "x/15"
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
               child: Text(
-                'Soal 1/15',
-                style: TextStyle(
+                'Soal ${_currentQuestionIndex + 1}/15',
+                style: const TextStyle(
                   fontSize: 25,
                   fontStyle: FontStyle.italic,
                 ),
@@ -87,38 +171,30 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            // Row dengan panah kiri, kotak huruf, dan panah kanan
+            // Row untuk tombol panah kiri, kotak huruf, dan panah kanan
             Padding(
               padding: const EdgeInsets.all(10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // Panah ke kiri (back button)
                   IconButton(
                     icon: const Icon(
                       Icons.arrow_left,
                       size: 40,
                     ),
-                    onPressed: () {
-                      // Aksi tombol back
-                    },
+                    onPressed: _previousQuestion,
                   ),
-
-                  // Kotak pertama: Huruf Hiragana
                   Container(
-                    width: 160, // Lebar tetap
-                    height: 160, // Tinggi tetap (sama dengan lebar)
+                    width: 160,
+                    height: 160,
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(156, 239, 71, 107),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2, // Border hitam dengan ketebalan 2
-                      ),
+                      border: Border.all(color: Colors.black, width: 2),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        'あ', // Huruf Hiragana
-                        style: TextStyle(
+                        _currentCharacter,
+                        style: const TextStyle(
                           fontSize: 100,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -126,16 +202,12 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // Panah ke kanan (next button)
                   IconButton(
                     icon: const Icon(
                       Icons.arrow_right,
                       size: 40,
                     ),
-                    onPressed: () {
-                      // Aksi tombol next
-                    },
+                    onPressed: _nextQuestion,
                   ),
                 ],
               ),
@@ -143,17 +215,14 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
 
             const SizedBox(height: 5),
 
-            // Kotak ketiga: Latihan menulis Hiragana
+            // Kotak untuk tempat menulis
             Padding(
               padding: const EdgeInsets.all(10),
               child: Container(
-                width: 160, // Lebar tetap
-                height: 160, // Tinggi tetap (sama dengan lebar)
+                width: 160,
+                height: 160,
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 2, // Border hitam dengan ketebalan 2
-                  ),
+                  border: Border.all(color: Colors.black, width: 2),
                 ),
                 child: Center(
                   child: Column(
@@ -167,13 +236,12 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      Center(
-                        child: Text(
-                          'Tempat untuk\nmenulis tangan',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey,
-                          ),
+                      Text(
+                        'Tempat untuk\nmenulis tangan',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey,
                         ),
                       ),
                     ],

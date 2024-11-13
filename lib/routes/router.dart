@@ -67,13 +67,6 @@ final GoRouter router = GoRouter(
             return const BelajarPage();
           },
           routes: [
-            // GoRoute(
-            //   path: '/profil',
-            //   name: Routes.profil,
-            //   builder: (BuildContext context, GoRouterState state) {
-            //     return const ProfilPage();
-            //   },
-            // ),
             GoRoute(
               path: '/tabel_hiragana',
               name: Routes.tabel_hiragana,
@@ -88,7 +81,6 @@ final GoRouter router = GoRouter(
                 return const TabelKatakanaPage();
               },
             ),
-
             GoRoute(
               path: '/detail_huruf',
               name: Routes.detail_huruf,
