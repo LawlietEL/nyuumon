@@ -1,7 +1,217 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
-class GameMatchingPage extends StatelessWidget {
+class GameMatchingPage extends StatefulWidget {
   const GameMatchingPage({super.key});
+
+  @override
+  _GameMatchingPageState createState() => _GameMatchingPageState();
+}
+
+class _GameMatchingPageState extends State<GameMatchingPage> {
+  final List<String> hiragana = [
+    'あ',
+    'い',
+    'う',
+    'え',
+    'お',
+    'か',
+    'き',
+    'く',
+    'け',
+    'こ',
+    'さ',
+    'し',
+    'す',
+    'せ',
+    'そ',
+    'た',
+    'ち',
+    'つ',
+    'て',
+    'と',
+    'な',
+    'に',
+    'ぬ',
+    'ね',
+    'の',
+    'は',
+    'ひ',
+    'ふ',
+    'へ',
+    'ほ',
+    'ま',
+    'み',
+    'む',
+    'め',
+    'も',
+    'や',
+    'ゆ',
+    'よ',
+    'ら',
+    'り',
+    'る',
+    'れ',
+    'ろ',
+    'わ',
+    'を',
+    'ん',
+  ];
+
+  final List<String> katakana = [
+    'ア',
+    'イ',
+    'ウ',
+    'エ',
+    'オ',
+    'カ',
+    'キ',
+    'ク',
+    'ケ',
+    'コ',
+    'サ',
+    'シ',
+    'ス',
+    'セ',
+    'ソ',
+    'タ',
+    'チ',
+    'ツ',
+    'テ',
+    'ト',
+    'ナ',
+    'ニ',
+    'ヌ',
+    'ネ',
+    'ノ',
+    'ハ',
+    'ヒ',
+    'フ',
+    'ヘ',
+    'ホ',
+    'マ',
+    'ミ',
+    'ム',
+    'メ',
+    'モ',
+    'ヤ',
+    'ユ',
+    'ヨ',
+    'ラ',
+    'リ',
+    'ル',
+    'レ',
+    'ロ',
+    'ワ',
+    'ヲ',
+    'ン',
+  ];
+
+  String currentQuestion = '';
+  List<String> answerOptions = [];
+  int questionIndex = 1;
+  int? totalQuestions;
+  int correctAnswers = 0;
+  List<bool> answerResults = [];
+  Random random = Random();
+
+  @override
+  void initState() {
+    super.initState();
+    _generateQuestion(); // Memanggil fungsi untuk menghasilkan soal pertama
+  }
+
+  void _generateQuestion() {
+    // Jika sudah mencapai total soal, tampilkan dialog hasil
+    if (questionIndex > (totalQuestions ?? 10)) {
+      _showResultDialog();
+      return;
+    }
+
+    bool isHiraganaQuestion = random.nextBool();
+    String questionChar;
+    String correctAnswer;
+
+    if (isHiraganaQuestion) {
+      questionChar = hiragana[random.nextInt(hiragana.length)];
+      correctAnswer = katakana[hiragana.indexOf(questionChar)];
+    } else {
+      questionChar = katakana[random.nextInt(katakana.length)];
+      correctAnswer = hiragana[katakana.indexOf(questionChar)];
+    }
+
+    setState(() {
+      currentQuestion = questionChar;
+      answerOptions = _generateAnswerOptions(correctAnswer, isHiraganaQuestion);
+    });
+  }
+
+  List<String> _generateAnswerOptions(
+      String correctAnswer, bool isHiraganaQuestion) {
+    List<String> answers = [correctAnswer];
+    List<String> options = isHiraganaQuestion ? katakana : hiragana;
+
+    while (answers.length < 3) {
+      String randomAnswer = options[random.nextInt(options.length)];
+      if (!answers.contains(randomAnswer)) {
+        answers.add(randomAnswer);
+      }
+    }
+    answers.shuffle();
+    return answers;
+  }
+
+  void _checkAnswer(String selectedAnswer) {
+    // Cek apakah jawaban benar
+    bool isCorrect = (hiragana.contains(currentQuestion) &&
+            selectedAnswer == katakana[hiragana.indexOf(currentQuestion)]) ||
+        (katakana.contains(currentQuestion) &&
+            selectedAnswer == hiragana[katakana.indexOf(currentQuestion)]);
+    answerResults.add(isCorrect);
+    if (isCorrect) correctAnswers++;
+
+    // Tampilkan soal berikutnya
+    setState(() {
+      questionIndex++;
+      if (questionIndex <= (totalQuestions ?? 10)) {
+        _generateQuestion();
+      } else {
+        _showResultDialog(); // Tampilkan dialog hasil jika soal habis
+      }
+    });
+  }
+
+  void _resetQuiz() {
+    setState(() {
+      questionIndex = 1;
+      correctAnswers = 0;
+      answerResults.clear();
+      totalQuestions = null;
+      _generateQuestion();
+    });
+  }
+
+  void _showResultDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Hasil Akhir'),
+          content:
+              Text('Total Point: $correctAnswers / ${totalQuestions ?? 10}'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _resetQuiz();
+              },
+              child: const Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -9,170 +219,116 @@ class GameMatchingPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Menempatkan tombol back dan user info di bagian atas
             Padding(
-              padding: const EdgeInsets.only(
-                  top: 30,
-                  left: 5,
-                  bottom: 5,
-                  right: 10), // Padding di sekitar teks
+              padding:
+                  const EdgeInsets.only(top: 30, left: 5, bottom: 5, right: 10),
               child: Row(
                 children: [
-                  // Tombol back dengan ikon panah kiri
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context); // Kembali ke halaman sebelumnya
+                      Navigator.pop(context);
                     },
                   ),
-                  // Expanded untuk membuat judul berada di tengah
-                  Expanded(
+                  const Expanded(
                     child: Align(
                       alignment: Alignment.center,
-                      child: const Text(
+                      child: Text(
                         'Matching HiraKata',
-                        style: TextStyle(
-                          fontSize: 23,
-                        ),
+                        style: TextStyle(fontSize: 23),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8), // Spacer untuk gambar (opsional)
+                  const SizedBox(width: 8),
                 ],
               ),
             ),
-            // Garis horizontal tipis berwarna abu-abu
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
+            const Divider(color: Colors.grey, thickness: 1),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DropdownButton<int>(
+                    value: totalQuestions,
+                    hint: const Text("Pilih Jumlah Soal"),
+                    items: [10, 20, 30, 40, 50].map((int value) {
+                      return DropdownMenuItem<int>(
+                        value: value,
+                        child: Text('$value'),
+                      );
+                    }).toList(),
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        totalQuestions = newValue!;
+                        questionIndex = 1;
+                        _generateQuestion();
+                      });
+                    },
+                  ),
+                  Text(
+                    'Soal $questionIndex/${totalQuestions ?? 0}',
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            // Teks soal 1/10
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Text(
-                'Soal 1/10',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontStyle: FontStyle.italic,
+            const SizedBox(height: 30),
+            if (totalQuestions != null) ...[
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 180,
+                      height: 180,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(156, 239, 71, 107),
+                        border: Border.all(color: Colors.black, width: 2),
+                      ),
+                      child: Center(
+                        child: Text(
+                          currentQuestion,
+                          style: const TextStyle(
+                            fontSize: 100,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            // Menambahkan SizedBox untuk memberikan jarak agar kotak agak turun
-            const SizedBox(height: 30),
-            // Row dengan panah kiri, kotak huruf, dan panah kanan
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Panah ke kiri
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_left,
-                      size: 40,
-                    ),
-                    onPressed: () {
-                      // Aksi tombol back
-                    },
-                  ),
-                  // Kotak huruf
-                  Container(
-                    width: 180, // Lebar tetap
-                    height: 180, // Tinggi tetap (sama dengan lebar)
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(156, 239, 71, 107),
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 2, // Border hitam dengan ketebalan 2
-                      ),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'ア', // Huruf Hiragana
-                        style: TextStyle(
-                          fontSize: 100,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: answerOptions.map((option) {
+                    return CircleAvatar(
+                      radius: 45,
+                      backgroundColor: const Color.fromRGBO(81, 79, 80, 100),
+                      child: IconButton(
+                        icon: Text(
+                          option,
+                          style: const TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
+                        onPressed: () => _checkAnswer(option),
                       ),
-                    ),
-                  ),
-                  // Panah ke kanan
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_right,
-                      size: 40,
-                    ),
-                    onPressed: () {
-                      // Aksi tombol next
-                    },
-                  ),
-                ],
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-            // Tiga lingkaran button di bawah kotak huruf
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Lingkaran pertama
-                  CircleAvatar(
-                    radius: 45,
-                    backgroundColor: Color.fromRGBO(81, 79, 80, 100),
-                    child: IconButton(
-                      icon: const Text(
-                        'あ',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      onPressed: () {
-                        // Aksi tombol lingkaran 1
-                      },
-                    ),
-                  ),
-                  // Lingkaran kedua
-                  CircleAvatar(
-                    radius: 45,
-                    backgroundColor: Color.fromRGBO(81, 79, 80, 100),
-                    child: IconButton(
-                      icon: const Text(
-                        'い',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      onPressed: () {
-                        // Aksi tombol lingkaran 2
-                      },
-                    ),
-                  ),
-                  // Lingkaran ketiga
-                  CircleAvatar(
-                    radius: 45,
-                    backgroundColor: Color.fromRGBO(81, 79, 80, 100),
-                    child: IconButton(
-                      icon: const Text(
-                        'う',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      onPressed: () {
-                        // Aksi tombol lingkaran 3
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+              const SizedBox(height: 20),
+            ],
           ],
         ),
       ),
