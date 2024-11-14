@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nyuumon/pages/belajar_page.dart';
@@ -22,12 +23,29 @@ import 'package:nyuumon/pages/tabel_katakana_page.dart';
 part 'route_name.dart';
 
 final GoRouter router = GoRouter(
+  redirect: (context, state) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    // cek kondisi saat ini -> sedang terautentikasi
+    if (auth.currentUser == null) {
+      // tidak sedang login / tidak ada user yg aktif saat ini
+      return "/login";
+    } else {
+      return null;
+    }
+  },
   routes: [
     GoRoute(
-      path: '/',
+      path: '/login',
       name: Routes.login,
       builder: (BuildContext context, GoRouterState state) {
         return LoginPage();
+      },
+    ),
+    GoRoute(
+      path: '/',
+      name: Routes.home,
+      builder: (BuildContext context, GoRouterState state) {
+        return HomePage();
       },
       routes: [
         GoRoute(
@@ -52,13 +70,6 @@ final GoRouter router = GoRouter(
               },
             ),
           ],
-        ),
-        GoRoute(
-          path: '/home',
-          name: Routes.home,
-          builder: (BuildContext context, GoRouterState state) {
-            return const HomePage();
-          },
         ),
         GoRoute(
           path: '/belajar',
@@ -108,7 +119,7 @@ final GoRouter router = GoRouter(
               path: '/game_matching',
               name: Routes.game_matching,
               builder: (BuildContext context, GoRouterState state) {
-                return const GameMatchingPage();
+                return GameMatchingPage();
               },
             ),
             GoRoute(

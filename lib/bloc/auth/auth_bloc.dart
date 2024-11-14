@@ -92,11 +92,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventProfilUser>((event, emit) async {
       try {
         emit(AuthStateLoading());
-        var email = _auth.currentUser!.email;
-        var name = _auth.currentUser?.displayName ?? 'null';
+        var userDoc = await users
+            .where('email', isEqualTo: _auth.currentUser!.email)
+            .limit(1)
+            .get();
+        var email = userDoc.docs[0].data() as Map<String, dynamic>;
+
         emit(AuthStateProfilUser(
-          email!,
-          name,
+          email['email'],
+          email['username'],
         ));
       } on FirebaseException catch (e) {
         emit(AuthStateError(e.message.toString()));
