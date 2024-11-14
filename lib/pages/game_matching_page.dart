@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GameMatchingPage extends StatefulWidget {
   const GameMatchingPage({super.key});
@@ -118,11 +120,10 @@ class _GameMatchingPageState extends State<GameMatchingPage> {
   @override
   void initState() {
     super.initState();
-    _generateQuestion(); // Memanggil fungsi untuk menghasilkan soal pertama
+    _generateQuestion();
   }
 
   void _generateQuestion() {
-    // Jika sudah mencapai total soal, tampilkan dialog hasil
     if (questionIndex > (totalQuestions ?? 10)) {
       _showResultDialog();
       return;
@@ -162,7 +163,6 @@ class _GameMatchingPageState extends State<GameMatchingPage> {
   }
 
   void _checkAnswer(String selectedAnswer) {
-    // Cek apakah jawaban benar
     bool isCorrect = (hiragana.contains(currentQuestion) &&
             selectedAnswer == katakana[hiragana.indexOf(currentQuestion)]) ||
         (katakana.contains(currentQuestion) &&
@@ -170,13 +170,12 @@ class _GameMatchingPageState extends State<GameMatchingPage> {
     answerResults.add(isCorrect);
     if (isCorrect) correctAnswers++;
 
-    // Tampilkan soal berikutnya
     setState(() {
       questionIndex++;
       if (questionIndex <= (totalQuestions ?? 10)) {
         _generateQuestion();
       } else {
-        _showResultDialog(); // Tampilkan dialog hasil jika soal habis
+        _showResultDialog();
       }
     });
   }
@@ -192,13 +191,14 @@ class _GameMatchingPageState extends State<GameMatchingPage> {
   }
 
   void _showResultDialog() {
+    _saveGameProgress();
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Hasil Akhir'),
           content:
-              Text('Total Point: $correctAnswers / ${totalQuestions ?? 10}'),
+              Text('Total Point: $correctAnswers / ${totalQuestions ?? 0}'),
           actions: [
             TextButton(
               onPressed: () {
@@ -211,6 +211,32 @@ class _GameMatchingPageState extends State<GameMatchingPage> {
         );
       },
     );
+  }
+
+  Future<void> _saveGameProgress() async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) {
+        print("No user logged in");
+        return;
+      }
+
+      final gameProgressRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('matching_hirakata_game');
+
+      await gameProgressRef.add({
+        'score': correctAnswers,
+        'totalQuestions': totalQuestions ?? 10,
+        'answeredCorrectly': correctAnswers,
+        'datePlayed': Timestamp.now(),
+      });
+
+      print("Game progress saved successfully!");
+    } catch (e) {
+      print("Error saving game progress: $e");
+    }
   }
 
   @override
@@ -269,9 +295,7 @@ class _GameMatchingPageState extends State<GameMatchingPage> {
                   Text(
                     'Soal $questionIndex/${totalQuestions ?? 0}',
                     style: const TextStyle(
-                      fontSize: 25,
-                      fontStyle: FontStyle.italic,
-                    ),
+                        fontSize: 25, fontStyle: FontStyle.italic),
                   ),
                 ],
               ),
@@ -294,10 +318,9 @@ class _GameMatchingPageState extends State<GameMatchingPage> {
                         child: Text(
                           currentQuestion,
                           style: const TextStyle(
-                            fontSize: 120,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                              fontSize: 120,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                       ),
                     ),
@@ -316,10 +339,9 @@ class _GameMatchingPageState extends State<GameMatchingPage> {
                         icon: Text(
                           option,
                           style: const TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                         onPressed: () => _checkAnswer(option),
                       ),
