@@ -294,7 +294,7 @@ class _GameMatchingPageState extends State<GameMatchingPage> {
                         child: Text(
                           currentQuestion,
                           style: const TextStyle(
-                            fontSize: 100,
+                            fontSize: 120,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),

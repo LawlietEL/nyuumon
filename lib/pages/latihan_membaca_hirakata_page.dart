@@ -16,172 +16,160 @@ class _LatihanMembacaHirakataPageState
     {'hiragana': 'あ', 'katakana': 'ア'},
     {'hiragana': 'い', 'katakana': 'イ'},
     {'hiragana': 'う', 'katakana': 'ウ'},
-    {'hiragana': 'え', 'katakana': 'エ'},
-    {'hiragana': 'お', 'katakana': 'オ'},
-    {'hiragana': 'か', 'katakana': 'カ'},
-    {'hiragana': 'き', 'katakana': 'キ'},
-    {'hiragana': 'く', 'katakana': 'ク'},
-    {'hiragana': 'け', 'katakana': 'ケ'},
-    {'hiragana': 'こ', 'katakana': 'コ'},
-    {'hiragana': 'さ', 'katakana': 'サ'},
-    {'hiragana': 'し', 'katakana': 'シ'},
-    {'hiragana': 'す', 'katakana': 'ス'},
-    {'hiragana': 'せ', 'katakana': 'セ'},
-    {'hiragana': 'そ', 'katakana': 'ソ'},
-    {'hiragana': 'た', 'katakana': 'タ'},
-    {'hiragana': 'ち', 'katakana': 'チ'},
-    {'hiragana': 'つ', 'katakana': 'ツ'},
-    {'hiragana': 'て', 'katakana': 'テ'},
-    {'hiragana': 'と', 'katakana': 'ト'},
-    {'hiragana': 'な', 'katakana': 'ナ'},
-    {'hiragana': 'に', 'katakana': 'ニ'},
-    {'hiragana': 'ぬ', 'katakana': 'ヌ'},
-    {'hiragana': 'ね', 'katakana': 'ネ'},
-    {'hiragana': 'の', 'katakana': 'ノ'},
-    {'hiragana': 'は', 'katakana': 'ハ'},
-    {'hiragana': 'ひ', 'katakana': 'ヒ'},
-    {'hiragana': 'ふ', 'katakana': 'フ'},
-    {'hiragana': 'へ', 'katakana': 'ヘ'},
-    {'hiragana': 'ほ', 'katakana': 'ホ'},
-    {'hiragana': 'ま', 'katakana': 'マ'},
-    {'hiragana': 'み', 'katakana': 'ミ'},
-    {'hiragana': 'む', 'katakana': 'ム'},
-    {'hiragana': 'め', 'katakana': 'メ'},
-    {'hiragana': 'も', 'katakana': 'モ'},
-    {'hiragana': 'や', 'katakana': 'ヤ'},
-    {'hiragana': 'ゆ', 'katakana': 'ユ'},
-    {'hiragana': 'よ', 'katakana': 'ヨ'},
-    {'hiragana': 'ら', 'katakana': 'ラ'},
-    {'hiragana': 'り', 'katakana': 'リ'},
-    {'hiragana': 'る', 'katakana': 'ル'},
-    {'hiragana': 'れ', 'katakana': 'レ'},
-    {'hiragana': 'ろ', 'katakana': 'ロ'},
-    {'hiragana': 'わ', 'katakana': 'ワ'},
-    {'hiragana': 'を', 'katakana': 'ヲ'},
-    {'hiragana': 'ん', 'katakana': 'ン'},
+    // Add other pairs here...
   ];
 
-  late List<Map<String, String>> soalList;
-  int currentIndex = 0;
-  late bool isHiraganaToKatakana;
-  int timer = 15;
-  Timer? _countdownTimer;
-  List<String>? currentChoices;
+  String currentQuestion = '';
+  List<String> answerOptions = [];
+  int questionIndex = 1;
+  int? totalQuestions;
+  int correctAnswers = 0;
+  List<bool> answerResults = [];
+  Random random = Random();
+
+  // Timer variables
+  int remainingTime = 10; // 10 seconds countdown
+  Timer? timer;
+  bool isTimerStarted = false;
+
+  // Track if the last answer has been selected
+  bool isLastQuestionAnswered = false;
 
   @override
   void initState() {
     super.initState();
-    soalList = generateSoal();
-    isHiraganaToKatakana = Random().nextBool();
-    currentChoices = generateChoices(
-      isHiraganaToKatakana
-          ? soalList[currentIndex]['katakana']!
-          : soalList[currentIndex]['hiragana']!,
+  }
+
+  void _generateQuestion() {
+    if (questionIndex > (totalQuestions ?? 10)) {
+      _showResultDialog();
+      return;
+    }
+
+    bool isHiraganaQuestion = random.nextBool();
+    String questionChar;
+    String correctAnswer;
+
+    if (isHiraganaQuestion) {
+      questionChar =
+          hirakataPairs[random.nextInt(hirakataPairs.length)]['hiragana']!;
+      correctAnswer = hirakataPairs
+          .firstWhere((pair) => pair['hiragana'] == questionChar)['katakana']!;
+    } else {
+      questionChar =
+          hirakataPairs[random.nextInt(hirakataPairs.length)]['katakana']!;
+      correctAnswer = hirakataPairs
+          .firstWhere((pair) => pair['katakana'] == questionChar)['hiragana']!;
+    }
+
+    setState(() {
+      currentQuestion = questionChar;
+      answerOptions = _generateAnswerOptions(correctAnswer, isHiraganaQuestion);
+      remainingTime = 10;
+      isTimerStarted = false;
+      isLastQuestionAnswered = false; // Reset last question flag
+    });
+
+    if (!isTimerStarted) {
+      _startTimer();
+    }
+  }
+
+  List<String> _generateAnswerOptions(
+      String correctAnswer, bool isHiraganaQuestion) {
+    List<String> answers = [correctAnswer];
+    List<String> options = isHiraganaQuestion
+        ? hirakataPairs.map((pair) => pair['katakana']!).toList()
+        : hirakataPairs.map((pair) => pair['hiragana']!).toList();
+
+    while (answers.length < 3) {
+      String randomAnswer = options[random.nextInt(options.length)];
+      if (!answers.contains(randomAnswer)) {
+        answers.add(randomAnswer);
+      }
+    }
+    answers.shuffle();
+    return answers;
+  }
+
+  void _checkAnswer(String selectedAnswer) {
+    bool isCorrect = (hirakataPairs.any((pair) =>
+            pair['hiragana'] == currentQuestion &&
+            selectedAnswer == pair['katakana']) ||
+        hirakataPairs.any((pair) =>
+            pair['katakana'] == currentQuestion &&
+            selectedAnswer == pair['hiragana']));
+    answerResults.add(isCorrect);
+    if (isCorrect) correctAnswers++;
+
+    setState(() {
+      questionIndex++;
+      if (questionIndex > (totalQuestions ?? 10)) {
+        isLastQuestionAnswered = true;
+      } else {
+        _generateQuestion();
+      }
+    });
+  }
+
+  void _startTimer() {
+    setState(() {
+      isTimerStarted = true;
+    });
+
+    timer?.cancel();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (remainingTime == 0) {
+        _generateQuestion();
+      } else {
+        setState(() {
+          remainingTime--;
+        });
+      }
+    });
+  }
+
+  void _resetQuiz() {
+    setState(() {
+      questionIndex = 1;
+      correctAnswers = 0;
+      answerResults.clear();
+      totalQuestions = null;
+      isTimerStarted = false;
+      timer?.cancel();
+    });
+  }
+
+  void _showResultDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Hasil Akhir'),
+          content:
+              Text('Total Point: $correctAnswers / ${totalQuestions ?? 10}'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _resetQuiz();
+              },
+              child: const Text("Close"),
+            ),
+          ],
+        );
+      },
     );
-    startTimer();
   }
 
   @override
   void dispose() {
-    _countdownTimer?.cancel();
+    timer?.cancel();
     super.dispose();
-  }
-
-  List<Map<String, String>> generateSoal() {
-    final random = Random();
-    final selectedHiragana = <Map<String, String>>[];
-    final hiraganaSet = Set<int>();
-
-    while (hiraganaSet.length < 15) {
-      final index = random.nextInt(hirakataPairs.length);
-      if (!hiraganaSet.contains(index)) {
-        hiraganaSet.add(index);
-        selectedHiragana.add(hirakataPairs[index]);
-      }
-    }
-    return selectedHiragana;
-  }
-
-  List<String> generateChoices(String correctAnswer) {
-    final random = Random();
-    final choices = <String>[correctAnswer];
-    final usedIndices = <int>[];
-
-    while (choices.length < 3) {
-      final index = random.nextInt(hirakataPairs.length);
-      final wrongAnswer = isHiraganaToKatakana
-          ? hirakataPairs[index]['katakana']!
-          : hirakataPairs[index]['hiragana']!;
-      if (!usedIndices.contains(index) && wrongAnswer != correctAnswer) {
-        usedIndices.add(index);
-        choices.add(wrongAnswer);
-      }
-    }
-
-    choices.shuffle();
-    return choices;
-  }
-
-  void startTimer() {
-    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (this.timer > 0) {
-          this.timer--;
-        } else {
-          navigateToNext();
-        }
-      });
-    });
-  }
-
-  void resetTimer() {
-    _countdownTimer?.cancel();
-    timer = 15;
-    startTimer();
-  }
-
-  void navigateToPrevious() {
-    if (currentIndex > 0) {
-      setState(() {
-        currentIndex--;
-        isHiraganaToKatakana = Random().nextBool();
-        currentChoices = generateChoices(
-          isHiraganaToKatakana
-              ? soalList[currentIndex]['katakana']!
-              : soalList[currentIndex]['hiragana']!,
-        );
-        resetTimer();
-      });
-    }
-  }
-
-  void navigateToNext() {
-    if (currentIndex < soalList.length - 1) {
-      setState(() {
-        currentIndex++;
-        isHiraganaToKatakana = Random().nextBool();
-        currentChoices = generateChoices(
-          isHiraganaToKatakana
-              ? soalList[currentIndex]['katakana']!
-              : soalList[currentIndex]['hiragana']!,
-        );
-        resetTimer();
-      });
-    } else {
-      _countdownTimer?.cancel(); // Berhenti jika sudah di soal terakhir
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentSoal = soalList[currentIndex];
-    final question = isHiraganaToKatakana
-        ? currentSoal['hiragana']!
-        : currentSoal['katakana']!;
-    final correctAnswer = isHiraganaToKatakana
-        ? currentSoal['katakana']!
-        : currentSoal['hiragana']!;
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -197,14 +185,12 @@ class _LatihanMembacaHirakataPageState
                       Navigator.pop(context);
                     },
                   ),
-                  Expanded(
+                  const Expanded(
                     child: Align(
                       alignment: Alignment.center,
-                      child: const Text(
+                      child: Text(
                         'Membaca HiraKata',
-                        style: TextStyle(
-                          fontSize: 23,
-                        ),
+                        style: TextStyle(fontSize: 23),
                       ),
                     ),
                   ),
@@ -212,159 +198,123 @@ class _LatihanMembacaHirakataPageState
                 ],
               ),
             ),
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Container(
-                width: 200,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 2,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Waktu: $timer detik',
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontStyle: FontStyle.italic,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            const Divider(color: Colors.grey, thickness: 1),
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Text(
-                'Soal ${currentIndex + 1}/15',
-                style: const TextStyle(
-                  fontSize: 25,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_left,
-                      size: 40,
-                    ),
-                    onPressed: navigateToPrevious,
+                  DropdownButton<int>(
+                    value: totalQuestions,
+                    hint: const Text("Pilih Jumlah Soal"),
+                    items: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+                        .map((int value) {
+                      return DropdownMenuItem<int>(
+                          value: value, child: Text('$value'));
+                    }).toList(),
+                    onChanged: (int? newValue) {
+                      setState(() {
+                        totalQuestions = newValue!;
+                        questionIndex = 0;
+                        isTimerStarted = false;
+                        _generateQuestion();
+                      });
+                    },
                   ),
-                  Container(
-                    width: 180,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(156, 239, 71, 107),
-                      border: Border.all(
+                  Text(
+                    'Soal $questionIndex/${totalQuestions ?? 0}',
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  if (totalQuestions != null) ...[
+                    Text(
+                      '$remainingTime',
+                      style: const TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black,
-                        width: 2,
                       ),
                     ),
-                    child: Center(
-                      child: Text(
-                        question,
-                        style: const TextStyle(
-                          fontSize: 100,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_right,
-                      size: 40,
-                    ),
-                    onPressed: navigateToNext,
-                  ),
+                  ],
                 ],
               ),
             ),
-            const SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: currentChoices!.map((choice) {
-                return Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: CircleAvatar(
-                    radius: 45,
-                    backgroundColor: const Color.fromRGBO(81, 79, 80, 100),
-                    child: TextButton(
-                      onPressed: () {
-                        if (choice == correctAnswer) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Benar!'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-                          navigateToNext();
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Salah, coba lagi!'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-                        }
-                      },
-                      child: Text(
-                        choice,
-                        style: const TextStyle(
-                          fontSize: 40,
-                          color: Colors.white,
+            const SizedBox(),
+            if (totalQuestions != null) ...[
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 180,
+                      height: 180,
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(156, 239, 71, 107),
+                        border: Border.all(color: Colors.black),
+                      ),
+                      child: Center(
+                        child: Text(
+                          currentQuestion,
+                          style: const TextStyle(
+                            fontSize: 120,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
-            ),
-            if (currentIndex == soalList.length - 1) ...[
-              const SizedBox(height: 20),
-              Container(
-                width: 150,
-                height: 45,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  border: Border.all(
-                    color: const Color.fromARGB(255, 44, 36, 36),
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
+                  ],
                 ),
-                child: TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Soal selesai!'),
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    'Submit',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
+              ),
+              if (!isLastQuestionAnswered) ...[
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: answerOptions.map((option) {
+                      return CircleAvatar(
+                        radius: 45,
+                        backgroundColor: const Color.fromRGBO(81, 79, 80, 100),
+                        child: IconButton(
+                          icon: Text(
+                            option,
+                            style: const TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onPressed: () => _checkAnswer(option),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+              if (isLastQuestionAnswered) ...[
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                      backgroundColor: Colors.blue, // Background color
+                      side: BorderSide(color: Colors.grey), // Border color
+                    ),
+                    onPressed: () {
+                      _showResultDialog();
+                    },
+                    child: const Text(
+                      'Selesai',
+                      style: TextStyle(fontSize: 22),
                     ),
                   ),
                 ),
-              ),
+              ]
             ],
           ],
         ),
