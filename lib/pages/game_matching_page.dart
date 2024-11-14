@@ -170,14 +170,14 @@ class _GameMatchingPageState extends State<GameMatchingPage> {
     answerResults.add(isCorrect);
     if (isCorrect) correctAnswers++;
 
-    setState(() {
-      questionIndex++;
-      if (questionIndex <= (totalQuestions ?? 10)) {
+    if (questionIndex < (totalQuestions ?? 10)) {
+      setState(() {
+        questionIndex++;
         _generateQuestion();
-      } else {
-        _showResultDialog();
-      }
-    });
+      });
+    } else {
+      _showResultDialog();
+    }
   }
 
   void _resetQuiz() {
