@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:nyuumon/bloc/games/games_bloc.dart';
 import 'package:nyuumon/bloc/games/games_event.dart';
 import 'package:nyuumon/bloc/games/games_state.dart';
@@ -112,20 +111,29 @@ class GameMatchingPage extends StatelessWidget {
       child: Scaffold(
         body: BlocBuilder<GamesBloc, GamesState>(
           builder: (context, state) {
-            if (state.showResult) {
-              return AlertDialog(
-                title: const Text('Hasil Akhir'),
-                content: Text(
-                    'Total Point: ${state.correctAnswers} / ${state.totalQuestions}'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      context.push('/games/game_matching');
-                    },
-                    child: const Text("Close"),
+            if (state.showResult &&
+                state.questionIndex == state.totalQuestions) {
+              // Menampilkan hasil akhir di pop-up hanya jika sudah selesai (soal terakhir)
+              Future.delayed(Duration.zero, () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Hasil Akhir'),
+                    content: Text(
+                        'Total Point: ${state.correctAnswers} / ${state.totalQuestions}'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          // Menutup pop-up dan mengirimkan event untuk mereset permainan
+                          Navigator.pop(context);
+                          context.read<GamesBloc>().add(ResetGameEvent());
+                        },
+                        child: const Text("Close"),
+                      ),
+                    ],
                   ),
-                ],
-              );
+                );
+              });
             }
 
             return SingleChildScrollView(
@@ -167,10 +175,14 @@ class GameMatchingPage extends StatelessWidget {
                           child: Text('$value'),
                         );
                       }).toList(),
-                      onChanged: (int? newValue) {
-                        context
-                            .read<GamesBloc>()
-                            .add(SelectTotalQuestionsEvent(newValue!));
+                      onChanged: (value) {
+                        if (value != null) {
+                          // Reset hasil game sebelumnya sebelum memulai game baru
+                          context.read<GamesBloc>().add(ResetGameEvent());
+                          context.read<GamesBloc>().add(
+                              SelectTotalQuestionsEvent(
+                                  value)); // Memilih jumlah soal
+                        }
                       },
                     ),
                   ),

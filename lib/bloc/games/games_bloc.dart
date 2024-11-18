@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nyuumon/bloc/games/games_event.dart';
 import 'package:nyuumon/bloc/games/games_state.dart';
@@ -17,6 +16,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
         )) {
     on<SelectTotalQuestionsEvent>(_onSelectTotalQuestions);
     on<CheckAnswerEvent>(_onCheckAnswer);
+    on<ResetGameEvent>(_onResetGame); // Event handler untuk reset game
   }
 
   void _onSelectTotalQuestions(
@@ -70,13 +70,27 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     int newCorrectAnswers = state.correctAnswers + (isCorrect ? 1 : 0);
 
     if (state.questionIndex < (state.totalQuestions ?? 10)) {
+      // Jika bukan soal terakhir, lanjutkan ke soal berikutnya
       emit(state.copyWith(
         questionIndex: state.questionIndex + 1,
         correctAnswers: newCorrectAnswers,
       ));
       _generateQuestion(emit);
     } else {
+      // Jika sudah soal terakhir, tampilkan hasil akhir
       emit(state.copyWith(correctAnswers: newCorrectAnswers, showResult: true));
     }
+  }
+
+  // Event handler untuk reset game
+  void _onResetGame(ResetGameEvent event, Emitter<GamesState> emit) {
+    emit(state.copyWith(
+      currentQuestion: '',
+      answerOptions: [],
+      questionIndex: 1,
+      correctAnswers: 0,
+      showResult: false,
+      totalQuestions: null, // Reset jumlah soal
+    ));
   }
 }

@@ -22,3 +22,5 @@ class CheckAnswerEvent extends GamesEvent {
   @override
   List<Object?> get props => [selectedAnswer];
 }
+
+class ResetGameEvent extends GamesEvent {}  // Event untuk reset game
