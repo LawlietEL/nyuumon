@@ -68,10 +68,10 @@ class TabelKatakanaPage extends StatelessWidget {
                     children: ['ア', 'イ', 'ウ', 'エ', 'オ'].map((vocal) {
                       return GestureDetector(
                         onTap: () {
-                          // Aksi ketika lingkaran vocal ditekan
-                          context.push('/belajar/detail_huruf');
+                          // Kirim parameter huruf yang ditekan ke halaman detail
+                          context.push(
+                              '/belajar/detail_huruf_katakana?letter=$vocal');
                           print('Vocal $vocal Ditekan');
-                          // Bisa melakukan aksi lain sesuai kebutuhan
                         },
                         child: CircleAvatar(
                           radius: 30,
@@ -113,9 +113,10 @@ class TabelKatakanaPage extends StatelessWidget {
                       final konsonan = _konsonanList()[index];
                       return GestureDetector(
                         onTap: () {
-                          // Aksi ketika lingkaran konsonan ditekan
-                          context.push('/belajar/detail_huruf');
+                          // Jika huruf tidak kosong, kirim parameter huruf ke halaman detail
                           if (konsonan.isNotEmpty) {
+                            context.push(
+                                '/belajar/detail_huruf_katakana?letter=$konsonan');
                             print('Konsonan $konsonan Ditekan');
                           }
                         },

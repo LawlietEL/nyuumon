@@ -68,7 +68,9 @@ class TabelHiraganaPage extends StatelessWidget {
                     children: ['あ', 'い', 'う', 'え', 'お'].map((vocal) {
                       return GestureDetector(
                         onTap: () {
-                          context.push('/belajar/detail_huruf');
+                          context.push(
+                              '/belajar/detail_huruf_hiragana?letter=$vocal');
+                          print('Vocal $vocal Ditekan');
                         },
                         child: CircleAvatar(
                           radius: 30,
@@ -110,7 +112,9 @@ class TabelHiraganaPage extends StatelessWidget {
                       final konsonan = _konsonanList()[index];
                       return GestureDetector(
                         onTap: () {
-                          context.push('/belajar/detail_huruf');
+                          context.push(
+                              '/belajar/detail_huruf_hiragana?letter=$konsonan');
+                          print('Konsonan $konsonan Ditekan');
                         },
                         child: CircleAvatar(
                           radius: 25,
