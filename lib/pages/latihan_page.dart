@@ -182,49 +182,6 @@ class LatihanPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(), // Jarak antara dua kotak di atas dengan kotak di bawahnya
-                // Kotak ketiga sebagai button
-                GestureDetector(
-                  onTap: () {
-                    context.push('/latihan/latihan_menulis_kosakata');
-                    // Aksi ketika kotak "Menulis Kosakata" ditekan
-                    print('Menulis Kosakata Ditekan');
-                    // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
-                  },
-                  child: Container(
-                    width: 120,
-                    height: 115,
-                    margin:
-                        const EdgeInsets.only(bottom: 25), // Jarak antar kotak
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(
-                          156, 239, 71, 107), // Warna background kotak
-                      borderRadius: BorderRadius.circular(10),
-                      border:
-                          Border.all(color: Colors.grey), // Garis border kotak
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/menuliskosakata.png', // Gambar kotak ketiga
-                          width: 70,
-                          height: 65,
-                        ),
-                        const SizedBox(
-                            height: 5), // Spasi antara gambar dan teks
-                        const Text(
-                          'Menulis\nKosakata',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

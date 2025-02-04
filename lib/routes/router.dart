@@ -24,13 +24,12 @@ part 'route_name.dart';
 
 final GoRouter router = GoRouter(
   //VERSI BARU
-  redirect: (context, state) {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    if (auth.currentUser == null) {
+  redirect: (context, state) async {
+    final user = FirebaseAuth.instance.authStateChanges().first;
+    if (await user == null) {
       return "/login";
-    } else {
-      return null;
     }
+    return null;
   },
 
   //VERSI LAMA
