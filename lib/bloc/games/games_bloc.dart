@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nyuumon/bloc/games/games_event.dart';
@@ -7,6 +9,9 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
   final List<String> hiragana;
   final List<String> katakana;
   final Random random = Random();
+
+  // Firestore instance
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   GamesBloc(this.hiragana, this.katakana)
       : super(GamesState(
@@ -77,12 +82,12 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       ));
       _generateQuestion(emit);
     } else {
-      // Jika sudah soal terakhir, tampilkan hasil akhir
+      // Jika sudah soal terakhir, simpan hasil dan tampilkan hasil akhir
+      _saveGameResult();
       emit(state.copyWith(correctAnswers: newCorrectAnswers, showResult: true));
     }
   }
 
-  // Event handler untuk reset game
   void _onResetGame(ResetGameEvent event, Emitter<GamesState> emit) {
     emit(state.copyWith(
       currentQuestion: '',
@@ -92,5 +97,31 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       showResult: false,
       totalQuestions: null, // Reset jumlah soal
     ));
+  }
+
+  Future<void> _saveGameResult() async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) {
+        print("No user logged in");
+        return;
+      }
+
+      final gameProgressRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('matching_hirakata_game');
+
+      await gameProgressRef.add({
+        'totalQuestions': state.totalQuestions,
+        'correctAnswers': state.correctAnswers,
+        'wrongAnswers': (state.totalQuestions ?? 0) - state.correctAnswers,
+        'datePlayed': Timestamp.now(),
+      });
+
+      print("Game progress saved successfully!");
+    } catch (e) {
+      print("Error saving game progress: $e");
+    }
   }
 }
