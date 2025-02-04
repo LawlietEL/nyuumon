@@ -14,7 +14,6 @@ import 'package:nyuumon/pages/games_page.dart';
 import 'package:nyuumon/pages/home_page.dart';
 import 'package:nyuumon/pages/latihan_membaca_hirakata_page.dart';
 import 'package:nyuumon/pages/latihan_menulis_hirakata_page.dart';
-import 'package:nyuumon/pages/latihan_menulis_kosakata_page.dart';
 import 'package:nyuumon/pages/latihan_page.dart';
 import 'package:nyuumon/pages/login_page.dart';
 import 'package:nyuumon/pages/profil_page.dart';
@@ -148,13 +147,6 @@ final GoRouter router = GoRouter(
         return const LatihanPage();
       },
       routes: [
-        // GoRoute(
-        //   path: '/profil',
-        //   name: Routes.profil,
-        //   builder: (BuildContext context, GoRouterState state) {
-        //     return const ProfilPage();
-        //   },
-        // ),
         GoRoute(
           path: '/latihan_menulis_hirakata',
           name: Routes.latihan_menulis_hirakata,
@@ -167,13 +159,6 @@ final GoRouter router = GoRouter(
           name: Routes.latihan_membaca_hirakata,
           builder: (BuildContext context, GoRouterState state) {
             return const LatihanMembacaHirakataPage();
-          },
-        ),
-        GoRoute(
-          path: '/latihan_menulis_kosakata',
-          name: Routes.latihan_menulis_kosakata,
-          builder: (BuildContext context, GoRouterState state) {
-            return const LatihanMenulisKosakataPage();
           },
         ),
       ],

@@ -58,7 +58,7 @@ class _GameMemoryPageState extends State<GameMemoryPage> {
             const Padding(
               padding: EdgeInsets.only(top: 10),
               child: Text(
-                'Soal 2/6',
+                'Soal 0/6',
                 style: TextStyle(
                   fontSize: 25,
                   fontStyle: FontStyle.italic,
