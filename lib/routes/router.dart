@@ -50,27 +50,29 @@ final GoRouter router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         return LoginPage();
       },
-    ),
-    GoRoute(
-      path: '/forget_password',
-      name: Routes.forget_password,
-      builder: (BuildContext context, GoRouterState state) {
-        return ForgetPasswordPage();
-      },
-    ),
-    GoRoute(
-      path: '/create_account',
-      name: Routes.create_account,
-      builder: (BuildContext context, GoRouterState state) {
-        return CreateAccountPage();
-      },
-    ),
-    GoRoute(
-      path: '/back_to_login',
-      name: Routes.back_to_login,
-      builder: (BuildContext context, GoRouterState state) {
-        return LoginPage();
-      },
+      routes: [
+        GoRoute(
+          path: '/forget_password',
+          name: Routes.forget_password,
+          builder: (BuildContext context, GoRouterState state) {
+            return ForgetPasswordPage();
+          },
+        ),
+        GoRoute(
+          path: '/create_account',
+          name: Routes.create_account,
+          builder: (BuildContext context, GoRouterState state) {
+            return CreateAccountPage();
+          },
+        ),
+        GoRoute(
+          path: '/back_to_login',
+          name: Routes.back_to_login,
+          builder: (BuildContext context, GoRouterState state) {
+            return LoginPage();
+          },
+        ),
+      ],
     ),
     GoRoute(
       path: '/',

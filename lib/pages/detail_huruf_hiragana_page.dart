@@ -6,9 +6,13 @@ class DetailHurufHiraganaPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Mengambil parameter letter dari query parameter, default 'ア' jika tidak ada
+    // Mengambil parameter letter dari query parameter, default 'あ' jika tidak ada
     final letter =
         GoRouterState.of(context).uri.queryParameters['letter'] ?? 'あ';
+
+    // Mengambil gambar berdasarkan huruf
+    final imagePath = _imageMap[letter] ?? 'assets/hiragana/a.png';
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -76,41 +80,35 @@ class DetailHurufHiraganaPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // Kotak kedua: Ilustrasi tulisan Katakana
+            // Kotak kedua: Ilustrasi tulisan Hiragana
             Padding(
               padding: const EdgeInsets.all(10),
               child: Container(
                 width: 180,
                 height: 180,
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   border: Border.all(
                     color: Colors.black,
                     width: 2,
                   ),
                 ),
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Ilustrasi Tulisan',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontStyle: FontStyle.italic,
+                  child: imagePath.isNotEmpty
+                      ? Image.asset(
+                          imagePath,
+                          height: 170,
+                          fit: BoxFit.contain,
+                        )
+                      : const Text(
+                          'Gambar tidak tersedia',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Image.asset(
-                        'assets/images/huruf_a.png',
-                        height: 80,
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            // Kotak ketiga: Latihan menulis Katakana
+            // Kotak ketiga: Latihan menulis Hiragana
             Padding(
               padding: const EdgeInsets.all(10),
               child: Container(
@@ -154,3 +152,53 @@ class DetailHurufHiraganaPage extends StatelessWidget {
     );
   }
 }
+
+// Map yang menghubungkan huruf dengan gambar
+final Map<String, String> _imageMap = {
+  'あ': 'assets/hiragana/a.png',
+  'い': 'assets/hiragana/i.png',
+  'う': 'assets/hiragana/u.png',
+  'え': 'assets/hiragana/e.png',
+  'お': 'assets/hiragana/o.png',
+  'か': 'assets/hiragana/ka.png',
+  'き': 'assets/hiragana/ki.png',
+  'く': 'assets/hiragana/ku.png',
+  'け': 'assets/hiragana/ke.png',
+  'こ': 'assets/hiragana/ko.png',
+  'さ': 'assets/hiragana/sa.png',
+  'し': 'assets/hiragana/shi.png',
+  'す': 'assets/hiragana/su.png',
+  'せ': 'assets/hiragana/se.png',
+  'そ': 'assets/hiragana/so.png',
+  'た': 'assets/hiragana/ta.png',
+  'ち': 'assets/hiragana/chi.png',
+  'つ': 'assets/hiragana/tsu.png',
+  'て': 'assets/hiragana/te.png',
+  'と': 'assets/hiragana/to.png',
+  'な': 'assets/hiragana/na.png',
+  'に': 'assets/hiragana/ni.png',
+  'ぬ': 'assets/hiragana/nu.png',
+  'ね': 'assets/hiragana/ne.png',
+  'の': 'assets/hiragana/no.png',
+  'は': 'assets/hiragana/ha.png',
+  'ひ': 'assets/hiragana/hi.png',
+  'ふ': 'assets/hiragana/fu.png',
+  'へ': 'assets/hiragana/he.png',
+  'ほ': 'assets/hiragana/ho.png',
+  'ま': 'assets/hiragana/ma.png',
+  'み': 'assets/hiragana/mi.png',
+  'む': 'assets/hiragana/mu.png',
+  'め': 'assets/hiragana/me.png',
+  'も': 'assets/hiragana/mo.png',
+  'や': 'assets/hiragana/ya.png',
+  'ゆ': 'assets/hiragana/yu.png',
+  'よ': 'assets/hiragana/yo.png',
+  'ら': 'assets/hiragana/ra.png',
+  'り': 'assets/hiragana/ri.png',
+  'る': 'assets/hiragana/ru.png',
+  'れ': 'assets/hiragana/re.png',
+  'ろ': 'assets/hiragana/ro.png',
+  'わ': 'assets/hiragana/wa.png',
+  'を': 'assets/hiragana/wo.png',
+  'ん': 'assets/hiragana/n.png',
+};
