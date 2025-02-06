@@ -68,8 +68,8 @@ class TabelKatakanaPage extends StatelessWidget {
                     children: ['ア', 'イ', 'ウ', 'エ', 'オ'].map((vocal) {
                       return GestureDetector(
                         onTap: () {
-                          // Kirim parameter huruf yang ditekan ke halaman detail
                           context.push(
+                              // Kirim parameter huruf yang ditekan ke halaman detail
                               '/belajar/detail_huruf_katakana?letter=$vocal');
                           print('Vocal $vocal Ditekan');
                         },

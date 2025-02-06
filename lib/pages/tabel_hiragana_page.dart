@@ -69,6 +69,7 @@ class TabelHiraganaPage extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           context.push(
+                              // Kirim parameter huruf yang ditekan ke halaman detail
                               '/belajar/detail_huruf_hiragana?letter=$vocal');
                           print('Vocal $vocal Ditekan');
                         },
@@ -112,9 +113,12 @@ class TabelHiraganaPage extends StatelessWidget {
                       final konsonan = _konsonanList()[index];
                       return GestureDetector(
                         onTap: () {
-                          context.push(
-                              '/belajar/detail_huruf_hiragana?letter=$konsonan');
-                          print('Konsonan $konsonan Ditekan');
+                          // Jika huruf tidak kosong, kirim parameter huruf ke halaman detail
+                          if (konsonan.isNotEmpty) {
+                            context.push(
+                                '/belajar/detail_huruf_hiragana?letter=$konsonan');
+                            print('Konsonan $konsonan Ditekan');
+                          }
                         },
                         child: CircleAvatar(
                           radius: 25,

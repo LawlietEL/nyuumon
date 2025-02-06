@@ -9,6 +9,10 @@ class DetailHurufKatakanaPage extends StatelessWidget {
     // Mengambil parameter letter dari query parameter, default 'ア' jika tidak ada
     final letter =
         GoRouterState.of(context).uri.queryParameters['letter'] ?? 'ア';
+
+    // Mengambil gambar berdasarkan huruf
+    final imagePath = _imageMap[letter] ?? 'assets/hiragana/a.png';
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -83,29 +87,23 @@ class DetailHurufKatakanaPage extends StatelessWidget {
                 width: 180,
                 height: 180,
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   border: Border.all(
                     color: Colors.black,
                     width: 2,
                   ),
                 ),
                 child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Ilustrasi Tulisan',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontStyle: FontStyle.italic,
+                  child: imagePath.isNotEmpty
+                      ? Image.asset(
+                          imagePath,
+                          height: 170,
+                          fit: BoxFit.contain,
+                        )
+                      : const Text(
+                          'Gambar tidak tersedia',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Image.asset(
-                        'assets/images/huruf_a_k.png',
-                        height: 80,
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),
@@ -154,3 +152,53 @@ class DetailHurufKatakanaPage extends StatelessWidget {
     );
   }
 }
+
+// Map yang menghubungkan huruf dengan gambar
+final Map<String, String> _imageMap = {
+  'ア': 'assets/katakana/a.png',
+  'イ': 'assets/katakana/i.png',
+  'ウ': 'assets/katakana/u.png',
+  'エ': 'assets/katakana/e.png',
+  'オ': 'assets/katakana/o.png',
+  'カ': 'assets/katakana/ka.png',
+  'キ': 'assets/katakana/ki.png',
+  'ク': 'assets/katakana/ku.png',
+  'ケ': 'assets/katakana/ke.png',
+  'コ': 'assets/katakana/ko.png',
+  'サ': 'assets/katakana/sa.png',
+  'シ': 'assets/katakana/shi.png',
+  'ス': 'assets/katakana/su.png',
+  'セ': 'assets/katakana/se.png',
+  'ソ': 'assets/katakana/so.png',
+  'タ': 'assets/katakana/ta.png',
+  'チ': 'assets/katakana/chi.png',
+  'ツ': 'assets/katakana/tsu.png',
+  'テ': 'assets/katakana/te.png',
+  'ト': 'assets/katakana/to.png',
+  'ナ': 'assets/katakana/na.png',
+  'ニ': 'assets/katakana/ni.png',
+  'ヌ': 'assets/katakana/nu.png',
+  'ネ': 'assets/katakana/ne.png',
+  'ノ': 'assets/katakana/no.png',
+  'ハ': 'assets/katakana/ha.png',
+  'ヒ': 'assets/katakana/hi.png',
+  'フ': 'assets/katakana/fu.png',
+  'ヘ': 'assets/katakana/he.png',
+  'ホ': 'assets/katakana/ho.png',
+  'マ': 'assets/katakana/ma.png',
+  'ミ': 'assets/katakana/mi.png',
+  'ム': 'assets/katakana/mu.png',
+  'メ': 'assets/katakana/me.png',
+  'モ': 'assets/katakana/mo.png',
+  'ヤ': 'assets/katakana/ya.png',
+  'ユ': 'assets/katakana/yu.png',
+  'ヨ': 'assets/katakana/yo.png',
+  'ラ': 'assets/katakana/ra.png',
+  'リ': 'assets/katakana/ri.png',
+  'ル': 'assets/katakana/ru.png',
+  'レ': 'assets/katakana/re.png',
+  'ロ': 'assets/katakana/ro.png',
+  'ワ': 'assets/katakana/wa.png',
+  'ヲ': 'assets/katakana/wo.png',
+  'ン': 'assets/katakana/n.png',
+};
