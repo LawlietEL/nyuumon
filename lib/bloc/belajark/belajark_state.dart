@@ -1,10 +1,17 @@
-part of 'belajark_bloc.dart';
+abstract class BelajarKState {}
 
-sealed class BelajarkState extends Equatable {
-  const BelajarkState();
-  
-  @override
-  List<Object> get props => [];
+class BelajarKInitial extends BelajarKState {}
+
+class BelajarKLoaded extends BelajarKState {
+  final List<String> vocalList;
+  final List<String> konsonanList;
+
+  BelajarKLoaded({required this.vocalList, required this.konsonanList});
 }
 
-final class BelajarkInitial extends BelajarkState {}
+class DetailHurufLoaded extends BelajarKState {
+  final String letter;
+  final String imagePath;
+
+  DetailHurufLoaded({required this.letter, required this.imagePath});
+}

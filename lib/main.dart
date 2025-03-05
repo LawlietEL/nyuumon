@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nyuumon/bloc/auth/auth_bloc.dart';
 import 'package:nyuumon/bloc/belajarh/belajarh_bloc.dart';
+import 'package:nyuumon/bloc/belajark/belajark_bloc.dart';
 import 'package:nyuumon/bloc/visibility/visibility_cubit.dart';
 import 'package:nyuumon/firebase_options.dart';
 import 'package:nyuumon/routes/router.dart';
@@ -31,6 +32,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<BelajarHBloc>(
           // Menambahkan BelajarHBloc
           create: (context) => BelajarHBloc(),
+        ),
+        BlocProvider<BelajarKBloc>(
+          // Menambahkan BelajarKBloc
+          create: (context) => BelajarKBloc(),
         ),
       ],
       child: MaterialApp.router(

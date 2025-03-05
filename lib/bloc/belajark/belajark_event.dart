@@ -1,8 +1,8 @@
-part of 'belajark_bloc.dart';
+abstract class BelajarKEvent {}
 
-sealed class BelajarkEvent extends Equatable {
-  const BelajarkEvent();
+class LoadKatakanaData extends BelajarKEvent {}
 
-  @override
-  List<Object> get props => [];
+class LoadDetailHuruf extends BelajarKEvent {
+  final String letter;
+  LoadDetailHuruf(this.letter);
 }
