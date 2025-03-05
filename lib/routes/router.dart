@@ -52,14 +52,14 @@ final GoRouter router = GoRouter(
       },
       routes: [
         GoRoute(
-          path: '/forget_password',
+          path: 'forget_password',
           name: Routes.forget_password,
           builder: (BuildContext context, GoRouterState state) {
             return ForgetPasswordPage();
           },
         ),
         GoRoute(
-          path: '/create_account',
+          path: 'create_account',
           name: Routes.create_account,
           builder: (BuildContext context, GoRouterState state) {
             return CreateAccountPage();
