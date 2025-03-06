@@ -1,26 +1,26 @@
-import 'package:equatable/equatable.dart';
+// import 'package:equatable/equatable.dart';
 
-abstract class GamesEvent extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+// abstract class GamesEvent extends Equatable {
+//   @override
+//   List<Object?> get props => [];
+// }
 
-class SelectTotalQuestionsEvent extends GamesEvent {
-  final int totalQuestions;
+// class SelectTotalQuestionsEvent extends GamesEvent {
+//   final int totalQuestions;
 
-  SelectTotalQuestionsEvent(this.totalQuestions);
+//   SelectTotalQuestionsEvent(this.totalQuestions);
 
-  @override
-  List<Object?> get props => [totalQuestions];
-}
+//   @override
+//   List<Object?> get props => [totalQuestions];
+// }
 
-class CheckAnswerEvent extends GamesEvent {
-  final String selectedAnswer;
+// class CheckAnswerEvent extends GamesEvent {
+//   final String selectedAnswer;
 
-  CheckAnswerEvent(this.selectedAnswer);
+//   CheckAnswerEvent(this.selectedAnswer);
 
-  @override
-  List<Object?> get props => [selectedAnswer];
-}
+//   @override
+//   List<Object?> get props => [selectedAnswer];
+// }
 
-class ResetGameEvent extends GamesEvent {}  // Event untuk reset game
+// class ResetGameEvent extends GamesEvent {}  // Event untuk reset game
