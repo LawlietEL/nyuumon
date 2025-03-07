@@ -68,27 +68,46 @@ class GameMemoryPage extends StatelessWidget {
                       ),
                     ),
 
-                  // **Menampilkan informasi waktu, jumlah gerakan, dan pasangan kartu yang cocok**
                   if (state.gameStarted) ...[
-                    const SizedBox(height: 10),
-                    Text(
-                      "Waktu: ${state.elapsedTime} detik",
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15), // Jarak 15 dari kiri dan kanan
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceBetween, // Sejajarkan ke kiri dan kanan
+                        children: [
+                          // **Timer di sebelah kiri atas**
+                          Text(
+                            "Waktu: ${state.elapsedTime} detik",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+
+                          // **Hitungan gerakan di sebelah kanan atas**
+                          Text(
+                            "Gerakan: ${state.moves}",
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      "Gerakan: ${state.moves}",
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
+
+                    const SizedBox(
+                        height: 25), // Jarak sebelum menampilkan jumlah cocokan
+
+                    // **Jumlah Cocokan Tetap di Tengah**
                     Text(
                       "Cocokan: ${state.pairsFound} / ${state.numberOfPairs}",
                       style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.bold),
+                          fontSize: 25, fontWeight: FontWeight.bold),
                     ),
                   ],
-
-                  const SizedBox(height: 10),
 
                   // **Grid untuk kartu permainan**
                   if (state.gameStarted)
