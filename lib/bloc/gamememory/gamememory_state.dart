@@ -1,4 +1,4 @@
-// State class containing the game state.
+// State untuk menyimpan kondisi permainan
 class GameMemoryState {
   final List<String> cards;
   final List<bool> cardVisibility;
@@ -6,7 +6,8 @@ class GameMemoryState {
   final int moves;
   final int numberOfPairs;
   final bool gameStarted;
-  final Stopwatch timer;
+  final bool gameFinished;
+  final int elapsedTime; // Menyimpan waktu berjalan dalam detik
 
   GameMemoryState({
     required this.cards,
@@ -15,10 +16,11 @@ class GameMemoryState {
     required this.moves,
     required this.numberOfPairs,
     required this.gameStarted,
-    required this.timer,
+    required this.gameFinished,
+    required this.elapsedTime,
   });
 
-  // Ensure all nullable values have defaults
+  // Method untuk membuat state baru dengan perubahan tertentu
   GameMemoryState copyWith({
     List<String>? cards,
     List<bool>? cardVisibility,
@@ -26,17 +28,18 @@ class GameMemoryState {
     int? moves,
     int? numberOfPairs,
     bool? gameStarted,
-    Stopwatch? timer,
+    bool? gameFinished,
+    int? elapsedTime,
   }) {
     return GameMemoryState(
       cards: cards ?? this.cards,
-      cardVisibility:
-          cardVisibility ?? List.generate(this.cards.length, (_) => false),
+      cardVisibility: cardVisibility ?? this.cardVisibility,
       pairsFound: pairsFound ?? this.pairsFound,
       moves: moves ?? this.moves,
       numberOfPairs: numberOfPairs ?? this.numberOfPairs,
       gameStarted: gameStarted ?? this.gameStarted,
-      timer: timer ?? this.timer,
+      gameFinished: gameFinished ?? this.gameFinished,
+      elapsedTime: elapsedTime ?? this.elapsedTime,
     );
   }
 }

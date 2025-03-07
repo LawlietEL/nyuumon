@@ -17,6 +17,7 @@ class GameMemoryPage extends StatelessWidget {
             builder: (context, state) {
               return Column(
                 children: [
+                  // **Header (Tombol Back dan Judul)**
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 30, left: 5, bottom: 5, right: 10),
@@ -41,6 +42,8 @@ class GameMemoryPage extends StatelessWidget {
                     ),
                   ),
                   const Divider(color: Colors.grey, thickness: 1),
+
+                  // **Dropdown untuk memilih jumlah soal sebelum game dimulai**
                   if (!state.gameStarted)
                     Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -64,10 +67,12 @@ class GameMemoryPage extends StatelessWidget {
                         },
                       ),
                     ),
+
+                  // **Menampilkan informasi waktu, jumlah gerakan, dan pasangan kartu yang cocok**
                   if (state.gameStarted) ...[
                     const SizedBox(height: 10),
                     Text(
-                      "Waktu: ${state.timer.elapsed.inSeconds} detik",
+                      "Waktu: ${state.elapsedTime} detik",
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -82,7 +87,10 @@ class GameMemoryPage extends StatelessWidget {
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ],
+
                   const SizedBox(height: 10),
+
+                  // **Grid untuk kartu permainan**
                   if (state.gameStarted)
                     Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -91,15 +99,14 @@ class GameMemoryPage extends StatelessWidget {
                         physics: const NeverScrollableScrollPhysics(),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4,
+                          crossAxisCount: 4, // 4 kolom untuk tampilan grid
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
                           childAspectRatio: 1,
                         ),
-                        itemCount: state.cards.length,
+                        itemCount: state.cards.length, // Jumlah kartu
                         itemBuilder: (context, index) {
-                          bool isRevealed = state.cardVisibility.isNotEmpty &&
-                              state.cardVisibility[index];
+                          bool isRevealed = state.cardVisibility[index];
                           return GestureDetector(
                             onTap: () {
                               if (!isRevealed) {
@@ -110,9 +117,8 @@ class GameMemoryPage extends StatelessWidget {
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: isRevealed
-                                    ? Colors.white
-                                    : Colors.pinkAccent,
+                                color: Colors
+                                    .pinkAccent, // Warna latar belakang kartu
                                 borderRadius: BorderRadius.circular(10),
                                 border:
                                     Border.all(color: Colors.black, width: 2),
@@ -120,13 +126,14 @@ class GameMemoryPage extends StatelessWidget {
                               child: Center(
                                 child: isRevealed
                                     ? Text(
-                                        state.cards[index],
+                                        state.cards[
+                                            index], // Menampilkan huruf hiragana atau katakana
                                         style: const TextStyle(
                                             fontSize: 24,
                                             fontWeight: FontWeight.bold),
                                       )
                                     : Image.asset(
-                                        'assets/images/memory.png',
+                                        'assets/images/memory.png', // Gambar belakang kartu
                                         fit: BoxFit.cover,
                                       ),
                               ),
@@ -135,6 +142,8 @@ class GameMemoryPage extends StatelessWidget {
                         },
                       ),
                     ),
+
+                  // **Menampilkan hasil akhir saat semua kartu cocok**
                   if (state.pairsFound == state.numberOfPairs &&
                       state.gameStarted)
                     Column(
@@ -147,16 +156,16 @@ class GameMemoryPage extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               color: Colors.green),
                         ),
-                        Text(
-                            "Total Waktu: ${state.timer.elapsed.inSeconds} detik",
+                        Text("Total Waktu: ${state.elapsedTime} detik",
                             style: const TextStyle(fontSize: 20)),
                         Text("Total Gerakan: ${state.moves}",
                             style: const TextStyle(fontSize: 20)),
                         const SizedBox(height: 15),
                         ElevatedButton(
                           onPressed: () {
-                            context.read<GameMemoryBloc>().add(StartGameEvent(
-                                numberOfPairs: state.numberOfPairs));
+                            context
+                                .read<GameMemoryBloc>()
+                                .add(ResetGameEvent());
                           },
                           child: const Text("Reset Game"),
                         ),

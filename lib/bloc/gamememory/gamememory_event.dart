@@ -1,19 +1,22 @@
-// Define abstract base class for all events.
+// Abstract class untuk semua event game memory
 abstract class GameMemoryEvent {}
 
-// Event to increment the counter.
-class IncrementCounterEvent extends GameMemoryEvent {}
-
-// Event to start the game with a selected number of pairs.
+// Event untuk memulai game dengan jumlah soal yang dipilih
 class StartGameEvent extends GameMemoryEvent {
   final int numberOfPairs;
 
   StartGameEvent({required this.numberOfPairs});
 }
 
-// Event to handle card taps.
+// Event ketika user mengklik kartu
 class CardTappedEvent extends GameMemoryEvent {
   final int cardIndex;
 
   CardTappedEvent({required this.cardIndex});
 }
+
+// Event untuk memperbarui waktu yang berjalan
+class UpdateTimerEvent extends GameMemoryEvent {}
+
+// Event untuk mereset game ke kondisi awal
+class ResetGameEvent extends GameMemoryEvent {}
