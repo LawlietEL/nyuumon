@@ -66,7 +66,7 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: '/back_to_login',
+          path: 'back_to_login',
           name: Routes.back_to_login,
           builder: (BuildContext context, GoRouterState state) {
             return LoginPage();

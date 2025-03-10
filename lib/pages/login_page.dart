@@ -120,8 +120,8 @@ class LoginPage extends StatelessWidget {
                           )
                         ],
                       ),
-                      TextButton(
-                        onPressed: () {
+                      GestureDetector(
+                        onTap: () {
                           context.push('/login/forget_password');
                           print('Forget Password Ditekan');
                         },
@@ -209,7 +209,7 @@ class LoginPage extends StatelessWidget {
                   // Create an account text
                   GestureDetector(
                     onTap: () {
-                      context.push('/create_account');
+                      context.push('/login/create_account');
                       print('Create Account Ditekan');
                       // Handle account creation process
                     },

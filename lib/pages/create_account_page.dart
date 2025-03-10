@@ -229,7 +229,7 @@ class CreateAccountPage extends StatelessWidget {
                     // Back to Login Page text
                     GestureDetector(
                       onTap: () {
-                        context.push('/create_account/back_to_login');
+                        context.push('/login');
                       },
                       child: Text(
                         'Back to Login Page',
