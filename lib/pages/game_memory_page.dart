@@ -68,14 +68,13 @@ class GameMemoryPage extends StatelessWidget {
                       ),
                     ),
 
+                  // **Menampilkan waktu, jumlah gerakan, dan jumlah pasangan yang cocok**
                   if (state.gameStarted) ...[
                     const SizedBox(height: 15),
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15), // Jarak 15 dari kiri dan kanan
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .spaceBetween, // Sejajarkan ke kiri dan kanan
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // **Timer di sebelah kiri atas**
                           Text(
@@ -85,7 +84,6 @@ class GameMemoryPage extends StatelessWidget {
                               fontStyle: FontStyle.italic,
                             ),
                           ),
-
                           // **Hitungan gerakan di sebelah kanan atas**
                           Text(
                             "Gerakan: ${state.moves}",
@@ -98,8 +96,7 @@ class GameMemoryPage extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(
-                        height: 25), // Jarak sebelum menampilkan jumlah cocokan
+                    const SizedBox(height: 25),
 
                     // **Jumlah Cocokan Tetap di Tengah**
                     Text(
@@ -109,56 +106,59 @@ class GameMemoryPage extends StatelessWidget {
                     ),
                   ],
 
-                  // **Grid untuk kartu permainan**
+                  // **Grid untuk kartu permainan (Diperbarui menggunakan Wrap)**
                   if (state.gameStarted)
                     Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 4, // 4 kolom untuk tampilan grid
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 1,
-                        ),
-                        itemCount: state.cards.length, // Jumlah kartu
-                        itemBuilder: (context, index) {
-                          bool isRevealed = state.cardVisibility[index];
-                          return GestureDetector(
-                            onTap: () {
-                              if (!isRevealed) {
-                                context
-                                    .read<GameMemoryBloc>()
-                                    .add(CardTappedEvent(cardIndex: index));
-                              }
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: List.generate(
+                            state.cards.length,
+                            (index) {
+                              bool isRevealed = state.cardVisibility[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  if (!isRevealed) {
+                                    context
+                                        .read<GameMemoryBloc>()
+                                        .add(CardTappedEvent(cardIndex: index));
+                                  }
+                                },
+                                child: Container(
+                                  width: 87, // Ukuran kartu tetap proporsional
+                                  height: 87,
+                                  decoration: BoxDecoration(
+                                    color: Colors.pinkAccent, // Warna kartu
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: Colors.black, width: 2),
+                                  ),
+                                  child: Center(
+                                    child: isRevealed
+                                        ? Text(
+                                            state.cards[
+                                                index], // Huruf hiragana/katakana
+                                            style: const TextStyle(
+                                              fontSize: 60, // Ukuran huruf
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          )
+                                        : Image.asset(
+                                            'assets/images/memory.png',
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                ),
+                              );
                             },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors
-                                    .pinkAccent, // Warna latar belakang kartu
-                                borderRadius: BorderRadius.circular(10),
-                                border:
-                                    Border.all(color: Colors.black, width: 2),
-                              ),
-                              child: Center(
-                                child: isRevealed
-                                    ? Text(
-                                        state.cards[
-                                            index], // Menampilkan huruf hiragana atau katakana
-                                        style: const TextStyle(
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    : Image.asset(
-                                        'assets/images/memory.png', // Gambar belakang kartu
-                                        fit: BoxFit.cover,
-                                      ),
-                              ),
-                            ),
-                          );
-                        },
+                          ),
+                        ),
                       ),
                     ),
 

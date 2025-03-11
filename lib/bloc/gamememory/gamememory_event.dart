@@ -8,6 +8,9 @@ class StartGameEvent extends GameMemoryEvent {
   StartGameEvent({required this.numberOfPairs});
 }
 
+// Event untuk menangani penutupan kartu setelah 5 detik
+class CloseCardsEvent extends GameMemoryEvent {}
+
 // Event ketika user mengklik kartu
 class CardTappedEvent extends GameMemoryEvent {
   final int cardIndex;
