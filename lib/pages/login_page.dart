@@ -209,7 +209,7 @@ class LoginPage extends StatelessWidget {
                   // Create an account text
                   GestureDetector(
                     onTap: () {
-                      context.push('/login/create_account');
+                      context.go('/login/create_account');
                       print('Create Account Ditekan');
                       // Handle account creation process
                     },
