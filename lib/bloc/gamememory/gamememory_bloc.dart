@@ -5,9 +5,11 @@ import 'gamememory_state.dart';
 
 class GameMemoryBloc extends Bloc<GameMemoryEvent, GameMemoryState> {
   Timer? _timer;
-  int? firstCardIndex; // Index kartu pertama yang diklik
-  int? secondCardIndex; // Index kartu kedua yang diklik
-  bool isChecking = false; // Status apakah sedang memeriksa kartu kedua
+  int? firstCardIndex;
+  int? secondCardIndex;
+  bool isChecking = false;
+  bool hasShownMismatchNotification =
+      false; // Flag untuk mengontrol notifikasi salah pasangan
 
   GameMemoryBloc()
       : super(GameMemoryState(
@@ -21,7 +23,6 @@ class GameMemoryBloc extends Bloc<GameMemoryEvent, GameMemoryState> {
           elapsedTime: 0,
         )) {
     on<StartGameEvent>(_startGame);
-    on<CloseCardsEvent>(_closeCards);
     on<CardTappedEvent>(_cardTapped);
     on<UpdateTimerEvent>(_updateTimer);
     on<ResetGameEvent>(_resetGame);
@@ -29,8 +30,102 @@ class GameMemoryBloc extends Bloc<GameMemoryEvent, GameMemoryState> {
 
   // **Memulai Game dengan jumlah soal yang dipilih**
   void _startGame(StartGameEvent event, Emitter<GameMemoryState> emit) {
-    List<String> hiragana = ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ'];
-    List<String> katakana = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ'];
+    List<String> hiragana = [
+      'あ',
+      'い',
+      'う',
+      'え',
+      'お',
+      'か',
+      'き',
+      'く',
+      'け',
+      'こ',
+      'さ',
+      'し',
+      'す',
+      'せ',
+      'そ',
+      'た',
+      'ち',
+      'つ',
+      'て',
+      'と',
+      'な',
+      'に',
+      'ぬ',
+      'ね',
+      'の',
+      'は',
+      'ひ',
+      'ふ',
+      'へ',
+      'ほ',
+      'ま',
+      'み',
+      'む',
+      'め',
+      'も',
+      'や',
+      'ゆ',
+      'よ',
+      'ら',
+      'り',
+      'る',
+      'れ',
+      'ろ',
+      'わ',
+      'を',
+      'ん'
+    ];
+    List<String> katakana = [
+      'ア',
+      'イ',
+      'ウ',
+      'エ',
+      'オ',
+      'カ',
+      'キ',
+      'ク',
+      'ケ',
+      'コ',
+      'サ',
+      'シ',
+      'ス',
+      'セ',
+      'ソ',
+      'タ',
+      'チ',
+      'ツ',
+      'テ',
+      'ト',
+      'ナ',
+      'ニ',
+      'ヌ',
+      'ネ',
+      'ノ',
+      'ハ',
+      'ヒ',
+      'フ',
+      'ヘ',
+      'ホ',
+      'マ',
+      'ミ',
+      'ム',
+      'メ',
+      'モ',
+      'ヤ',
+      'ユ',
+      'ヨ',
+      'ラ',
+      'リ',
+      'ル',
+      'レ',
+      'ロ',
+      'ワ',
+      'ヲ',
+      'ン'
+    ];
 
     List<String> selectedHiragana = hiragana.sublist(0, event.numberOfPairs);
     List<String> selectedKatakana = katakana.sublist(0, event.numberOfPairs);
@@ -40,8 +135,8 @@ class GameMemoryBloc extends Bloc<GameMemoryEvent, GameMemoryState> {
 
     emit(state.copyWith(
       cards: cards,
-      cardVisibility:
-          List.generate(cards.length, (_) => true), // Semua kartu terbuka
+      cardVisibility: List.generate(
+          cards.length, (_) => true), // Semua kartu langsung terbuka
       numberOfPairs: event.numberOfPairs,
       gameStarted: true,
       gameFinished: false,
@@ -50,49 +145,25 @@ class GameMemoryBloc extends Bloc<GameMemoryEvent, GameMemoryState> {
       elapsedTime: 0,
     ));
 
-    Future.delayed(const Duration(seconds: 5), () {
-      add(CloseCardsEvent()); // Menggunakan event untuk menutup kartu
-    });
-  }
-
-  // **Menutup semua kartu setelah 5 detik**
-  void _closeCards(CloseCardsEvent event, Emitter<GameMemoryState> emit) {
-    emit(state.copyWith(
-      cardVisibility: List.generate(state.cards.length, (_) => false),
-    ));
-
+    // Mulai timer
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       add(UpdateTimerEvent());
     });
   }
 
-  // **Logika Membuka dan Mencocokkan Kartu**
+  // **Logika Memilih dan Mencocokkan Kartu**
   void _cardTapped(CardTappedEvent event, Emitter<GameMemoryState> emit) {
-    if (isChecking)
-      return; // Tidak bisa klik kartu lain saat kartu kedua belum ditutup
+    if (isChecking) return; // Tidak bisa klik kartu lain saat menunggu proses
 
-    var newVisibility = List<bool>.from(state.cardVisibility);
+    // Tambahkan jumlah gerakan setiap kali user klik kartu
+    emit(state.copyWith(moves: state.moves + 1));
 
-    // **Jika kartu sudah terbuka dan itu adalah kartu kedua, maka kartu ditutup kembali**
-    if (secondCardIndex == event.cardIndex) {
-      newVisibility[event.cardIndex] = false;
-      secondCardIndex = null;
-      emit(state.copyWith(cardVisibility: newVisibility));
-      return;
-    }
-
-    // **Klik kartu pertama**
     if (firstCardIndex == null) {
       firstCardIndex = event.cardIndex;
-      newVisibility[event.cardIndex] = true;
-    }
-    // **Klik kartu kedua**
-    else if (secondCardIndex == null) {
+    } else {
       secondCardIndex = event.cardIndex;
-      newVisibility[event.cardIndex] = true;
-      isChecking =
-          true; // Kunci interaksi sampai kartu cocok atau ditutup kembali
+      isChecking = true;
 
       var firstCard = state.cards[firstCardIndex!];
       var secondCard = state.cards[secondCardIndex!];
@@ -104,28 +175,117 @@ class GameMemoryBloc extends Bloc<GameMemoryEvent, GameMemoryState> {
           (firstCard == 'う' && secondCard == 'ウ') ||
           (firstCard == 'ウ' && secondCard == 'う') ||
           (firstCard == 'え' && secondCard == 'エ') ||
-          (firstCard == 'エ' && secondCard == 'え'));
+          (firstCard == 'エ' && secondCard == 'え') ||
+          (firstCard == 'お' && secondCard == 'オ') ||
+          (firstCard == 'オ' && secondCard == 'お') ||
+          (firstCard == 'か' && secondCard == 'カ') ||
+          (firstCard == 'カ' && secondCard == 'か') ||
+          (firstCard == 'き' && secondCard == 'キ') ||
+          (firstCard == 'キ' && secondCard == 'き') ||
+          (firstCard == 'く' && secondCard == 'ク') ||
+          (firstCard == 'ク' && secondCard == 'く') ||
+          (firstCard == 'け' && secondCard == 'ケ') ||
+          (firstCard == 'ケ' && secondCard == 'け') ||
+          (firstCard == 'こ' && secondCard == 'コ') ||
+          (firstCard == 'コ' && secondCard == 'こ') ||
+          (firstCard == 'さ' && secondCard == 'サ') ||
+          (firstCard == 'サ' && secondCard == 'さ') ||
+          (firstCard == 'し' && secondCard == 'シ') ||
+          (firstCard == 'シ' && secondCard == 'し') ||
+          (firstCard == 'す' && secondCard == 'ス') ||
+          (firstCard == 'ス' && secondCard == 'す') ||
+          (firstCard == 'せ' && secondCard == 'セ') ||
+          (firstCard == 'セ' && secondCard == 'せ') ||
+          (firstCard == 'そ' && secondCard == 'ソ') ||
+          (firstCard == 'ソ' && secondCard == 'そ') ||
+          (firstCard == 'た' && secondCard == 'タ') ||
+          (firstCard == 'タ' && secondCard == 'た') ||
+          (firstCard == 'ち' && secondCard == 'チ') ||
+          (firstCard == 'チ' && secondCard == 'ち') ||
+          (firstCard == 'つ' && secondCard == 'ツ') ||
+          (firstCard == 'ツ' && secondCard == 'つ') ||
+          (firstCard == 'て' && secondCard == 'テ') ||
+          (firstCard == 'テ' && secondCard == 'て') ||
+          (firstCard == 'と' && secondCard == 'ト') ||
+          (firstCard == 'ト' && secondCard == 'と') ||
+          (firstCard == 'な' && secondCard == 'ナ') ||
+          (firstCard == 'ナ' && secondCard == 'な') ||
+          (firstCard == 'に' && secondCard == 'ニ') ||
+          (firstCard == 'ニ' && secondCard == 'に') ||
+          (firstCard == 'ぬ' && secondCard == 'ヌ') ||
+          (firstCard == 'ヌ' && secondCard == 'ぬ') ||
+          (firstCard == 'ね' && secondCard == 'ネ') ||
+          (firstCard == 'ネ' && secondCard == 'ね') ||
+          (firstCard == 'の' && secondCard == 'ノ') ||
+          (firstCard == 'ノ' && secondCard == 'の') ||
+          (firstCard == 'は' && secondCard == 'ハ') ||
+          (firstCard == 'ハ' && secondCard == 'は') ||
+          (firstCard == 'ひ' && secondCard == 'ヒ') ||
+          (firstCard == 'ヒ' && secondCard == 'ひ') ||
+          (firstCard == 'ふ' && secondCard == 'フ') ||
+          (firstCard == 'フ' && secondCard == 'ふ') ||
+          (firstCard == 'へ' && secondCard == 'ヘ') ||
+          (firstCard == 'ヘ' && secondCard == 'へ') ||
+          (firstCard == 'ほ' && secondCard == 'ホ') ||
+          (firstCard == 'ホ' && secondCard == 'ほ') ||
+          (firstCard == 'ま' && secondCard == 'マ') ||
+          (firstCard == 'マ' && secondCard == 'ま') ||
+          (firstCard == 'み' && secondCard == 'ミ') ||
+          (firstCard == 'ミ' && secondCard == 'み') ||
+          (firstCard == 'む' && secondCard == 'ム') ||
+          (firstCard == 'ム' && secondCard == 'む') ||
+          (firstCard == 'め' && secondCard == 'メ') ||
+          (firstCard == 'メ' && secondCard == 'め') ||
+          (firstCard == 'も' && secondCard == 'モ') ||
+          (firstCard == 'モ' && secondCard == 'も') ||
+          (firstCard == 'や' && secondCard == 'ヤ') ||
+          (firstCard == 'ヤ' && secondCard == 'や') ||
+          (firstCard == 'ゆ' && secondCard == 'ユ') ||
+          (firstCard == 'ユ' && secondCard == 'ゆ') ||
+          (firstCard == 'よ' && secondCard == 'ヨ') ||
+          (firstCard == 'ヨ' && secondCard == 'よ') ||
+          (firstCard == 'ら' && secondCard == 'ラ') ||
+          (firstCard == 'ラ' && secondCard == 'ら') ||
+          (firstCard == 'り' && secondCard == 'リ') ||
+          (firstCard == 'リ' && secondCard == 'り') ||
+          (firstCard == 'る' && secondCard == 'ル') ||
+          (firstCard == 'ル' && secondCard == 'る') ||
+          (firstCard == 'れ' && secondCard == 'レ') ||
+          (firstCard == 'レ' && secondCard == 'れ') ||
+          (firstCard == 'ろ' && secondCard == 'ロ') ||
+          (firstCard == 'ロ' && secondCard == 'ろ') ||
+          (firstCard == 'わ' && secondCard == 'ワ') ||
+          (firstCard == 'ワ' && secondCard == 'わ') ||
+          (firstCard == 'を' && secondCard == 'ヲ') ||
+          (firstCard == 'ヲ' && secondCard == 'を') ||
+          (firstCard == 'ん' && secondCard == 'ン') ||
+          (firstCard == 'ン' && secondCard == 'ん'));
 
       if (isMatch) {
+        var newCards = List<String>.from(state.cards);
+        newCards[firstCardIndex!] = '';
+        newCards[secondCardIndex!] = '';
+
         emit(state.copyWith(
+          cards: newCards,
           pairsFound: state.pairsFound + 1,
+          moves: state.moves + 1,
         ));
-        firstCardIndex = null;
-        secondCardIndex = null;
-        isChecking = false;
-      }
-    }
 
-    emit(state.copyWith(cardVisibility: newVisibility, moves: state.moves + 1));
+        // **Cek apakah semua pasangan sudah ditemukan dan game selesai**
+        if (state.pairsFound + 1 == state.numberOfPairs) {
+          _timer?.cancel(); // **Hentikan timer saat game selesai**
+          emit(state.copyWith(gameFinished: true));
+        }
+      } else {}
 
-    // **Jika semua pasangan sudah ditemukan, permainan selesai**
-    if (state.pairsFound + 1 == state.numberOfPairs) {
-      _timer?.cancel();
-      emit(state.copyWith(gameFinished: true));
+      firstCardIndex = null;
+      secondCardIndex = null;
+      isChecking = false;
     }
   }
 
-  // **Memperbarui Timer Setiap Detik**
+  // **Memperbarui Timer**
   void _updateTimer(UpdateTimerEvent event, Emitter<GameMemoryState> emit) {
     emit(state.copyWith(elapsedTime: state.elapsedTime + 1));
   }
@@ -136,6 +296,7 @@ class GameMemoryBloc extends Bloc<GameMemoryEvent, GameMemoryState> {
     firstCardIndex = null;
     secondCardIndex = null;
     isChecking = false;
+    hasShownMismatchNotification = false;
     emit(GameMemoryState(
       cards: [],
       cardVisibility: [],
