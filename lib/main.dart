@@ -6,6 +6,7 @@ import 'package:nyuumon/bloc/belajarh/belajarh_bloc.dart';
 import 'package:nyuumon/bloc/belajark/belajark_bloc.dart';
 import 'package:nyuumon/bloc/gamematching/gamematching_bloc.dart';
 import 'package:nyuumon/bloc/gamememory/gamememory_bloc.dart';
+import 'package:nyuumon/bloc/latihanmembaca/latihanmembaca_bloc.dart';
 import 'package:nyuumon/bloc/visibility/visibility_cubit.dart';
 import 'package:nyuumon/firebase_options.dart';
 import 'package:nyuumon/routes/router.dart';
@@ -46,6 +47,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<GameMemoryBloc>(
           // Menambahkan GameMemoryBloc
           create: (context) => GameMemoryBloc(),
+        ),
+        BlocProvider<LatihanMembacaBloc>(
+          // Menambahkan LatihanMembacaBloc
+          create: (context) => LatihanMembacaBloc(),
         ),
       ],
       child: MaterialApp.router(
