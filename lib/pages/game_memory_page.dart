@@ -167,7 +167,7 @@ class GameMemoryPage extends StatelessWidget {
                         const Text(
                           "Game Selesai!",
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: 38,
                               fontWeight: FontWeight.bold,
                               color: Colors.pinkAccent),
                         ),
@@ -178,7 +178,10 @@ class GameMemoryPage extends StatelessWidget {
                                 .read<GameMemoryBloc>()
                                 .add(ResetGameEvent());
                           },
-                          child: const Text("Reset Game"),
+                          child: const Text(
+                            "Reset Game",
+                            style: TextStyle(fontSize: 18),
+                          ),
                         ),
                       ],
                     ),
