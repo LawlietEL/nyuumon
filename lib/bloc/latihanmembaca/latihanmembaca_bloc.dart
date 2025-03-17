@@ -105,7 +105,7 @@ class LatihanMembacaBloc
     'ン'
   ];
 
-  final Random random = Random();
+  Random random = Random();
   Timer? _timer;
   int _elapsedTime = 0;
 
@@ -134,7 +134,13 @@ class LatihanMembacaBloc
   void _onAnswerSelected(
       AnswerSelectedEvent event, Emitter<LatihanMembacaState> emit) {
     final state = this.state as QuestionGenerated;
-    bool isCorrect = event.selectedAnswer == state.answerOptions.first;
+    int hiraganaIndex = hiragana.indexOf(state.currentQuestion);
+    int katakanaIndex = katakana.indexOf(state.currentQuestion);
+    bool isCorrect = (hiraganaIndex != -1 &&
+            event.selectedAnswer == katakana[hiraganaIndex]) ||
+        (katakanaIndex != -1 &&
+            event.selectedAnswer == hiragana[katakanaIndex]);
+
     List<bool> updatedResults = List.from(state.answerResults)..add(isCorrect);
     if (state.questionIndex < (state.totalQuestions ?? 10)) {
       emit(state.copyWith(
@@ -154,10 +160,18 @@ class LatihanMembacaBloc
       GenerateQuestionEvent event, Emitter<LatihanMembacaState> emit) {
     final state = this.state as QuestionGenerated;
     if (state.questionIndex <= (state.totalQuestions ?? 10)) {
-      int index = random.nextInt(hiragana.length);
-      String question = hiragana[index];
-      String correctAnswer = katakana[index];
-      List<String> allOptions = List.from(katakana)..shuffle(random);
+      bool isHiragana = random
+          .nextBool(); // Secara acak memilih apakah menggunakan hiragana atau katakana
+      List<String> sourceList =
+          isHiragana ? hiragana : katakana; // Memilih sumber huruf
+      List<String> targetList =
+          isHiragana ? katakana : hiragana; // Memilih target huruf yang sesuai
+
+      int index = random.nextInt(sourceList.length);
+      String question = sourceList[index];
+      String correctAnswer = targetList[index];
+
+      List<String> allOptions = List.from(targetList)..shuffle(random);
       List<String> answerOptions =
           allOptions.where((option) => option != correctAnswer).take(2).toList()
             ..add(correctAnswer)

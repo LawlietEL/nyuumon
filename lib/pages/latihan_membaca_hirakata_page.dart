@@ -4,6 +4,7 @@ import 'package:nyuumon/bloc/latihanmembaca/latihanmembaca_bloc.dart';
 import 'package:nyuumon/bloc/latihanmembaca/latihanmembaca_event.dart';
 import 'package:nyuumon/bloc/latihanmembaca/latihanmembaca_state.dart';
 
+// Halaman utama untuk permainan cocokkan Hiragana dan Katakana.
 class LatihanMembacaHirakataPage extends StatelessWidget {
   const LatihanMembacaHirakataPage({Key? key}) : super(key: key);
 
@@ -99,7 +100,6 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: state.answerOptions.map((option) {
-              // Membangun pilihan jawaban.
               return CircleAvatar(
                 radius: 45,
                 backgroundColor: const Color.fromRGBO(81, 79, 80, 100),

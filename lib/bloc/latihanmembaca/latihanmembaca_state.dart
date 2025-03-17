@@ -60,10 +60,11 @@ class LatihanFinished extends LatihanMembacaState {
   final int totalQuestions;
   final int elapsedTime;
 
-  const LatihanFinished(
-      {required this.correctAnswers,
-      required this.totalQuestions,
-      required this.elapsedTime});
+  const LatihanFinished({
+    required this.correctAnswers,
+    required this.totalQuestions,
+    required this.elapsedTime,
+  });
 
   @override
   List<Object?> get props => [correctAnswers, totalQuestions, elapsedTime];
