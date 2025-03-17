@@ -138,7 +138,7 @@ class GameMatchingPage extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
             ),
-            child: const Text("Restart Quiz", style: TextStyle(fontSize: 20)),
+            child: const Text("Restart Game", style: TextStyle(fontSize: 20)),
           ),
         ],
       ),

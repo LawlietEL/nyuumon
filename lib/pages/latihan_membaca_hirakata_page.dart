@@ -4,7 +4,6 @@ import 'package:nyuumon/bloc/latihanmembaca/latihanmembaca_bloc.dart';
 import 'package:nyuumon/bloc/latihanmembaca/latihanmembaca_event.dart';
 import 'package:nyuumon/bloc/latihanmembaca/latihanmembaca_state.dart';
 
-// Halaman utama untuk permainan cocokkan Hiragana dan Katakana.
 class LatihanMembacaHirakataPage extends StatelessWidget {
   const LatihanMembacaHirakataPage({Key? key}) : super(key: key);
 
@@ -17,9 +16,7 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Center(
-            child:
-                const Text('Membaca HiraKata', style: TextStyle(fontSize: 23))),
+        title: const Text('Membaca HiraKata', style: TextStyle(fontSize: 23)),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -30,7 +27,14 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
               child: BlocBuilder<LatihanMembacaBloc, LatihanMembacaState>(
                 builder: (context, state) {
                   if (state is QuestionGenerated) {
-                    return _buildQuestion(context, state);
+                    return Column(children: [
+                      Text('Timer: ${state.elapsedTime} s',
+                          style: TextStyle(fontSize: 17)),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      _buildQuestion(context, state)
+                    ]);
                   } else if (state is LatihanFinished) {
                     return _buildResult(context, state);
                   }
@@ -89,9 +93,7 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
                     color: Colors.white)),
           ),
         ),
-        SizedBox(
-          height: 20,
-        ),
+        SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Row(
@@ -129,8 +131,15 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
         children: [
           Text('Total Point: ${state.correctAnswers} / ${state.totalQuestions}',
               style:
-                  const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 60),
+                  const TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+          SizedBox(
+            height: 7,
+          ),
+          Text('Waktu: ${state.elapsedTime} detik',
+              style: const TextStyle(
+                fontSize: 20,
+              )),
+          const SizedBox(height: 55),
           ElevatedButton(
             onPressed: () {
               context.read<LatihanMembacaBloc>().add(ResetQuizEvent());
@@ -138,7 +147,8 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
             ),
-            child: const Text("Restart Quiz", style: TextStyle(fontSize: 20)),
+            child:
+                const Text("Restart Latihan", style: TextStyle(fontSize: 20)),
           ),
         ],
       ),

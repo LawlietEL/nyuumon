@@ -28,3 +28,12 @@ class AnswerSelectedEvent extends LatihanMembacaEvent {
 class GenerateQuestionEvent extends LatihanMembacaEvent {}
 
 class ResetQuizEvent extends LatihanMembacaEvent {}
+
+class UpdateTimeEvent extends LatihanMembacaEvent {
+  final int elapsedTime;
+
+  const UpdateTimeEvent(this.elapsedTime);
+
+  @override
+  List<Object> get props => [elapsedTime];
+}
