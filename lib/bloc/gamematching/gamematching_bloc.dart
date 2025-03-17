@@ -1,13 +1,9 @@
 import 'dart:math';
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'gamematching_event.dart';
+import 'gamematching_state.dart';
 
-part 'gamematching_event.dart';
-part 'gamematching_state.dart';
-
-// Bloc untuk mengelola logika game cocokkan Hiragana dan Katakana.
 class GameMatchingBloc extends Bloc<GameMatchingEvent, GameMatchingState> {
-  // Daftar karakter Hiragana.
   final List<String> hiragana = [
     'あ',
     'い',
@@ -107,18 +103,55 @@ class GameMatchingBloc extends Bloc<GameMatchingEvent, GameMatchingState> {
     'ン'
   ];
 
-  // Pengaturan inisial untuk variabel yang mengontrol game.
   int questionIndex = 1;
   int correctAnswers = 0;
   List<bool> answerResults = [];
   Random random = Random();
   int? totalQuestions;
 
-  // Konstruktor yang menginisiasi GameMatchingBloc dengan state awal.
   GameMatchingBloc() : super(GameMatchingInitial()) {
     on<GenerateQuestionEvent>(_onGenerateQuestion);
     on<AnswerSelectedEvent>(_onAnswerSelected);
     on<SetTotalQuestionsEvent>(_onSetTotalQuestions);
+    on<ResetQuizEvent>(_onResetQuiz);
+  }
+
+  void _onResetQuiz(ResetQuizEvent event, Emitter<GameMatchingState> emit) {
+    emit(GameMatchingInitial());
+  }
+
+  void _onSetTotalQuestions(
+      SetTotalQuestionsEvent event, Emitter<GameMatchingState> emit) {
+    totalQuestions = event.totalQuestions;
+    questionIndex = 1;
+    correctAnswers = 0;
+    answerResults.clear();
+    add(GenerateQuestionEvent());
+  }
+
+  void _onAnswerSelected(
+      AnswerSelectedEvent event, Emitter<GameMatchingState> emit) {
+    if (state is QuestionGenerated) {
+      String currentQuestion = (state as QuestionGenerated).currentQuestion;
+      int hiraganaIndex = hiragana.indexOf(currentQuestion);
+      int katakanaIndex = katakana.indexOf(currentQuestion);
+
+      bool isCorrect = (hiraganaIndex != -1 &&
+              event.selectedAnswer == katakana[hiraganaIndex]) ||
+          (katakanaIndex != -1 &&
+              event.selectedAnswer == hiragana[katakanaIndex]);
+
+      answerResults.add(isCorrect);
+      if (isCorrect) {
+        correctAnswers++;
+      }
+      questionIndex++;
+      if (questionIndex <= (totalQuestions ?? 10)) {
+        add(GenerateQuestionEvent());
+      } else {
+        emit(GameFinished(correctAnswers, totalQuestions ?? 10));
+      }
+    }
   }
 
   void _onGenerateQuestion(
@@ -163,39 +196,5 @@ class GameMatchingBloc extends Bloc<GameMatchingEvent, GameMatchingState> {
     }
     answers.shuffle(random);
     return answers;
-  }
-
-  void _onAnswerSelected(
-      AnswerSelectedEvent event, Emitter<GameMatchingState> emit) {
-    if (state is QuestionGenerated) {
-      String currentQuestion = (state as QuestionGenerated).currentQuestion;
-      int hiraganaIndex = hiragana.indexOf(currentQuestion);
-      int katakanaIndex = katakana.indexOf(currentQuestion);
-
-      bool isCorrect = (hiraganaIndex != -1 &&
-              event.selectedAnswer == katakana[hiraganaIndex]) ||
-          (katakanaIndex != -1 &&
-              event.selectedAnswer == hiragana[katakanaIndex]);
-
-      answerResults.add(isCorrect);
-      if (isCorrect) {
-        correctAnswers++;
-      }
-      questionIndex++;
-      if (questionIndex <= (totalQuestions ?? 10)) {
-        add(GenerateQuestionEvent());
-      } else {
-        emit(GameFinished(correctAnswers, totalQuestions ?? 10));
-      }
-    }
-  }
-
-  void _onSetTotalQuestions(
-      SetTotalQuestionsEvent event, Emitter<GameMatchingState> emit) {
-    totalQuestions = event.totalQuestions;
-    questionIndex = 1;
-    correctAnswers = 0;
-    answerResults.clear();
-    add(GenerateQuestionEvent());
   }
 }

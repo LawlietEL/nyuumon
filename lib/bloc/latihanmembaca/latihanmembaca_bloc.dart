@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'latihanmembaca_event.dart';
@@ -6,148 +5,197 @@ import 'latihanmembaca_state.dart';
 
 class LatihanMembacaBloc
     extends Bloc<LatihanMembacaEvent, LatihanMembacaState> {
-  final List<Map<String, String>> hirakataPairs = [
-    {"hiragana": "あ", "katakana": "ア"},
-    {"hiragana": "い", "katakana": "イ"},
-    {"hiragana": "う", "katakana": "ウ"},
-    {"hiragana": "え", "katakana": "エ"},
-    {"hiragana": "お", "katakana": "オ"},
-    {"hiragana": "か", "katakana": "カ"},
-    {"hiragana": "き", "katakana": "キ"},
-    {"hiragana": "く", "katakana": "ク"},
-    {"hiragana": "け", "katakana": "ケ"},
-    {"hiragana": "こ", "katakana": "コ"},
-    {"hiragana": "さ", "katakana": "サ"},
-    {"hiragana": "し", "katakana": "シ"},
-    {"hiragana": "す", "katakana": "ス"},
-    {"hiragana": "せ", "katakana": "セ"},
-    {"hiragana": "そ", "katakana": "ソ"},
-    {"hiragana": "た", "katakana": "タ"},
-    {"hiragana": "ち", "katakana": "チ"},
-    {"hiragana": "つ", "katakana": "ツ"},
-    {"hiragana": "て", "katakana": "テ"},
-    {"hiragana": "と", "katakana": "ト"},
-    {"hiragana": "な", "katakana": "ナ"},
-    {"hiragana": "に", "katakana": "ニ"},
-    {"hiragana": "ぬ", "katakana": "ヌ"},
-    {"hiragana": "ね", "katakana": "ネ"},
-    {"hiragana": "の", "katakana": "ノ"},
-    {"hiragana": "は", "katakana": "ハ"},
-    {"hiragana": "ひ", "katakana": "ヒ"},
-    {"hiragana": "ふ", "katakana": "フ"},
-    {"hiragana": "へ", "katakana": "ヘ"},
-    {"hiragana": "ほ", "katakana": "ホ"},
-    {"hiragana": "ま", "katakana": "マ"},
-    {"hiragana": "み", "katakana": "ミ"},
-    {"hiragana": "む", "katakana": "ム"},
-    {"hiragana": "め", "katakana": "メ"},
-    {"hiragana": "も", "katakana": "モ"},
-    {"hiragana": "や", "katakana": "ヤ"},
-    {"hiragana": "ゆ", "katakana": "ユ"},
-    {"hiragana": "よ", "katakana": "ヨ"},
-    {"hiragana": "ら", "katakana": "ラ"},
-    {"hiragana": "り", "katakana": "リ"},
-    {"hiragana": "る", "katakana": "ル"},
-    {"hiragana": "れ", "katakana": "レ"},
-    {"hiragana": "ろ", "katakana": "ロ"},
-    {"hiragana": "わ", "katakana": "ワ"},
-    {"hiragana": "を", "katakana": "ヲ"},
-    {"hiragana": "ん", "katakana": "ン"}
+  final List<String> hiragana = [
+    'あ',
+    'い',
+    'う',
+    'え',
+    'お',
+    'か',
+    'き',
+    'く',
+    'け',
+    'こ',
+    'さ',
+    'し',
+    'す',
+    'せ',
+    'そ',
+    'た',
+    'ち',
+    'つ',
+    'て',
+    'と',
+    'な',
+    'に',
+    'ぬ',
+    'ね',
+    'の',
+    'は',
+    'ひ',
+    'ふ',
+    'へ',
+    'ほ',
+    'ま',
+    'み',
+    'む',
+    'め',
+    'も',
+    'や',
+    'ゆ',
+    'よ',
+    'ら',
+    'り',
+    'る',
+    'れ',
+    'ろ',
+    'わ',
+    'を',
+    'ん'
   ];
 
-  Timer? timer;
+  // Daftar karakter Katakana.
+  final List<String> katakana = [
+    'ア',
+    'イ',
+    'ウ',
+    'エ',
+    'オ',
+    'カ',
+    'キ',
+    'ク',
+    'ケ',
+    'コ',
+    'サ',
+    'シ',
+    'ス',
+    'セ',
+    'ソ',
+    'タ',
+    'チ',
+    'ツ',
+    'テ',
+    'ト',
+    'ナ',
+    'ニ',
+    'ヌ',
+    'ネ',
+    'ノ',
+    'ハ',
+    'ヒ',
+    'フ',
+    'ヘ',
+    'ホ',
+    'マ',
+    'ミ',
+    'ム',
+    'メ',
+    'モ',
+    'ヤ',
+    'ユ',
+    'ヨ',
+    'ラ',
+    'リ',
+    'ル',
+    'レ',
+    'ロ',
+    'ワ',
+    'ヲ',
+    'ン'
+  ];
+
+  int questionIndex = 1;
+  int correctAnswers = 0;
+  List<bool> answerResults = [];
   Random random = Random();
+  int? totalQuestions;
 
-  LatihanMembacaBloc() : super(LatihanMembacaState()) {
-    on<ChangeTotalQuestions>((event, emit) {
-      emit(state.copyWith(
-          totalQuestions: event.totalQuestions, questionIndex: 1));
-      _generateQuestion(emit);
-    });
-
-    on<AnswerSelected>((event, emit) {
-      _checkAnswer(event.selectedAnswer, emit);
-    });
-
-    on<ResetQuiz>((event, emit) {
-      timer?.cancel();
-      emit(LatihanMembacaState());
-    });
+  LatihanMembacaBloc() : super(LatihanMembacaInitial()) {
+    on<GenerateQuestionEvent>(_onGenerateQuestion);
+    on<AnswerSelectedEvent>(_onAnswerSelected);
+    on<SetTotalQuestionsEvent>(_onSetTotalQuestions);
+    on<ResetQuizEvent>(_onResetQuiz);
   }
 
-  void _generateQuestion(Emitter<LatihanMembacaState> emit) {
-    if (state.questionIndex > (state.totalQuestions ?? 10)) {
+  void _onResetQuiz(ResetQuizEvent event, Emitter<LatihanMembacaState> emit) {
+    emit(LatihanMembacaInitial());
+  }
+
+  void _onSetTotalQuestions(
+      SetTotalQuestionsEvent event, Emitter<LatihanMembacaState> emit) {
+    totalQuestions = event.totalQuestions;
+    questionIndex = 1;
+    correctAnswers = 0;
+    answerResults.clear();
+    add(GenerateQuestionEvent());
+  }
+
+  void _onAnswerSelected(
+      AnswerSelectedEvent event, Emitter<LatihanMembacaState> emit) {
+    if (state is QuestionGenerated) {
+      String currentQuestion = (state as QuestionGenerated).currentQuestion;
+      int hiraganaIndex = hiragana.indexOf(currentQuestion);
+      int katakanaIndex = katakana.indexOf(currentQuestion);
+
+      bool isCorrect = (hiraganaIndex != -1 &&
+              event.selectedAnswer == katakana[hiraganaIndex]) ||
+          (katakanaIndex != -1 &&
+              event.selectedAnswer == hiragana[katakanaIndex]);
+
+      answerResults.add(isCorrect);
+      if (isCorrect) {
+        correctAnswers++;
+      }
+      questionIndex++;
+      if (questionIndex <= (totalQuestions ?? 10)) {
+        add(GenerateQuestionEvent());
+      } else {
+        emit(LatihanFinished(correctAnswers, totalQuestions ?? 10));
+      }
+    }
+  }
+
+  void _onGenerateQuestion(
+      GenerateQuestionEvent event, Emitter<LatihanMembacaState> emit) {
+    if (questionIndex > (totalQuestions ?? 10)) {
+      emit(LatihanFinished(correctAnswers, totalQuestions ?? 10));
       return;
     }
 
     bool isHiraganaQuestion = random.nextBool();
-    Map<String, String> pair =
-        hirakataPairs[random.nextInt(hirakataPairs.length)];
-    String questionChar = pair[isHiraganaQuestion ? 'hiragana' : 'katakana']!;
-    String correctAnswer = pair[!isHiraganaQuestion ? 'hiragana' : 'katakana']!;
+    String questionChar = isHiraganaQuestion
+        ? hiragana[random.nextInt(hiragana.length)]
+        : katakana[random.nextInt(katakana.length)];
+    int index = isHiraganaQuestion
+        ? hiragana.indexOf(questionChar)
+        : katakana.indexOf(questionChar);
+    String correctAnswer =
+        isHiraganaQuestion ? katakana[index] : hiragana[index];
 
-    List<String> answerOptions =
+    List<String> answers =
         _generateAnswerOptions(correctAnswer, isHiraganaQuestion);
 
-    emit(state.copyWith(
-      currentQuestion: questionChar,
-      answerOptions: answerOptions,
-      remainingTime: 10, // Reset waktu untuk pertanyaan baru
-      isTimerStarted: false,
-    ));
-
-    if (!state.isTimerStarted) {
-      _startTimer(emit);
-    }
+    emit(QuestionGenerated(
+        currentQuestion: questionChar,
+        answerOptions: answers,
+        questionIndex: questionIndex,
+        totalQuestions: totalQuestions,
+        answerResults: answerResults));
   }
 
   List<String> _generateAnswerOptions(
       String correctAnswer, bool isHiraganaQuestion) {
     List<String> answers = [correctAnswer];
-    Set<String> options = Set.from(hirakataPairs
-        .map((pair) => pair[isHiraganaQuestion ? 'katakana' : 'hiragana']!));
+    List<String> options = isHiraganaQuestion ? katakana : hiragana;
 
-    while (answers.length < 4) {
-      String randomAnswer = options.elementAt(random.nextInt(options.length));
+    while (answers.length < 3) {
+      // Mengatur jumlah pilihan jawaban menjadi tiga.
+      String randomAnswer = options[random.nextInt(options.length)];
       if (!answers.contains(randomAnswer)) {
         answers.add(randomAnswer);
       }
     }
-    answers.shuffle();
+    answers.shuffle(random);
     return answers;
-  }
-
-  void _checkAnswer(String selectedAnswer, Emitter<LatihanMembacaState> emit) {
-    bool isCorrect = selectedAnswer ==
-        state.answerOptions[
-            0]; // Membandingkan dengan jawaban yang benar yang selalu di indeks 0 setelah shuffle
-
-    emit(state.copyWith(
-      correctAnswers:
-          isCorrect ? state.correctAnswers + 1 : state.correctAnswers,
-      answerResults: List.from(state.answerResults)..add(isCorrect),
-      questionIndex: state.questionIndex + 1,
-      isLastQuestionAnswered:
-          state.questionIndex >= (state.totalQuestions ?? 10),
-    ));
-
-    if (state.questionIndex >= (state.totalQuestions ?? 10)) {
-      timer?.cancel(); // Stop timer jika kuis selesai
-    } else {
-      _generateQuestion(emit);
-    }
-  }
-
-  void _startTimer(Emitter<LatihanMembacaState> emit) {
-    emit(state.copyWith(isTimerStarted: true));
-
-    timer?.cancel();
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (state.remainingTime == 0) {
-        _generateQuestion(emit);
-      } else {
-        emit(state.copyWith(remainingTime: state.remainingTime - 1));
-      }
-    });
   }
 }

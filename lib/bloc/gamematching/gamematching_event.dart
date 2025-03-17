@@ -1,6 +1,5 @@
-part of 'gamematching_bloc.dart';
+import 'package:equatable/equatable.dart';
 
-// Base class for all GameMatching events
 abstract class GameMatchingEvent extends Equatable {
   const GameMatchingEvent();
 
@@ -8,10 +7,15 @@ abstract class GameMatchingEvent extends Equatable {
   List<Object> get props => [];
 }
 
-// Event to generate a new question
-class GenerateQuestionEvent extends GameMatchingEvent {}
+class SetTotalQuestionsEvent extends GameMatchingEvent {
+  final int totalQuestions;
 
-// Event triggered when an answer is selected by the user
+  const SetTotalQuestionsEvent(this.totalQuestions);
+
+  @override
+  List<Object> get props => [totalQuestions];
+}
+
 class AnswerSelectedEvent extends GameMatchingEvent {
   final String selectedAnswer;
 
@@ -21,12 +25,6 @@ class AnswerSelectedEvent extends GameMatchingEvent {
   List<Object> get props => [selectedAnswer];
 }
 
-// Event to set the total number of questions for the game
-class SetTotalQuestionsEvent extends GameMatchingEvent {
-  final int totalQuestions;
+class GenerateQuestionEvent extends GameMatchingEvent {}
 
-  const SetTotalQuestionsEvent(this.totalQuestions);
-
-  @override
-  List<Object> get props => [totalQuestions];
-}
+class ResetQuizEvent extends GameMatchingEvent {}

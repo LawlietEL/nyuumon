@@ -1,18 +1,30 @@
-abstract class LatihanMembacaEvent {}
+import 'package:equatable/equatable.dart';
 
-// Event untuk mengubah jumlah total pertanyaan.
-class ChangeTotalQuestions extends LatihanMembacaEvent {
-  final int? totalQuestions;
+abstract class LatihanMembacaEvent extends Equatable {
+  const LatihanMembacaEvent();
 
-  ChangeTotalQuestions(this.totalQuestions);
+  @override
+  List<Object> get props => [];
 }
 
-// Event untuk menangani jawaban yang dipilih pengguna.
-class AnswerSelected extends LatihanMembacaEvent {
+class SetTotalQuestionsEvent extends LatihanMembacaEvent {
+  final int totalQuestions;
+
+  const SetTotalQuestionsEvent(this.totalQuestions);
+
+  @override
+  List<Object> get props => [totalQuestions];
+}
+
+class AnswerSelectedEvent extends LatihanMembacaEvent {
   final String selectedAnswer;
 
-  AnswerSelected(this.selectedAnswer);
+  const AnswerSelectedEvent(this.selectedAnswer);
+
+  @override
+  List<Object> get props => [selectedAnswer];
 }
 
-// Event untuk mereset kuis ke kondisi awal.
-class ResetQuiz extends LatihanMembacaEvent {}
+class GenerateQuestionEvent extends LatihanMembacaEvent {}
+
+class ResetQuizEvent extends LatihanMembacaEvent {}

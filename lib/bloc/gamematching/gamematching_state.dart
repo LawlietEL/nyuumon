@@ -1,6 +1,5 @@
-part of 'gamematching_bloc.dart';
+import 'package:equatable/equatable.dart';
 
-// Base class for all game matching states
 abstract class GameMatchingState extends Equatable {
   const GameMatchingState();
 
@@ -8,15 +7,13 @@ abstract class GameMatchingState extends Equatable {
   List<Object?> get props => [];
 }
 
-// State when the game is initially loaded or reset
 class GameMatchingInitial extends GameMatchingState {}
 
-// State when a new question is generated
 class QuestionGenerated extends GameMatchingState {
   final String currentQuestion;
   final List<String> answerOptions;
   final int questionIndex;
-  final int? totalQuestions; // Nullable to represent that it may not be set
+  final int? totalQuestions;
   final List<bool> answerResults;
 
   const QuestionGenerated({
@@ -37,11 +34,9 @@ class QuestionGenerated extends GameMatchingState {
       ];
 }
 
-// State when the game has finished
 class GameFinished extends GameMatchingState {
   final int correctAnswers;
-  final int
-      totalQuestions; // Non-nullable as this state represents end of the game
+  final int totalQuestions;
 
   const GameFinished(this.correctAnswers, this.totalQuestions);
 
