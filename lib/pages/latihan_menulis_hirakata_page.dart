@@ -144,7 +144,7 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
-              child: const Text("Submit", style: TextStyle(fontSize: 20)),
+              child: const Text("Selesai", style: TextStyle(fontSize: 20)),
             ),
         ],
       ),
