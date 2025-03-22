@@ -42,9 +42,9 @@ class ForgetPasswordPage extends StatelessWidget {
               ),
             ),
             // Garis horizontal tipis berwarna abu-abu
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
+            Container(
+              height: 2, // Tinggi garis
+              color: Colors.grey[300], // Warna abu-abu
             ),
             // Wadah untuk gambar
             Padding(

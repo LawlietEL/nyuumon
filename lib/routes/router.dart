@@ -24,26 +24,26 @@ part 'route_name.dart';
 
 final GoRouter router = GoRouter(
   //VERSI BARU
-  // redirect: (context, state) async {
-  // final user = FirebaseAuth.instance.authStateChanges().first;
-  // if (await user == null) {
-  //   return "/login";
-  // } else {
-  //   return null;
-  // }
-  // },
-
-  //VERSI LAMA
-  redirect: (context, state) {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    // cek kondisi saat ini -> sedang terautentikasi
-    if (auth.currentUser == null) {
-      // tidak sedang login / tidak ada user yg aktif saat ini
+  redirect: (context, state) async {
+    final user = FirebaseAuth.instance.authStateChanges().first;
+    if (await user == null) {
       return "/login";
     } else {
       return null;
     }
   },
+
+  //VERSI LAMA
+  // redirect: (context, state) {
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   // cek kondisi saat ini -> sedang terautentikasi
+  //   if (auth.currentUser == null) {
+  //     // tidak sedang login / tidak ada user yg aktif saat ini
+  //     return "/login";
+  //   } else {
+  //     return null;
+  //   }
+  // },
   // initialLocation: '/login',
   routes: [
     GoRoute(

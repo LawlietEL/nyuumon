@@ -11,18 +11,43 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text('Membaca HiraKata', style: TextStyle(fontSize: 23)),
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Divider(color: Colors.grey, thickness: 1),
+            // Header dengan tombol back dan judul
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 30,
+                  left: 5,
+                  bottom: 5,
+                  right: 10), // Padding di sekitar teks
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () =>
+                        Navigator.pop(context), // Kembali ke halaman sebelumnya
+                  ),
+                  const Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Membaca HiraKata',
+                        style: TextStyle(
+                          fontSize: 23,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
+            ),
+            // Garis horizontal tipis berwarna abu-abu
+            Container(
+              height: 2, // Tinggi garis
+              color: Colors.grey[300], // Warna abu-abu
+            ),
             Padding(
               padding: const EdgeInsets.all(20),
               child: BlocBuilder<LatihanMembacaBloc, LatihanMembacaState>(
@@ -31,9 +56,7 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
                     return Column(children: [
                       Text('Timer: ${state.elapsedTime} s',
                           style: TextStyle(fontSize: 17)),
-                      SizedBox(
-                        height: 15,
-                      ),
+                      SizedBox(height: 15),
                       _buildQuestion(context, state)
                     ]);
                   } else if (state is LatihanFinished) {
@@ -54,7 +77,13 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         DropdownButton<int>(
-          items: const [10, 20, 30, 40, 50]
+          items: const [
+            10,
+            15,
+            20,
+            25,
+            30,
+          ]
               .map((value) => DropdownMenuItem<int>(
                     value: value,
                     child: Text(value.toString()),
@@ -132,13 +161,9 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
           Text('Total Point: ${state.correctAnswers} / ${state.totalQuestions}',
               style:
                   const TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-          SizedBox(
-            height: 7,
-          ),
+          SizedBox(height: 7),
           Text('Waktu: ${state.elapsedTime} detik',
-              style: const TextStyle(
-                fontSize: 20,
-              )),
+              style: const TextStyle(fontSize: 20)),
           const SizedBox(height: 55),
           ElevatedButton(
             onPressed: () {

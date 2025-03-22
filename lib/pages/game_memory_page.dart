@@ -41,7 +41,10 @@ class GameMemoryPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Divider(color: Colors.grey, thickness: 1),
+                  Container(
+                    height: 2, // Tinggi garis
+                    color: Colors.grey[300], // Warna abu-abu
+                  ),
 
                   // **Dropdown untuk memilih jumlah soal sebelum game dimulai**
                   if (!state.gameStarted)

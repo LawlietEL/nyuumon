@@ -41,7 +41,10 @@ class TabelKatakanaPage extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(color: Colors.grey, thickness: 1),
+            Container(
+              height: 2, // Tinggi garis
+              color: Colors.grey[300], // Warna abu-abu
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 15, top: 10),
               child: Column(

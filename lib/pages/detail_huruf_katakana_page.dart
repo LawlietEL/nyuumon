@@ -46,7 +46,10 @@ class DetailHurufKatakanaPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const Divider(color: Colors.grey, thickness: 1),
+                    Container(
+                      height: 2, // Tinggi garis
+                      color: Colors.grey[300], // Warna abu-abu
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: Container(
