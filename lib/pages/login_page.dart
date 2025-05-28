@@ -105,19 +105,7 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Container(
-                            width: 15,
-                            height: 15,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black),
-                              borderRadius: BorderRadius.circular(3),
-                            ),
-                          ),
                           SizedBox(width: 5),
-                          Text(
-                            "Remember me",
-                            style: TextStyle(color: Colors.blue[400]),
-                          )
                         ],
                       ),
                       GestureDetector(

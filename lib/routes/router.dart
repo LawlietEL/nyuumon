@@ -24,14 +24,14 @@ part 'route_name.dart';
 
 final GoRouter router = GoRouter(
   //VERSI BARU
-  redirect: (context, state) async {
-    final user = FirebaseAuth.instance.authStateChanges().first;
-    if (await user == null) {
-      return "/login";
-    } else {
-      return null;
-    }
-  },
+  // redirect: (context, state) async {
+  //   final user = FirebaseAuth.instance.authStateChanges().first;
+  //   if (await user == null) {
+  //     return "/login";
+  //   } else {
+  //     return null;
+  //   }
+  // },
 
   //VERSI LAMA
   // redirect: (context, state) {
@@ -44,7 +44,7 @@ final GoRouter router = GoRouter(
   //     return null;
   //   }
   // },
-  // initialLocation: '/login',
+  initialLocation: '/login',
   routes: [
     GoRoute(
       path: '/login',
@@ -83,6 +83,36 @@ final GoRouter router = GoRouter(
       builder: (BuildContext context, GoRouterState state) {
         return HomePage();
       },
+    ),
+    GoRoute(
+      path: '/profil',
+      name: Routes.profil,
+      builder: (BuildContext context, GoRouterState state) {
+        return const ProfilPage();
+      },
+      routes: [
+        GoRoute(
+          path: '/logout',
+          name: Routes.logout,
+          builder: (BuildContext context, GoRouterState state) {
+            return LoginPage();
+          },
+        ),
+        GoRoute(
+          path: '/edit_profile',
+          name: Routes.edit_profile,
+          builder: (BuildContext context, GoRouterState state) {
+            return EditProfilePage();
+          },
+        ),
+        GoRoute(
+          path: '/change_password',
+          name: Routes.change_password,
+          builder: (BuildContext context, GoRouterState state) {
+            return ChangePassword();
+          },
+        ),
+      ],
     ),
     GoRoute(
       path: '/belajar',
@@ -163,36 +193,6 @@ final GoRouter router = GoRouter(
           name: Routes.latihan_membaca_hirakata,
           builder: (BuildContext context, GoRouterState state) {
             return const LatihanMembacaHirakataPage();
-          },
-        ),
-      ],
-    ),
-    GoRoute(
-      path: '/profil',
-      name: Routes.profil,
-      builder: (BuildContext context, GoRouterState state) {
-        return const ProfilPage();
-      },
-      routes: [
-        GoRoute(
-          path: '/logout',
-          name: Routes.logout,
-          builder: (BuildContext context, GoRouterState state) {
-            return LoginPage();
-          },
-        ),
-        GoRoute(
-          path: '/edit_profile',
-          name: Routes.edit_profile,
-          builder: (BuildContext context, GoRouterState state) {
-            return EditProfilePage();
-          },
-        ),
-        GoRoute(
-          path: '/change_password',
-          name: Routes.change_password,
-          builder: (BuildContext context, GoRouterState state) {
-            return ChangePassword();
           },
         ),
       ],

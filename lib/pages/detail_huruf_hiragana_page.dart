@@ -114,15 +114,16 @@ class DetailHurufHiraganaPage extends StatelessWidget {
                             children: const [
                               Text(
                                 'Latihan Menulis',
-                                style: TextStyle(
-                                    fontSize: 20, fontStyle: FontStyle.italic),
+                                style: TextStyle(fontSize: 20),
                               ),
                               SizedBox(height: 10),
                               Center(
                                 child: Text(
-                                  'Tempat untuk\nmenulis tangan',
+                                  'Cobalah tulis\npada buku anda',
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.grey),
+                                      fontSize: 16,
+                                      color: Colors.grey,
+                                      fontStyle: FontStyle.italic),
                                 ),
                               ),
                             ],
