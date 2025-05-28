@@ -128,19 +128,19 @@ class ProfilPage extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     width: 300,
                     decoration: BoxDecoration(
-                      color: Colors.white, // Warna kotak
+                      color: Colors.blue, // Warna kotak
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(color: Colors.grey),
                     ),
                     child: Row(
                       children: const [
-                        Icon(Icons.lock, color: Colors.grey), // Ikon gembok
+                        Icon(Icons.lock, color: Colors.white), // Ikon gembok
                         SizedBox(width: 10), // Jarak antara ikon dan teks
                         Text(
                           'Change Password',
                           style: TextStyle(
                             fontSize: 18,
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                         ),
                       ],
