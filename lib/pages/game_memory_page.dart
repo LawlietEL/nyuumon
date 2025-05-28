@@ -137,7 +137,7 @@ class GameMemoryPage extends StatelessWidget {
                                   width: 87,
                                   height: 87,
                                   decoration: BoxDecoration(
-                                    color: Colors.pinkAccent,
+                                    color: Colors.lightBlueAccent,
                                     borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
                                         color: Colors.black, width: 2),

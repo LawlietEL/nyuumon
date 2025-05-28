@@ -72,8 +72,7 @@ class TabelKatakanaPage extends StatelessWidget {
                               },
                               child: CircleAvatar(
                                 radius: 30,
-                                backgroundColor:
-                                    const Color.fromARGB(156, 239, 71, 107),
+                                backgroundColor: Colors.lightBlueAccent,
                                 child: Text(
                                   vocal,
                                   style: const TextStyle(
@@ -129,7 +128,7 @@ class TabelKatakanaPage extends StatelessWidget {
                                 radius: 25,
                                 backgroundColor: konsonan.isEmpty
                                     ? Colors.transparent
-                                    : const Color.fromARGB(156, 239, 71, 107),
+                                    : Colors.lightBlueAccent,
                                 child: konsonan.isEmpty
                                     ? null
                                     : Text(

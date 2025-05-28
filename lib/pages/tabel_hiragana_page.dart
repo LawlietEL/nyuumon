@@ -80,8 +80,7 @@ class TabelHiraganaPage extends StatelessWidget {
                                   const SizedBox(height: 2),
                                   CircleAvatar(
                                     radius: 30,
-                                    backgroundColor:
-                                        const Color.fromARGB(156, 239, 71, 107),
+                                    backgroundColor: Colors.lightBlueAccent,
                                     child: Text(
                                       vocal,
                                       style: const TextStyle(
@@ -149,8 +148,8 @@ class TabelHiraganaPage extends StatelessWidget {
                                         const SizedBox(height: 2),
                                         CircleAvatar(
                                           radius: 30,
-                                          backgroundColor: const Color.fromARGB(
-                                              156, 239, 71, 107),
+                                          backgroundColor:
+                                              Colors.lightBlueAccent,
                                           child: Text(
                                             konsonan,
                                             style: const TextStyle(

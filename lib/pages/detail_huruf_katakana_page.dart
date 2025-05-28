@@ -56,7 +56,7 @@ class DetailHurufKatakanaPage extends StatelessWidget {
                         width: 180,
                         height: 180,
                         decoration: BoxDecoration(
-                          color: const Color.fromARGB(156, 239, 71, 107),
+                          color: Colors.lightBlueAccent,
                           border: Border.all(color: Colors.black, width: 2),
                         ),
                         child: Center(

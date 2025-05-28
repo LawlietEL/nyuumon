@@ -111,8 +111,8 @@ class GamesPage extends StatelessWidget {
                           margin: const EdgeInsets.only(
                               bottom: 25), // Jarak antar kotak
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(
-                                156, 239, 71, 107), // Warna background kotak
+                            color: Colors
+                                .lightBlueAccent, // Warna background kotak
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.grey),
                           ),
@@ -152,8 +152,8 @@ class GamesPage extends StatelessWidget {
                           margin: const EdgeInsets.only(
                               bottom: 25), // Jarak antar kotak
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(
-                                156, 239, 71, 107), // Warna background kotak
+                            color: Colors
+                                .lightBlueAccent, // Warna background kotak
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.grey),
                           ),

@@ -102,7 +102,7 @@ class HomePage extends StatelessWidget {
                           margin: const EdgeInsets.only(
                               bottom: 35), // Jarak antar kotak
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(156, 239, 71, 107),
+                            color: Colors.lightBlueAccent,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.black),
                           ),
@@ -141,7 +141,7 @@ class HomePage extends StatelessWidget {
                           margin: const EdgeInsets.only(
                               bottom: 35), // Jarak antar kotak
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(156, 239, 71, 107),
+                            color: Colors.lightBlueAccent,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.black),
                           ),
@@ -180,7 +180,7 @@ class HomePage extends StatelessWidget {
                           margin: const EdgeInsets.only(
                               bottom: 35), // Jarak antar kotak
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(156, 239, 71, 107),
+                            color: Colors.lightBlueAccent,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.black),
                           ),

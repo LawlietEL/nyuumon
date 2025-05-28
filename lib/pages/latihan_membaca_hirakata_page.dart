@@ -112,7 +112,7 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
           width: 180,
           height: 180,
           decoration: BoxDecoration(
-            color: Color.fromARGB(156, 239, 71, 107),
+            color: Colors.lightBlueAccent,
             border: Border.all(color: Colors.black, width: 2),
           ),
           child: Center(
@@ -131,7 +131,7 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
             children: state.answerOptions.map((option) {
               return CircleAvatar(
                 radius: 45,
-                backgroundColor: const Color.fromRGBO(81, 79, 80, 100),
+                backgroundColor: Colors.lightBlueAccent,
                 child: IconButton(
                   icon: Text(
                     option,
