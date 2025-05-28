@@ -6,7 +6,6 @@ import 'package:nyuumon/pages/change_password.dart';
 import 'package:nyuumon/pages/create_account_page.dart';
 import 'package:nyuumon/pages/detail_huruf_hiragana_page.dart';
 import 'package:nyuumon/pages/detail_huruf_katakana_page.dart';
-import 'package:nyuumon/pages/edit_profile_page.dart';
 import 'package:nyuumon/pages/forget_password_page.dart';
 import 'package:nyuumon/pages/game_matching_page.dart';
 import 'package:nyuumon/pages/game_memory_page.dart';
@@ -96,13 +95,6 @@ final GoRouter router = GoRouter(
           name: Routes.logout,
           builder: (BuildContext context, GoRouterState state) {
             return LoginPage();
-          },
-        ),
-        GoRoute(
-          path: '/edit_profile',
-          name: Routes.edit_profile,
-          builder: (BuildContext context, GoRouterState state) {
-            return EditProfilePage();
           },
         ),
         GoRoute(

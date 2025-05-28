@@ -146,6 +146,20 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
               child: const Text("Selesai", style: TextStyle(fontSize: 20)),
             ),
+          const SizedBox(height: 35),
+          Container(
+            width: 300,
+            height: 50,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey, width: 1),
+            ),
+            alignment: Alignment.center,
+            child: const Text(
+              'Cobalah tulis pada buku anda.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+            ),
+          ),
         ],
       ),
     );

@@ -51,7 +51,7 @@ class DetailHurufHiraganaPage extends StatelessWidget {
                       color: Colors.grey[300], // Warna abu-abu
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(30),
                       child: Container(
                         width: 180,
                         height: 180,
@@ -99,14 +99,14 @@ class DetailHurufHiraganaPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 50),
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: Container(
-                        width: 180,
-                        height: 180,
+                        width: 360,
+                        height: 80,
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 2),
+                          border: Border.all(color: Colors.black, width: 1),
                         ),
                         child: Center(
                           child: Column(
@@ -114,12 +114,15 @@ class DetailHurufHiraganaPage extends StatelessWidget {
                             children: const [
                               Text(
                                 'Latihan Menulis',
-                                style: TextStyle(fontSize: 20),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 57, 56, 56),
+                                ),
                               ),
                               SizedBox(height: 10),
                               Center(
                                 child: Text(
-                                  'Cobalah tulis\npada buku anda',
+                                  'Cobalah tulis pada buku anda',
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.grey,

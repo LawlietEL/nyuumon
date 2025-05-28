@@ -7,7 +7,6 @@ abstract class Routes {
   static const login = 'login';
   static const home = 'home';
   static const profil = 'profil';
-  static const edit_profile = 'edit_profile';
   static const change_password = 'change_password';
   static const belajar = 'belajar';
   static const tabel_hiragana = 'tabel_hiragana';

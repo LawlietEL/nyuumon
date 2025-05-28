@@ -71,37 +71,8 @@ class ProfilPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20), // Jarak setelah CircleAvatar
-
-                // Button "Ubah Profil"
-                GestureDetector(
-                  onTap: () {
-                    context.push('/profil/edit_profile');
-                    // Aksi ketika tombol ditekan
-                    print('Ubah Profil ditekan');
-                  },
-                  child: Container(
-                    width: 130,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.blue, // Warna kotak
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Edit Profile',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
                 const SizedBox(
-                    height: 35), // Jarak antara button dan container informasi
-
-                // Kotak informasi user (Nama dan Email)
+                    height: 35), // Kotak informasi user (Nama dan Email)
                 Container(
                   padding: const EdgeInsets.all(10),
                   width: 300,
