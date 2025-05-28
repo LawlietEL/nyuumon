@@ -1,3 +1,4 @@
+// Event untuk BLoC Belajar Hiragana
 abstract class BelajarHEvent {}
 
 class LoadHiraganaData extends BelajarHEvent {}

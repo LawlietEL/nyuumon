@@ -71,7 +71,7 @@ class HomePage extends StatelessWidget {
             color: Colors.grey[300], // Warna abu-abu
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 15),
+            padding: const EdgeInsets.only(top: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.50,
                   ),
                 ),
-                const SizedBox(height: 25), // Jarak antara logo dan kotak
+                const SizedBox(height: 50), // Jarak antara logo dan kotak
                 // Membuat tiga kotak berjejer ke bawah
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
@@ -100,7 +100,7 @@ class HomePage extends StatelessWidget {
                           width: 110,
                           height: 100,
                           margin: const EdgeInsets.only(
-                              bottom: 25), // Jarak antar kotak
+                              bottom: 35), // Jarak antar kotak
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(156, 239, 71, 107),
                             borderRadius: BorderRadius.circular(10),
@@ -139,7 +139,7 @@ class HomePage extends StatelessWidget {
                           width: 110,
                           height: 100,
                           margin: const EdgeInsets.only(
-                              bottom: 25), // Jarak antar kotak
+                              bottom: 35), // Jarak antar kotak
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(156, 239, 71, 107),
                             borderRadius: BorderRadius.circular(10),
@@ -178,7 +178,7 @@ class HomePage extends StatelessWidget {
                           width: 110,
                           height: 100,
                           margin: const EdgeInsets.only(
-                              bottom: 25), // Jarak antar kotak
+                              bottom: 35), // Jarak antar kotak
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(156, 239, 71, 107),
                             borderRadius: BorderRadius.circular(10),

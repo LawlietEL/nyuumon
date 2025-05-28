@@ -31,9 +31,9 @@ class TabelHiraganaPage extends StatelessWidget {
                   Expanded(
                     child: Align(
                       alignment: Alignment.center,
-                      child: Text(
+                      child: const Text(
                         'Tabel Hiragana',
-                        style: const TextStyle(fontSize: 23),
+                        style: TextStyle(fontSize: 23),
                       ),
                     ),
                   ),
@@ -42,11 +42,11 @@ class TabelHiraganaPage extends StatelessWidget {
               ),
             ),
             Container(
-              height: 2, // Tinggi garis
-              color: Colors.grey[300], // Warna abu-abu
+              height: 2,
+              color: Colors.grey[300],
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 15, top: 10),
+              padding: const EdgeInsets.only(left: 15, top: 10, right: 15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -65,23 +65,33 @@ class TabelHiraganaPage extends StatelessWidget {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: state.vocalList.map((vocal) {
+                            final romaji = state.romajiMap[vocal] ?? '';
                             return GestureDetector(
                               onTap: () {
                                 context.push(
                                     '/belajar/detail_huruf_hiragana?letter=$vocal');
                               },
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundColor:
-                                    const Color.fromARGB(156, 239, 71, 107),
-                                child: Text(
-                                  vocal,
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    romaji,
+                                    style: const TextStyle(fontSize: 14),
                                   ),
-                                ),
+                                  const SizedBox(height: 2),
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor:
+                                        const Color.fromARGB(156, 239, 71, 107),
+                                    child: Text(
+                                      vocal,
+                                      style: const TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                           }).toList(),
@@ -102,7 +112,7 @@ class TabelHiraganaPage extends StatelessWidget {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  const SizedBox(),
+                  const SizedBox(height: 10),
                   BlocBuilder<BelajarHBloc, BelajarHState>(
                     builder: (context, state) {
                       if (state is BelajarHLoaded) {
@@ -114,10 +124,13 @@ class TabelHiraganaPage extends StatelessWidget {
                             crossAxisCount: 5,
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
+                            childAspectRatio: 0.8,
                           ),
                           itemCount: state.konsonanList.length,
                           itemBuilder: (context, index) {
                             final konsonan = state.konsonanList[index];
+                            final romaji = state.romajiMap[konsonan] ?? '';
+
                             return GestureDetector(
                               onTap: () {
                                 if (konsonan.isNotEmpty) {
@@ -125,22 +138,30 @@ class TabelHiraganaPage extends StatelessWidget {
                                       '/belajar/detail_huruf_hiragana?letter=$konsonan');
                                 }
                               },
-                              child: CircleAvatar(
-                                radius: 25,
-                                backgroundColor: konsonan.isEmpty
-                                    ? Colors.transparent
-                                    : const Color.fromARGB(156, 239, 71, 107),
-                                child: konsonan.isEmpty
-                                    ? null
-                                    : Text(
-                                        konsonan,
-                                        style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                              child: konsonan.isEmpty
+                                  ? const SizedBox()
+                                  : Column(
+                                      children: [
+                                        Text(
+                                          romaji,
+                                          style: const TextStyle(fontSize: 14),
                                         ),
-                                      ),
-                              ),
+                                        const SizedBox(height: 2),
+                                        CircleAvatar(
+                                          radius: 30,
+                                          backgroundColor: const Color.fromARGB(
+                                              156, 239, 71, 107),
+                                          child: Text(
+                                            konsonan,
+                                            style: const TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             );
                           },
                         );
