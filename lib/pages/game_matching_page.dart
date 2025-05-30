@@ -87,7 +87,7 @@ class GameMatchingPage extends StatelessWidget {
           child: Center(
             child: Text(state.currentQuestion,
                 style: const TextStyle(
-                    fontSize: 100,
+                    fontSize: 120,
                     fontWeight: FontWeight.bold,
                     color: Colors.white)),
           ),
