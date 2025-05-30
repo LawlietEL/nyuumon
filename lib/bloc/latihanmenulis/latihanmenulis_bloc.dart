@@ -96,10 +96,6 @@ class LatihanMenulisBloc
     });
   }
 
-  void _stopTimer() {
-    _timer?.cancel();
-  }
-
   String _getRandomHiraganaKatakana() {
     final random = Random();
     const List<String> hiraganaKatakanaList = [
