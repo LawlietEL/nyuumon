@@ -129,9 +129,9 @@ class GamesPage extends StatelessWidget {
                               const Text(
                                 'Matching\nHirakata', // Teks untuk kotak pertama
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                                 textAlign: TextAlign.center,
                               ),
                             ],
@@ -170,9 +170,9 @@ class GamesPage extends StatelessWidget {
                               const Text(
                                 'Hirakata\nMemory', // Teks untuk kotak kedua
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                                 textAlign: TextAlign.center,
                               ),
                             ],

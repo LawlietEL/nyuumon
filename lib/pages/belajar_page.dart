@@ -130,9 +130,9 @@ class BelajarPage extends StatelessWidget {
                               const Text(
                                 'ひらがな', // Teks untuk kotak pertama
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
                             ],
                           ),
@@ -170,9 +170,9 @@ class BelajarPage extends StatelessWidget {
                               const Text(
                                 'カタカナ', // Teks untuk kotak kedua
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
                             ],
                           ),
