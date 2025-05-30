@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nyuumon/bloc/auth/auth_bloc.dart';
 import 'package:nyuumon/routes/router.dart';
 
 class BelajarPage extends StatelessWidget {
@@ -30,11 +32,20 @@ class BelajarPage extends StatelessWidget {
                 // Menempatkan nama pengguna dan gambar di pojok kanan
                 Row(
                   children: [
-                    const Text(
-                      'Nama User',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        if (state is AuthStateProfilUser) {
+                          return Text(
+                            state.name,
+                            style: const TextStyle(fontSize: 16),
+                          );
+                        } else {
+                          return const Text(
+                            'Nama User',
+                            style: TextStyle(fontSize: 16),
+                          );
+                        }
+                      },
                     ),
                     const SizedBox(width: 8), // Jarak antara nama dan gambar
                     // Mengubah lingkaran profile menjadi button
@@ -43,7 +54,6 @@ class BelajarPage extends StatelessWidget {
                         context.pushNamed(Routes.profil);
                         // Aksi yang ingin dijalankan ketika profile button ditekan
                         print('Profile Button Ditekan');
-                        // Misalnya, arahkan ke halaman profile
                       },
                       child: Container(
                         width: 40,
@@ -95,25 +105,20 @@ class BelajarPage extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .spaceEvenly, // Agar kotak merata di horizontal
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
                           context.push('/belajar/tabel_hiragana');
-                          // Aksi ketika kotak "ひらがな" ditekan
                           print('Kotak ひらがな Ditekan');
-                          // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
                         },
                         child: Container(
                           width: 110,
                           height: 100,
-                          margin: const EdgeInsets.only(
-                              bottom: 25), // Jarak antar kotak
+                          margin: const EdgeInsets.only(bottom: 25),
                           decoration: BoxDecoration(
-                            color: Colors
-                                .lightBlueAccent, // Warna background kotak
+                            color: Colors.lightBlueAccent,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.grey),
                           ),
@@ -121,14 +126,13 @@ class BelajarPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                'assets/images/hiragana.png', // Gambar untuk kotak pertama
+                                'assets/images/hiragana.png',
                                 width: 60,
                                 height: 60,
                               ),
-                              const SizedBox(
-                                  height: 5), // Spasi antara gambar dan teks
+                              const SizedBox(height: 5),
                               const Text(
-                                'ひらがな', // Teks untuk kotak pertama
+                                'ひらがな',
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
@@ -142,18 +146,14 @@ class BelajarPage extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           context.push('/belajar/tabel_katakana');
-                          // Aksi ketika kotak "カタカナ" ditekan
                           print('Kotak カタカナ Ditekan');
-                          // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
                         },
                         child: Container(
                           width: 110,
                           height: 100,
-                          margin: const EdgeInsets.only(
-                              bottom: 25), // Jarak antar kotak
+                          margin: const EdgeInsets.only(bottom: 25),
                           decoration: BoxDecoration(
-                            color: Colors
-                                .lightBlueAccent, // Warna background kotak
+                            color: Colors.lightBlueAccent,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.grey),
                           ),
@@ -161,14 +161,13 @@ class BelajarPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                'assets/images/katakana.png', // Gambar untuk kotak kedua
+                                'assets/images/katakana.png',
                                 width: 60,
                                 height: 60,
                               ),
-                              const SizedBox(
-                                  height: 5), // Spasi antara gambar dan teks
+                              const SizedBox(height: 5),
                               const Text(
-                                'カタカナ', // Teks untuk kotak kedua
+                                'カタカナ',
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,

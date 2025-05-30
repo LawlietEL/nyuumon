@@ -30,11 +30,24 @@ class HomePage extends StatelessWidget {
                 // Menempatkan nama pengguna dan gambar di pojok kanan
                 Row(
                   children: [
-                    const Text(
-                      'Nama User',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        if (state is AuthStateProfilUser) {
+                          return Text(
+                            state.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          );
+                        } else {
+                          return const Text(
+                            'Nama User',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          );
+                        }
+                      },
                     ),
                     const SizedBox(width: 8), // Jarak antara nama dan gambar
                     GestureDetector(

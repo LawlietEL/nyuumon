@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nyuumon/bloc/auth/auth_bloc.dart';
 import 'package:nyuumon/bloc/belajarh/belajarh_bloc.dart';
 import 'package:nyuumon/bloc/belajark/belajark_bloc.dart';
+import 'package:nyuumon/bloc/forgetpassword/forgetpassword_bloc.dart';
 import 'package:nyuumon/bloc/gamematching/gamematching_bloc.dart';
 import 'package:nyuumon/bloc/gamememory/gamememory_bloc.dart';
 import 'package:nyuumon/bloc/latihanmembaca/latihanmembaca_bloc.dart';
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<VisibilityCubit>(
           create: (context) => VisibilityCubit(),
+        ),
+        BlocProvider<ForgetpasswordBloc>(
+          create: (context) => ForgetpasswordBloc(),
         ),
         BlocProvider<BelajarHBloc>(
           // Menambahkan BelajarHBloc

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nyuumon/bloc/auth/auth_bloc.dart';
 import 'package:nyuumon/routes/router.dart';
 
 class GamesPage extends StatelessWidget {
@@ -13,35 +15,41 @@ class GamesPage extends StatelessWidget {
           // Menempatkan tombol back dan user info di bagian atas
           Padding(
             padding: const EdgeInsets.only(
-                top: 30,
-                left: 5,
-                bottom: 5,
-                right: 10), // Padding di sekitar teks
+              top: 30,
+              left: 5,
+              bottom: 5,
+              right: 10,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Tombol back dengan ikon panah kiri
                 IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pop(context); // Kembali ke halaman sebelumnya
+                    Navigator.pop(context);
                   },
                 ),
-                // Menempatkan nama pengguna dan gambar di pojok kanan
                 Row(
                   children: [
-                    const Text(
-                      'Nama User',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        if (state is AuthStateProfilUser) {
+                          return Text(
+                            state.name,
+                            style: const TextStyle(fontSize: 16),
+                          );
+                        } else {
+                          return const Text(
+                            'Nama User',
+                            style: TextStyle(fontSize: 16),
+                          );
+                        }
+                      },
                     ),
-                    const SizedBox(width: 8), // Jarak antara nama dan gambar
-                    // Mengubah lingkaran profile menjadi button
+                    const SizedBox(width: 8),
                     GestureDetector(
                       onTap: () {
                         context.pushNamed(Routes.profil);
-                        // Aksi yang ingin dijalankan ketika profile button ditekan
                         print('Profile Button Ditekan');
                       },
                       child: Container(
@@ -49,11 +57,11 @@ class GamesPage extends StatelessWidget {
                         height: 40,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.grey[300], // Warna lingkaran
+                          color: Colors.grey[300],
                         ),
                         child: ClipOval(
                           child: Image.asset(
-                            'assets/icons/logo.png', // Ganti dengan path gambar Anda
+                            'assets/icons/logo.png',
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -64,10 +72,9 @@ class GamesPage extends StatelessWidget {
               ],
             ),
           ),
-          // Garis horizontal tipis berwarna abu-abu
           Container(
-            height: 2, // Tinggi garis
-            color: Colors.grey[300], // Warna abu-abu
+            height: 2,
+            color: Colors.grey[300],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15),
@@ -85,34 +92,28 @@ class GamesPage extends StatelessWidget {
                 const Text(
                   "Games",
                   style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
+                    color: Colors.black,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const SizedBox(height: 30), // Jarak antara logo dan kotak
-                // Membuat dua kotak berjejer ke samping (horizontal)
+                const SizedBox(height: 30),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .spaceEvenly, // Agar kotak merata di horizontal
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
                           context.push('/games/game_matching');
-                          // Aksi ketika kotak "Matching Hirakata" ditekan
                           print('Matching Hirakata Ditekan');
-                          // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
                         },
                         child: Container(
                           width: 120,
                           height: 120,
-                          margin: const EdgeInsets.only(
-                              bottom: 25), // Jarak antar kotak
+                          margin: const EdgeInsets.only(bottom: 25),
                           decoration: BoxDecoration(
-                            color: Colors
-                                .lightBlueAccent, // Warna background kotak
+                            color: Colors.lightBlueAccent,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.grey),
                           ),
@@ -120,40 +121,35 @@ class GamesPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                'assets/images/matching.png', // Gambar untuk kotak pertama
+                                'assets/images/matching.png',
                                 width: 70,
                                 height: 65,
                               ),
-                              const SizedBox(
-                                  height: 5), // Spasi antara gambar dan teks
+                              const SizedBox(height: 5),
                               const Text(
-                                'Matching\nHirakata', // Teks untuk kotak pertama
+                                'Matching\nHirakata',
                                 style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                             ],
                           ),
                         ),
                       ),
-                      // Kotak kedua sebagai button
                       GestureDetector(
                         onTap: () {
                           context.push('/games/game_memory');
-                          // Aksi ketika kotak "Hirakata Memory" ditekan
                           print('Hirakata Memory Ditekan');
-                          // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
                         },
                         child: Container(
                           width: 120,
                           height: 120,
-                          margin: const EdgeInsets.only(
-                              bottom: 25), // Jarak antar kotak
+                          margin: const EdgeInsets.only(bottom: 25),
                           decoration: BoxDecoration(
-                            color: Colors
-                                .lightBlueAccent, // Warna background kotak
+                            color: Colors.lightBlueAccent,
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(color: Colors.grey),
                           ),
@@ -161,18 +157,18 @@ class GamesPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                'assets/images/memory.png', // Gambar untuk kotak kedua
+                                'assets/images/memory.png',
                                 width: 70,
                                 height: 65,
                               ),
-                              const SizedBox(
-                                  height: 5), // Spasi antara gambar dan teks
+                              const SizedBox(height: 5),
                               const Text(
-                                'Hirakata\nMemory', // Teks untuk kotak kedua
+                                'Hirakata\nMemory',
                                 style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                             ],
