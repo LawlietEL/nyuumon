@@ -65,22 +65,32 @@ class TabelKatakanaPage extends StatelessWidget {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: state.vocalList.map((vocal) {
+                            final romaji = state.romajiMap[vocal] ?? '';
                             return GestureDetector(
                               onTap: () {
                                 context.push(
                                     '/belajar/detail_huruf_katakana?letter=$vocal');
                               },
-                              child: CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Colors.lightBlueAccent,
-                                child: Text(
-                                  vocal,
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    romaji,
+                                    style: const TextStyle(fontSize: 14),
                                   ),
-                                ),
+                                  const SizedBox(height: 2),
+                                  CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.lightBlueAccent,
+                                    child: Text(
+                                      vocal,
+                                      style: const TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                           }).toList(),
@@ -101,7 +111,7 @@ class TabelKatakanaPage extends StatelessWidget {
                       fontStyle: FontStyle.italic,
                     ),
                   ),
-                  const SizedBox(),
+                  const SizedBox(height: 10),
                   BlocBuilder<BelajarKBloc, BelajarKState>(
                     builder: (context, state) {
                       if (state is BelajarKLoaded) {
@@ -113,10 +123,13 @@ class TabelKatakanaPage extends StatelessWidget {
                             crossAxisCount: 5,
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
+                            childAspectRatio: 0.8,
                           ),
                           itemCount: state.konsonanList.length,
                           itemBuilder: (context, index) {
                             final konsonan = state.konsonanList[index];
+                            final romaji = state.romajiMap[konsonan] ?? '';
+
                             return GestureDetector(
                               onTap: () {
                                 if (konsonan.isNotEmpty) {
@@ -124,22 +137,30 @@ class TabelKatakanaPage extends StatelessWidget {
                                       '/belajar/detail_huruf_katakana?letter=$konsonan');
                                 }
                               },
-                              child: CircleAvatar(
-                                radius: 25,
-                                backgroundColor: konsonan.isEmpty
-                                    ? Colors.transparent
-                                    : Colors.lightBlueAccent,
-                                child: konsonan.isEmpty
-                                    ? null
-                                    : Text(
-                                        konsonan,
-                                        style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                              child: konsonan.isEmpty
+                                  ? const SizedBox()
+                                  : Column(
+                                      children: [
+                                        Text(
+                                          romaji,
+                                          style: const TextStyle(fontSize: 14),
                                         ),
-                                      ),
-                              ),
+                                        const SizedBox(height: 2),
+                                        CircleAvatar(
+                                          radius: 30,
+                                          backgroundColor:
+                                              Colors.lightBlueAccent,
+                                          child: Text(
+                                            konsonan,
+                                            style: const TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             );
                           },
                         );

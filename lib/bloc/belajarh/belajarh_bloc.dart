@@ -64,7 +64,7 @@ class BelajarHBloc extends Bloc<BelajarHEvent, BelajarHState> {
       ''
     ];
 
-    final romajiMap = {
+    final romajiMaph = {
       'あ': 'a',
       'い': 'i',
       'う': 'u',
@@ -116,7 +116,7 @@ class BelajarHBloc extends Bloc<BelajarHEvent, BelajarHState> {
     emit(BelajarHLoaded(
       vocalList: vocalList,
       konsonanList: konsonanList,
-      romajiMap: romajiMap,
+      romajiMap: romajiMaph,
     ));
   }
 

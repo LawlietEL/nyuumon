@@ -12,19 +12,112 @@ class BelajarKBloc extends Bloc<BelajarKEvent, BelajarKState> {
       LoadKatakanaData event, Emitter<BelajarKState> emit) {
     const vocalList = ['ア', 'イ', 'ウ', 'エ', 'オ'];
     const konsonanList = [
-      'カ', 'キ', 'ク', 'ケ', 'コ', // Baris 1
-      'サ', 'シ', 'ス', 'セ', 'ソ', // Baris 2
-      'タ', 'チ', 'ツ', 'テ', 'ト', // Baris 3
-      'ナ', 'ニ', 'ヌ', 'ネ', 'ノ', // Baris 4
-      'ハ', 'ヒ', 'フ', 'ヘ', 'ホ', // Baris 5
-      'マ', 'ミ', 'ム', 'メ', 'モ', // Baris 6
-      'ヤ', '', 'ユ', '', 'ヨ', // Baris 7
-      'ラ', 'リ', 'ル', 'レ', 'ロ', // Baris 8
-      'ワ', '', '', '', 'ヲ', // Baris 9
-      'ン', '', '', '', '' // Baris 10
+      'カ',
+      'キ',
+      'ク',
+      'ケ',
+      'コ',
+      'サ',
+      'シ',
+      'ス',
+      'セ',
+      'ソ',
+      'タ',
+      'チ',
+      'ツ',
+      'テ',
+      'ト',
+      'ナ',
+      'ニ',
+      'ヌ',
+      'ネ',
+      'ノ',
+      'ハ',
+      'ヒ',
+      'フ',
+      'ヘ',
+      'ホ',
+      'マ',
+      'ミ',
+      'ム',
+      'メ',
+      'モ',
+      'ヤ',
+      '',
+      'ユ',
+      '',
+      'ヨ',
+      'ラ',
+      'リ',
+      'ル',
+      'レ',
+      'ロ',
+      'ワ',
+      '',
+      '',
+      '',
+      'ヲ',
+      'ン',
+      '',
+      '',
+      '',
+      ''
     ];
 
-    emit(BelajarKLoaded(vocalList: vocalList, konsonanList: konsonanList));
+    final romajiMapk = {
+      'ア': 'a',
+      'イ': 'i',
+      'ウ': 'u',
+      'エ': 'e',
+      'オ': 'o',
+      'カ': 'ka',
+      'キ': 'ki',
+      'ク': 'ku',
+      'ケ': 'ke',
+      'コ': 'ko',
+      'サ': 'sa',
+      'シ': 'shi',
+      'ス': 'su',
+      'セ': 'se',
+      'ソ': 'so',
+      'タ': 'ta',
+      'チ': 'chi',
+      'ツ': 'tsu',
+      'テ': 'te',
+      'ト': 'to',
+      'ナ': 'na',
+      'ニ': 'ni',
+      'ヌ': 'nu',
+      'ネ': 'ne',
+      'ノ': 'no',
+      'ハ': 'ha',
+      'ヒ': 'hi',
+      'フ': 'fu',
+      'ヘ': 'he',
+      'ホ': 'ho',
+      'マ': 'ma',
+      'ミ': 'mi',
+      'ム': 'mu',
+      'メ': 'me',
+      'モ': 'mo',
+      'ヤ': 'ya',
+      'ユ': 'yu',
+      'ヨ': 'yo',
+      'ラ': 'ra',
+      'リ': 'ri',
+      'ル': 'ru',
+      'レ': 're',
+      'ロ': 'ro',
+      'ワ': 'wa',
+      'ヲ': 'wo',
+      'ン': 'n',
+    };
+
+    emit(BelajarKLoaded(
+      vocalList: vocalList,
+      konsonanList: konsonanList,
+      romajiMap: romajiMapk,
+    ));
   }
 
   void _onLoadDetailHuruf(LoadDetailHuruf event, Emitter<BelajarKState> emit) {
