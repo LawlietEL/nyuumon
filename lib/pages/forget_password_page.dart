@@ -24,7 +24,9 @@ class ForgetPasswordPage extends StatelessWidget {
 
           if (state is ForgetpasswordSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Password reset email sent')),
+              const SnackBar(
+                  content:
+                      Text('Link Reset Password Telah Dikirim ke Email Anda')),
             );
           } else if (state is ForgetpasswordError) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -76,7 +78,7 @@ class ForgetPasswordPage extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 40),
                 child: Text(
-                  'Silahkan masukkan email, password akan dikirim ke email anda.',
+                  'Silahkan masukkan email, link reset password akan dikirim ke email anda.',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
@@ -113,7 +115,7 @@ class ForgetPasswordPage extends StatelessWidget {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Email tidak boleh kosong')),
+                            content: Text('Email tidak boleh kosong!')),
                       );
                     }
                   },
