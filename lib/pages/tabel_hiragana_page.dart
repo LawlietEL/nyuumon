@@ -68,8 +68,18 @@ class TabelHiraganaPage extends StatelessWidget {
                             final romaji = state.romajiMap[vocal] ?? '';
                             return GestureDetector(
                               onTap: () {
-                                context.push(
-                                    '/belajar/detail_huruf_hiragana?letter=$vocal');
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (_) => const Center(
+                                      child: CircularProgressIndicator()),
+                                );
+                                Future.delayed(
+                                    const Duration(milliseconds: 250), () {
+                                  Navigator.pop(context);
+                                  context.push(
+                                      '/belajar/detail_huruf_hiragana?letter=$vocal');
+                                });
                               },
                               child: Column(
                                 children: [
@@ -132,10 +142,20 @@ class TabelHiraganaPage extends StatelessWidget {
 
                             return GestureDetector(
                               onTap: () {
-                                if (konsonan.isNotEmpty) {
-                                  context.push(
-                                      '/belajar/detail_huruf_hiragana?letter=$konsonan');
-                                }
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (_) => const Center(
+                                      child: CircularProgressIndicator()),
+                                );
+                                Future.delayed(
+                                    const Duration(milliseconds: 250), () {
+                                  Navigator.pop(context);
+                                  if (konsonan.isNotEmpty) {
+                                    context.push(
+                                        '/belajar/detail_huruf_hiragana?letter=$konsonan');
+                                  }
+                                });
                               },
                               child: konsonan.isEmpty
                                   ? const SizedBox()

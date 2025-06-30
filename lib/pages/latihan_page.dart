@@ -44,8 +44,17 @@ class LatihanPage extends StatelessWidget {
                     const SizedBox(width: 8),
                     GestureDetector(
                       onTap: () {
-                        context.pushNamed(Routes.profil);
-                        print('Profile Button Ditekan');
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) =>
+                              const Center(child: CircularProgressIndicator()),
+                        );
+                        Future.delayed(const Duration(milliseconds: 250), () {
+                          Navigator.pop(context);
+                          context.pushNamed(Routes.profil);
+                          print('Profile Button Ditekan');
+                        });
                       },
                       child: Container(
                         width: 40,
@@ -99,8 +108,17 @@ class LatihanPage extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          context.push('/latihan/latihan_menulis_hirakata');
-                          print('Menulis Hirakata Ditekan');
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context);
+                            context.push('/latihan/latihan_menulis_hirakata');
+                            print('Menulis Hirakata Ditekan');
+                          });
                         },
                         child: Container(
                           width: 120,
@@ -134,8 +152,17 @@ class LatihanPage extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          context.push('/latihan/latihan_membaca_hirakata');
-                          print('Membaca Hirakata Ditekan');
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context);
+                            context.push('/latihan/latihan_membaca_hirakata');
+                            print('Membaca Hirakata Ditekan');
+                          });
                         },
                         child: Container(
                           width: 120,

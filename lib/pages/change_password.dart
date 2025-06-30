@@ -58,6 +58,13 @@ class _ChangePasswordState extends State<ChangePassword> {
       return;
     }
 
+    // ✅ Tampilkan loading hanya jika semua validasi sudah lolos
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+
     context.read<AuthBloc>().add(ChangePasswordEvent(
           recentPassword: recentPassword,
           newPassword: newPassword,
@@ -76,11 +83,13 @@ class _ChangePasswordState extends State<ChangePassword> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthPasswordChanged) {
+            Navigator.pop(context); // Tutup loading
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Password changed successfully")),
             );
             _clearTextFields();
           } else if (state is AuthChangePasswordError) {
+            Navigator.pop(context); // Tutup loading
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.errorMessage)),
             );
@@ -120,10 +129,9 @@ class _ChangePasswordState extends State<ChangePassword> {
                 ),
               ),
               Container(
-                height: 2, // Tinggi garis
-                color: Colors.grey[300], // Warna abu-abu
+                height: 2,
+                color: Colors.grey[300],
               ),
-
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Center(
@@ -133,7 +141,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                 ),
               ),
-              // Tulisan Edit Profile
               const Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: Text(
@@ -143,8 +150,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                 ),
               ),
-
-              // Kolom isian Recent Password
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -170,13 +175,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                       },
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10), // Circular 10
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                 ),
               ),
-
-              // Kolom isian New Password
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -202,13 +205,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                       },
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10), // Circular 10
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                 ),
               ),
-
-              // Kolom isian Confirm New Password
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -234,19 +235,16 @@ class _ChangePasswordState extends State<ChangePassword> {
                       },
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10), // Circular 10
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 35),
-
-              // Tombol Change dan Cancel
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    // Tombol Change
                     Expanded(
                       child: GestureDetector(
                         onTap: () => _handleChangePassword(context),
@@ -254,8 +252,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                           height: 45,
                           decoration: BoxDecoration(
                             color: Colors.blue,
-                            borderRadius:
-                                BorderRadius.circular(20), // Circular 10
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: const Center(
                             child: Text(
@@ -268,19 +265,26 @@ class _ChangePasswordState extends State<ChangePassword> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    // Tombol Cancel
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pop(context); // Kembali ke halaman profil
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          });
                         },
                         child: Container(
                           height: 45,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             border: Border.all(color: Colors.grey),
-                            borderRadius:
-                                BorderRadius.circular(20), // Circular 10
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           child: const Center(
                             child: Text(

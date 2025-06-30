@@ -149,6 +149,15 @@ class LoginPage extends StatelessWidget {
                       child: BlocConsumer<AuthBloc, AuthState>(
                         listener: (context, state) {
                           if (state is AuthStateLogin) {
+                            // Tampilkan notifikasi login berhasil
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Login berhasil!'),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+
+                            // Navigasi ke home setelah login
                             context.goNamed(Routes.home);
                           }
                           if (state is AuthStateError) {

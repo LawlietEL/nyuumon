@@ -53,10 +53,18 @@ class HomePage extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         context.read<AuthBloc>().add(AuthEventProfilUser());
-                        context.push('/profil');
-                        // Aksi ketika gambar profil ditekan
-                        print('Profil button ditekan');
-                        // Contoh navigasi ke halaman profil
+
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) =>
+                              const Center(child: CircularProgressIndicator()),
+                        );
+                        Future.delayed(const Duration(milliseconds: 250), () {
+                          Navigator.pop(context); // Tutup dialog loading
+                          context.push('/profil');
+                          print('Profil button ditekan');
+                        });
                       },
                       child: Container(
                         width: 40,
@@ -104,9 +112,18 @@ class HomePage extends StatelessWidget {
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/belajar');
-                          // Aksi ketika kotak "Belajar" ditekan
-                          print('Kotak Belajar Ditekan');
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context);
+                            context.push('/belajar');
+                            // Aksi ketika kotak "Belajar" ditekan
+                            print('Kotak Belajar Ditekan');
+                          });
                           // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
                         },
                         child: Container(
@@ -143,10 +160,19 @@ class HomePage extends StatelessWidget {
                       // Kotak kedua sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/games');
-                          // Aksi ketika kotak "Games" ditekan
-                          print('Kotak Games Ditekan');
-                          // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context);
+                            context.push('/games');
+                            // Aksi ketika kotak "Games" ditekan
+                            print('Kotak Games Ditekan');
+                            // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
+                          });
                         },
                         child: Container(
                           width: 110,
@@ -182,10 +208,19 @@ class HomePage extends StatelessWidget {
                       // Kotak ketiga sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/latihan');
-                          // Aksi ketika kotak "Latihan" ditekan
-                          print('Kotak Latihan Ditekan');
-                          // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context);
+                            context.push('/latihan');
+                            // Aksi ketika kotak "Latihan" ditekan
+                            print('Kotak Latihan Ditekan');
+                            // Navigator.push() atau aksi lainnya bisa ditambahkan di sini
+                          });
                         },
                         child: Container(
                           width: 110,

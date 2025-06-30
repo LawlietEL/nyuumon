@@ -49,8 +49,17 @@ class GamesPage extends StatelessWidget {
                     const SizedBox(width: 8),
                     GestureDetector(
                       onTap: () {
-                        context.pushNamed(Routes.profil);
-                        print('Profile Button Ditekan');
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) =>
+                              const Center(child: CircularProgressIndicator()),
+                        );
+                        Future.delayed(const Duration(milliseconds: 250), () {
+                          Navigator.pop(context);
+                          context.pushNamed(Routes.profil);
+                          print('Profile Button Ditekan');
+                        });
                       },
                       child: Container(
                         width: 40,
@@ -105,8 +114,17 @@ class GamesPage extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          context.push('/games/game_matching');
-                          print('Matching Hirakata Ditekan');
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context);
+                            context.push('/games/game_matching');
+                            print('Matching Hirakata Ditekan');
+                          });
                         },
                         child: Container(
                           width: 120,
@@ -141,8 +159,17 @@ class GamesPage extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          context.push('/games/game_memory');
-                          print('Hirakata Memory Ditekan');
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context);
+                            context.push('/games/game_memory');
+                            print('Hirakata Memory Ditekan');
+                          });
                         },
                         child: Container(
                           width: 120,

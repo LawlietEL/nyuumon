@@ -51,9 +51,18 @@ class BelajarPage extends StatelessWidget {
                     // Mengubah lingkaran profile menjadi button
                     GestureDetector(
                       onTap: () {
-                        context.pushNamed(Routes.profil);
-                        // Aksi yang ingin dijalankan ketika profile button ditekan
-                        print('Profile Button Ditekan');
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) =>
+                              const Center(child: CircularProgressIndicator()),
+                        );
+                        Future.delayed(const Duration(milliseconds: 250), () {
+                          Navigator.pop(context);
+                          context.pushNamed(Routes.profil);
+                          // Aksi yang ingin dijalankan ketika profile button ditekan
+                          print('Profile Button Ditekan');
+                        });
                       },
                       child: Container(
                         width: 40,
@@ -110,8 +119,17 @@ class BelajarPage extends StatelessWidget {
                       // Kotak pertama sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/belajar/tabel_hiragana');
-                          print('Kotak ひらがな Ditekan');
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context); // tutup loading
+                            context.push('/belajar/tabel_hiragana');
+                          });
                         },
                         child: Container(
                           width: 110,
@@ -145,8 +163,16 @@ class BelajarPage extends StatelessWidget {
                       // Kotak kedua sebagai button
                       GestureDetector(
                         onTap: () {
-                          context.push('/belajar/tabel_katakana');
-                          print('Kotak カタカナ Ditekan');
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context); // tutup loading
+                            context.push('/belajar/tabel_katakana');
+                          });
                         },
                         child: Container(
                           width: 110,
