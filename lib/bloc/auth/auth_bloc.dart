@@ -134,7 +134,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         await user.reauthenticateWithCredential(credential);
       } on FirebaseAuthException {
-        emit(AuthChangePasswordError("Recent password is incorrect"));
+        emit(AuthChangePasswordError("Password Saat ini Salah!"));
         return;
       }
 
@@ -148,7 +148,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       emit(AuthPasswordChanged());
     } on FirebaseAuthException catch (e) {
-      emit(AuthStateError(e.message ?? 'Failed to change password'));
+      emit(AuthStateError(e.message ?? 'Gagal Mengganti Password!'));
     } catch (e) {
       emit(AuthStateError('An unexpected error occurred.'));
     }

@@ -85,7 +85,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           if (state is AuthPasswordChanged) {
             Navigator.pop(context); // Tutup loading
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Password changed successfully")),
+              const SnackBar(content: Text("Password Berhasil Diganti.")),
             );
             _clearTextFields();
           } else if (state is AuthChangePasswordError) {

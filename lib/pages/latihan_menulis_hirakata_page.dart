@@ -41,7 +41,7 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       child: const Text(
-                        'Latihan Menulis HiraKata',
+                        'Menulis HiraKata',
                         style: TextStyle(
                           fontSize: 23,
                         ),
