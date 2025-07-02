@@ -4,29 +4,52 @@ import 'package:nyuumon/bloc/gamematching/gamematching_bloc.dart';
 import 'package:nyuumon/bloc/gamematching/gamematching_event.dart';
 import 'package:nyuumon/bloc/gamematching/gamematching_state.dart';
 
-// Halaman utama untuk permainan cocokkan Hiragana dan Katakana.
 class GameMatchingPage extends StatelessWidget {
   const GameMatchingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Center(
-            child: const Text('Matching HiraKata',
-                style: TextStyle(fontSize: 23))),
-      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // Header dengan tombol back dan judul (mirip Latihan Membaca)
+            Padding(
+              padding:
+                  const EdgeInsets.only(top: 30, left: 5, bottom: 5, right: 10),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) =>
+                            const Center(child: CircularProgressIndicator()),
+                      );
+                      Future.delayed(const Duration(milliseconds: 250), () {
+                        Navigator.pop(context); // tutup loading
+                        Navigator.pop(context); // kembali
+                      });
+                    },
+                  ),
+                  const Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Matching HiraKata',
+                        style: TextStyle(fontSize: 23),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
+            ),
             Container(
-              height: 2, // Tinggi garis
-              color: Colors.grey[300], // Warna abu-abu
+              height: 2,
+              color: Colors.grey[300],
             ),
             Padding(
               padding: const EdgeInsets.all(20),
@@ -76,7 +99,7 @@ class GameMatchingPage extends StatelessWidget {
       children: [
         Text('Soal ${state.questionIndex}/${state.totalQuestions ?? 0}',
             style: const TextStyle(fontSize: 25, fontStyle: FontStyle.italic)),
-        SizedBox(height: 25),
+        const SizedBox(height: 25),
         Container(
           width: 180,
           height: 180,
@@ -92,15 +115,12 @@ class GameMatchingPage extends StatelessWidget {
                     color: Colors.white)),
           ),
         ),
-        SizedBox(
-          height: 20,
-        ),
+        const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: state.answerOptions.map((option) {
-              // Membangun pilihan jawaban.
               return CircleAvatar(
                 radius: 45,
                 backgroundColor: Colors.lightBlueAccent,
@@ -136,7 +156,16 @@ class GameMatchingPage extends StatelessWidget {
           const SizedBox(height: 60),
           ElevatedButton(
             onPressed: () {
-              context.read<GameMatchingBloc>().add(ResetQuizEvent());
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) =>
+                    const Center(child: CircularProgressIndicator()),
+              );
+              Future.delayed(const Duration(milliseconds: 250), () {
+                Navigator.pop(context);
+                context.read<GameMatchingBloc>().add(ResetQuizEvent());
+              });
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),

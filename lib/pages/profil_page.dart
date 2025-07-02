@@ -41,8 +41,17 @@ class ProfilPage extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.arrow_back),
                           onPressed: () {
-                            Navigator.pop(
-                                context); // Kembali ke halaman sebelumnya
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (_) => const Center(
+                                  child: CircularProgressIndicator()),
+                            );
+                            Future.delayed(const Duration(milliseconds: 250),
+                                () {
+                              Navigator.pop(context); // tutup loading
+                              Navigator.pop(context); // kembali
+                            });
                           },
                         ),
                         // Expanded untuk membuat judul berada di tengah
@@ -179,9 +188,18 @@ class ProfilPage extends StatelessWidget {
                   // Button "Logout"
                   GestureDetector(
                     onTap: () {
-                      context.read<AuthBloc>().add(AuthEventLogout());
-                      // Aksi ketika tombol ditekan
-                      print('Logout ditekan');
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) =>
+                            const Center(child: CircularProgressIndicator()),
+                      );
+                      Future.delayed(const Duration(milliseconds: 250), () {
+                        Navigator.pop(context);
+                        context.read<AuthBloc>().add(AuthEventLogout());
+                        // Aksi ketika tombol ditekan
+                        print('Logout ditekan');
+                      });
                     },
                     child: Container(
                       width: 100,

@@ -107,17 +107,27 @@ class ForgetPasswordPage extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.45,
                 child: ElevatedButton(
                   onPressed: () {
-                    final email = emailController.text.trim();
-                    if (email.isNotEmpty) {
-                      context.read<ForgetpasswordBloc>().add(
-                            ForgetpasswordSendEmailEvent(email),
-                          );
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Email tidak boleh kosong!')),
-                      );
-                    }
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (_) =>
+                          const Center(child: CircularProgressIndicator()),
+                    );
+
+                    Future.delayed(const Duration(milliseconds: 250), () {
+                      Navigator.pop(context); // tutup loading
+                      final email = emailController.text.trim();
+                      if (email.isNotEmpty) {
+                        context.read<ForgetpasswordBloc>().add(
+                              ForgetpasswordSendEmailEvent(email),
+                            );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Email tidak boleh kosong!')),
+                        );
+                      }
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,

@@ -26,7 +26,17 @@ class GameMemoryPage extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.arrow_back),
                           onPressed: () {
-                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (_) => const Center(
+                                  child: CircularProgressIndicator()),
+                            );
+                            Future.delayed(const Duration(milliseconds: 250),
+                                () {
+                              Navigator.pop(context); // tutup loading
+                              Navigator.pop(context); // kembali
+                            });
                           },
                         ),
                         Expanded(
@@ -177,9 +187,19 @@ class GameMemoryPage extends StatelessWidget {
                         const SizedBox(height: 30),
                         ElevatedButton(
                           onPressed: () {
-                            context
-                                .read<GameMemoryBloc>()
-                                .add(ResetGameEvent());
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (_) => const Center(
+                                  child: CircularProgressIndicator()),
+                            );
+                            Future.delayed(const Duration(milliseconds: 250),
+                                () {
+                              Navigator.pop(context);
+                              context
+                                  .read<GameMemoryBloc>()
+                                  .add(ResetGameEvent());
+                            });
                           },
                           child: const Text(
                             "Reset Game",

@@ -25,7 +25,16 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context); // Kembali ke halaman sebelumnya
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) =>
+                            const Center(child: CircularProgressIndicator()),
+                      );
+                      Future.delayed(const Duration(milliseconds: 250), () {
+                        Navigator.pop(context); // tutup loading
+                        Navigator.pop(context); // kembali
+                      });
                     },
                   ),
                   Expanded(
@@ -139,7 +148,16 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
           if (state.questionIndex == state.totalQuestions)
             ElevatedButton(
               onPressed: () {
-                context.read<LatihanMenulisBloc>().add(SubmitLatihanEvent());
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (_) =>
+                      const Center(child: CircularProgressIndicator()),
+                );
+                Future.delayed(const Duration(milliseconds: 250), () {
+                  Navigator.pop(context);
+                  context.read<LatihanMenulisBloc>().add(SubmitLatihanEvent());
+                });
               },
               style: ElevatedButton.styleFrom(
                   padding:
@@ -179,7 +197,16 @@ class LatihanMenulisHirakataPage extends StatelessWidget {
           const SizedBox(height: 55),
           ElevatedButton(
             onPressed: () {
-              context.read<LatihanMenulisBloc>().add(ResetLatihanEvent());
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) =>
+                    const Center(child: CircularProgressIndicator()),
+              );
+              Future.delayed(const Duration(milliseconds: 250), () {
+                Navigator.pop(context);
+                context.read<LatihanMenulisBloc>().add(ResetLatihanEvent());
+              });
             },
             style: ElevatedButton.styleFrom(
                 padding:

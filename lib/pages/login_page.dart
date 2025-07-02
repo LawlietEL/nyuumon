@@ -110,8 +110,18 @@ class LoginPage extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          context.push('/login/forget_password');
-                          print('Forget Password Ditekan');
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context); // tutup loading
+                            context.push('/login/forget_password');
+                            print('Forget Password Ditekan');
+                          });
                         },
                         child: Text(
                           "Forget password?",
@@ -206,9 +216,19 @@ class LoginPage extends StatelessWidget {
                   // Create an account text
                   GestureDetector(
                     onTap: () {
-                      context.go('/login/create_account');
-                      print('Create Account Ditekan');
-                      // Handle account creation process
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) =>
+                            const Center(child: CircularProgressIndicator()),
+                      );
+
+                      Future.delayed(const Duration(milliseconds: 250), () {
+                        Navigator.pop(context); // tutup loading
+                        context.go('/login/create_account');
+                        print('Create Account Ditekan');
+                        // Handle account creation process
+                      });
                     },
                     child: Text(
                       'Create an account',

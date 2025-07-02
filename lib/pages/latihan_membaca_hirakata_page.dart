@@ -25,8 +25,18 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
-                    onPressed: () =>
-                        Navigator.pop(context), // Kembali ke halaman sebelumnya
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) =>
+                            const Center(child: CircularProgressIndicator()),
+                      );
+                      Future.delayed(const Duration(milliseconds: 250), () {
+                        Navigator.pop(context); // tutup loading
+                        Navigator.pop(context); // kembali
+                      });
+                    },
                   ),
                   const Expanded(
                     child: Align(
@@ -167,7 +177,16 @@ class LatihanMembacaHirakataPage extends StatelessWidget {
           const SizedBox(height: 55),
           ElevatedButton(
             onPressed: () {
-              context.read<LatihanMembacaBloc>().add(ResetQuizEvent());
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) =>
+                    const Center(child: CircularProgressIndicator()),
+              );
+              Future.delayed(const Duration(milliseconds: 250), () {
+                Navigator.pop(context);
+                context.read<LatihanMembacaBloc>().add(ResetQuizEvent());
+              });
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),

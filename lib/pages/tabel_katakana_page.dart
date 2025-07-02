@@ -25,7 +25,16 @@ class TabelKatakanaPage extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context);
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) =>
+                            const Center(child: CircularProgressIndicator()),
+                      );
+                      Future.delayed(const Duration(milliseconds: 250), () {
+                        Navigator.pop(context); // tutup loading
+                        Navigator.pop(context); // kembali
+                      });
                     },
                   ),
                   Expanded(
@@ -68,8 +77,18 @@ class TabelKatakanaPage extends StatelessWidget {
                             final romaji = state.romajiMap[vocal] ?? '';
                             return GestureDetector(
                               onTap: () {
-                                context.push(
-                                    '/belajar/detail_huruf_katakana?letter=$vocal');
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (_) => const Center(
+                                      child: CircularProgressIndicator()),
+                                );
+                                Future.delayed(
+                                    const Duration(milliseconds: 250), () {
+                                  Navigator.pop(context);
+                                  context.push(
+                                      '/belajar/detail_huruf_katakana?letter=$vocal');
+                                });
                               },
                               child: Column(
                                 children: [
@@ -132,10 +151,20 @@ class TabelKatakanaPage extends StatelessWidget {
 
                             return GestureDetector(
                               onTap: () {
-                                if (konsonan.isNotEmpty) {
-                                  context.push(
-                                      '/belajar/detail_huruf_katakana?letter=$konsonan');
-                                }
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (_) => const Center(
+                                      child: CircularProgressIndicator()),
+                                );
+                                Future.delayed(
+                                    const Duration(milliseconds: 250), () {
+                                  Navigator.pop(context);
+                                  if (konsonan.isNotEmpty) {
+                                    context.push(
+                                        '/belajar/detail_huruf_katakana?letter=$konsonan');
+                                  }
+                                });
                               },
                               child: konsonan.isEmpty
                                   ? const SizedBox()

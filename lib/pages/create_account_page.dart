@@ -24,7 +24,7 @@ class CreateAccountPage extends StatelessWidget {
         if (state is AuthStateRegisterSuccess) {
           // Tampilkan pesan sukses
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Account created successfully!")),
+            SnackBar(content: Text("Akun Berhasil Dibuat, Silahkan Login.")),
           );
           // Kosongkan semua TextField setelah akun berhasil dibuat
           usernameController.clear();
@@ -58,7 +58,7 @@ class CreateAccountPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.25,
                 ),
               ),
-              SizedBox(height: 15), // Padding between image and input fields
+              SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
@@ -188,28 +188,48 @@ class CreateAccountPage extends StatelessWidget {
                         );
                       },
                     ),
-                    SizedBox(height: 15), // Space between fields and button
+                    SizedBox(height: 15),
                     // Create Button
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.4,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (passwordController.text ==
-                              confirmPasswordController.text) {
-                            // Kirim event AuthEventRegister ke AuthBloc
-                            context.read<AuthBloc>().add(
-                                  AuthEventRegister(
-                                    username: usernameController.text,
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                  ),
-                                );
-                          } else {
-                            // Tampilkan error jika password tidak cocok
+                          if (usernameController.text.isEmpty ||
+                              emailController.text.isEmpty ||
+                              passwordController.text.isEmpty ||
+                              confirmPasswordController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Passwords do not match")),
+                              const SnackBar(
+                                  content: Text("Silahkan Lengkapi Data Anda")),
                             );
+                            return;
                           }
+
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (_) => const Center(
+                                child: CircularProgressIndicator()),
+                          );
+
+                          Future.delayed(const Duration(milliseconds: 250), () {
+                            Navigator.pop(context);
+                            if (passwordController.text ==
+                                confirmPasswordController.text) {
+                              context.read<AuthBloc>().add(
+                                    AuthEventRegister(
+                                      username: usernameController.text,
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                    ),
+                                  );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Passwords Tidak Sesuai")),
+                              );
+                            }
+                          });
                         },
                         child: Text(
                           'Create',
@@ -229,7 +249,17 @@ class CreateAccountPage extends StatelessWidget {
                     // Back to Login Page text
                     GestureDetector(
                       onTap: () {
-                        context.push('/login');
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) =>
+                              const Center(child: CircularProgressIndicator()),
+                        );
+
+                        Future.delayed(const Duration(milliseconds: 250), () {
+                          Navigator.pop(context);
+                          context.push('/login');
+                        });
                       },
                       child: Text(
                         'Back to Login Page',
